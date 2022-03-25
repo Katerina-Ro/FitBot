@@ -20,7 +20,7 @@ import java.time.LocalDate;
 public class Visits {
     @Column(name="gym_pass")
     @NotBlank
-    private Integer gymPass;
+    private Pass gymPass;
 
     @Column(name="date_visit")
     private LocalDate dateVisit;

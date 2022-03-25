@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import repositories.VisitorsRepository;
 
 import javax.annotation.Nullable;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,5 +48,11 @@ public class VisitorsService {
             visitor.setSurname(surname);
         }
         visitorsRepository.save(visitor);
+    }
+
+    // получить номер телефона и фио всех, кто сегодня придет
+    public List<Visitors> getVisitorsList(LocalDate localDate) {
+        LocalDate currencyDay = LocalDate.now(ZoneId.of("Europe/Moscow"));
+        return visitorsRepository.findAllByCurrencyDay(currencyDay);
     }
 }
