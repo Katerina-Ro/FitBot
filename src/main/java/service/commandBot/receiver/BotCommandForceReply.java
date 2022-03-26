@@ -5,8 +5,9 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import service.commandBot.Command;
 import service.commandBot.CommandEditSendMessage;
 import service.commandBot.receiver.start.StartCommand;
 
@@ -16,17 +17,17 @@ import service.commandBot.receiver.start.StartCommand;
 @Service
 @Getter
 public class BotCommandForceReply {
-    private final ImmutableMap<String, CommandEditSendMessage> commandMapForceReply;
-    private final CommandEditSendMessage phoneNumber;
+    private final ImmutableMap<String, Command> commandMapForceReply;
+    private final Command phoneNumber;
 
     @Autowired
-    public BotCommandForceReply(@Qualifier("phoneNumber") CommandEditSendMessage phoneNumber){
+    public BotCommandForceReply(@Qualifier("phoneNumber") Command phoneNumber){
         this.phoneNumber = phoneNumber;
         this.commandMapForceReply = ImmutableMap.<String, CommandEditSendMessage>builder()
                 .put(StartCommand.getNO_USER_IN_DB_BY_CHAT_ID(), this.phoneNumber)
                 .build();
     }
-    public EditMessageText findCommand(String commandIdentifier, Update update) {
+    public SendMessage findCommand(String commandIdentifier, Update update) {
             return (commandMapForceReply.get(commandIdentifier).execute(update));
     }
 }

@@ -5,16 +5,23 @@ package service.commandBot.receiver.utils;
  */
 public class FindingDataUtil {
     /**
-     * Получаем подстроку из сообщения от начала доп первого пробела
+     * Проверка, первый символ - это цифра 7
      * @param incomingMessage - пришедшее от бота сообщение
      * @return подстрока типа String
      */
-    public static String findLineByIncomingMessage(String incomingMessage){
-        int indexSpace = incomingMessage.indexOf(" ");
-        if (indexSpace == -1){
-            return "нет команды";
+    public static boolean firstSevenByIncomingMessage(String incomingMessage){
+        String firstSymbol = incomingMessage.trim().substring(0, 1);
+        return "7".equals(firstSymbol);
+    }
+
+    public static boolean isPhoneNumber(String incomingMessage) {
+        if (firstSevenByIncomingMessage(incomingMessage)) {
+            if (CheckingInputLinesUtil.checkLengthLine(incomingMessage)) {
+                return CheckingInputLinesUtil.isNumbers(incomingMessage);
+            };
+           return false;
         }
-        return incomingMessage.substring(0,(indexSpace));
+        return false;
     }
 
     /**
