@@ -47,6 +47,6 @@ public class VisitsService {
 
     public Optional<Visits> getVisit(Long chatId) {
         Pass pass = passService.getPass(chatId);
-        return visitsRepository.findById(pass.getGymPass());
+        return visitsRepository.findById(pass.getNumPass());
     }
 }

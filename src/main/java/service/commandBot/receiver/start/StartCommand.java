@@ -1,12 +1,12 @@
-package service.commandBot.start;
+package service.commandBot.receiver.start;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import service.commandBot.Command;
-import service.commandBot.utils.SendMessageUtils;
-import service.commandBot.utils.keyboard.Buttons;
+import service.commandBot.receiver.utils.SendMessageUtils;
+import service.commandBot.receiver.utils.keyboard.Buttons;
 import service.entetiesService.VisitorsService;
 
 /**

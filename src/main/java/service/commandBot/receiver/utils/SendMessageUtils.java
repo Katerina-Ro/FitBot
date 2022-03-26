@@ -1,4 +1,4 @@
-package service.commandBot.utils;
+package service.commandBot.receiver.utils;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;

@@ -1,4 +1,4 @@
-package service.commandBot.utils;
+package service.commandBot.receiver.utils;
 
 /**
  * Вспомогательный класс для получения данных из сообщения типа String

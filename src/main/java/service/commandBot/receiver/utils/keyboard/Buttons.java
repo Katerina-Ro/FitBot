@@ -1,4 +1,4 @@
-package service.commandBot.utils.keyboard;
+package service.commandBot.receiver.utils.keyboard;
 
 import lombok.Getter;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;

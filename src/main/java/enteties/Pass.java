@@ -22,7 +22,7 @@ public class Pass {
     @Id
     @Column(name="gym_pass")
     @NotBlank
-    private Integer gymPass;
+    private Integer numPass;
 
     @Column(name="date_start")
     @NotBlank

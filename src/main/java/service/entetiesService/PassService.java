@@ -36,10 +36,8 @@ public class PassService {
             pass.setExerciseLeft(pass.getExerciseLeft() - 1);
             passRepository.save(pass);
             LocalDate localDate = LocalDate.now(ZoneId.of("Europe/Moscow"));
-
             // зафиксировать этот день в визит
             // написать лог
-
             return true;
         }
         // Сообщение, что занятий больше нет
