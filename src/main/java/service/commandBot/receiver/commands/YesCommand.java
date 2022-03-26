@@ -1,4 +1,4 @@
-package service.commandBot.receiver.command;
+package service.commandBot.receiver.commands;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

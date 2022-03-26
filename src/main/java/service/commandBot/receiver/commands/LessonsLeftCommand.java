@@ -1,4 +1,4 @@
-package service.commandBot.receiver.command;
+package service.commandBot.receiver.commands;
 
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -12,7 +12,7 @@ import service.commandBot.receiver.utils.keyboard.MakerInlineKeyboardMarkup;
  * Класс-Receiver команды {@link service.commandBot.COMMANDS} {@link CommandEditSendMessage}
  */
 @Service
-public class NoCommand implements CommandEditSendMessage {
+public class LessonsLeftCommand implements CommandEditSendMessage{
     private static final String NO_MESSAGE = "Приходите в следующий раз. Хорошего дня";
 
     @Override
@@ -22,4 +22,3 @@ public class NoCommand implements CommandEditSendMessage {
                 MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
     }
 }
-
