@@ -1,4 +1,4 @@
-package service.entetiesservice;
+package service.entetiesService;
 
 import enteties.Pass;
 import enteties.Visits;

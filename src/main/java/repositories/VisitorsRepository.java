@@ -14,4 +14,6 @@ public interface VisitorsRepository extends JpaRepository<Visitors, Long> {
 
     //  получить номер телефона и фио всех, кто сегодня придет
     List<Visitors> findAllByCurrencyDay(LocalDate localDate);
+
+    boolean existsByTelephoneNum(String phoneNumber);
 }

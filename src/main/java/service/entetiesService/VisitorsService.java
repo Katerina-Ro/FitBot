@@ -1,4 +1,4 @@
-package service.entetiesservice;
+package service.entetiesService;
 
 import enteties.Visitors;
 import org.springframework.beans.factory.annotation.Autowired;
