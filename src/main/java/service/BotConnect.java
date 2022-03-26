@@ -1,8 +1,6 @@
 package service;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +10,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import service.commandBot.receiver.BotCommandCallBackQueryEdit;
+import service.commandBot.receiver.BotCommandForceReply;
 import service.commandBot.receiver.BotCommandSendMessage;
 
 import java.util.logging.Logger;
@@ -28,7 +27,7 @@ public class BotConnect extends TelegramLongPollingBot {
 
     private final BotCommandSendMessage botCommandSendMessage;
     private final BotCommandCallBackQueryEdit botCommandCallbackQueryEdit;
-    //private final BotCommandForceReply botCommandForceReply;
+    private final BotCommandForceReply botCommandForceReply;
     //private final BotCommandCallbackQuery botCommandCallbackQuery;
 
     @Setter
@@ -40,9 +39,11 @@ public class BotConnect extends TelegramLongPollingBot {
 
     @Autowired
     public BotConnect(BotCommandSendMessage botCommandSendMessage,
-                      BotCommandCallBackQueryEdit botCommandCallbackQueryEdit) {
+                      BotCommandCallBackQueryEdit botCommandCallbackQueryEdit,
+                      BotCommandForceReply botCommandForceReply) {
         this.botCommandSendMessage = botCommandSendMessage;
         this.botCommandCallbackQueryEdit = botCommandCallbackQueryEdit;
+        this.botCommandForceReply = botCommandForceReply;
     }
 
     // настроить время polling
@@ -58,6 +59,9 @@ public class BotConnect extends TelegramLongPollingBot {
         } else if (update.hasCallbackQuery()) {
             String commandIdentifier = update.getCallbackQuery().getData();
             try {
+                if (update.getMessage().isReply()) {
+                    execute(botCommandForceReply.findCommand(commandIdentifier, update));
+                }
                 execute(botCommandCallbackQueryEdit.findCommand(commandIdentifier, update));
             } catch (TelegramApiException e) {
                 e.printStackTrace();

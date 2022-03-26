@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * {@link Repository для работы с сущностью {@link enteties.Pass}
  */
+@Repository
 public interface PassRepository extends JpaRepository<Pass, Integer>{
 }

@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 /**
  * {@link Repository для работы с сущностью {@link enteties.Visits}
  */
+@Repository
 public interface VisitsRepository extends JpaRepository<Visits, Integer> {
 }

@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * {@link Repository для работы с сущностью {@link enteties.Visitors}
  */
+@Repository
 public interface VisitorsRepository extends JpaRepository<Visitors, Long> {
 
     //  получить номер телефона и фио всех, кто сегодня придет

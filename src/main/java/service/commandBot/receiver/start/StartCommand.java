@@ -1,5 +1,6 @@
 package service.commandBot.receiver.start;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,7 +17,8 @@ import service.entetiesService.VisitorsService;
 public class StartCommand implements Command {
     private static final String IMAGE_WAVING_HAND = String.valueOf(Character.toChars(0x1F44B));
     private static final String START_MESSAGE = "Привет " + IMAGE_WAVING_HAND + " \n Это бот для опроса о посещении";
-    private static final String NO_USER_IN_DB = "Введите Ваш номер телефона, который Вы указывали в качестве контакта";
+    @Getter
+    private static final String NO_USER_IN_DB_BY_CHAT_ID = "Введите Ваш номер телефона, который Вы указывали в качестве контакта";
     private final VisitorsService visitorsService;
 
     @Autowired
@@ -35,6 +37,6 @@ public class StartCommand implements Command {
     }
 
     private SendMessage messageError(Update update){
-        return SendMessageUtils.sendMessage(update,NO_USER_IN_DB, true);
+        return SendMessageUtils.sendMessage(update, NO_USER_IN_DB_BY_CHAT_ID, true);
     }
 }
