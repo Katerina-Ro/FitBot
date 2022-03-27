@@ -1,30 +1,29 @@
-package db.enteties;
+package telegramBot.enteties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
-@Table(name = "pass")
+@Table(name = "pass_table")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class Pass {
-    @Column(name="chat_id", unique = true)
-    private Long chatId;
     @Id
     @Column(name="pass_id", unique = true)
     @NotBlank
     private Integer numPass;
+
+    @Column(name="chat_id", unique = true)
+    private Long chatId;
 
     @Column(name="date_start")
     @NotBlank
@@ -37,7 +36,8 @@ public class Pass {
     @NotBlank
     private Integer visitLimit;
 
-    private Visits visits;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Visits> visits;
 
     @Override
     public String toString() {

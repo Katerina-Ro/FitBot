@@ -1,4 +1,4 @@
-package db.enteties;
+package telegramBot.enteties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,6 +36,8 @@ public class Visitors {
     @Column(name="patronumic")
     private String patronymic;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pass_id")
     private List<Pass> passList;
 
     @Override

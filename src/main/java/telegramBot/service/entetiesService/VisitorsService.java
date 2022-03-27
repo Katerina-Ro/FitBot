@@ -1,10 +1,10 @@
 package telegramBot.service.entetiesService;
 
-import db.enteties.Pass;
-import db.enteties.Visitors;
+import telegramBot.enteties.Pass;
+import telegramBot.enteties.Visitors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import db.repositories.VisitorsRepository;
+import telegramBot.repositories.VisitorsRepository;
 
 import javax.annotation.Nullable;
 import java.time.LocalDate;
@@ -107,7 +107,7 @@ public class VisitorsService {
      * @param phoneNumber - номер телефона студента
      */
     public Optional<Visitors> getVisitor(String phoneNumber) {
-        return visitorsRepository.findVisitorByPhoneNumber(phoneNumber);
+        return visitorsRepository.findVisitorByPhoneNumber(phoneNumber.trim());
     }
 
     /**

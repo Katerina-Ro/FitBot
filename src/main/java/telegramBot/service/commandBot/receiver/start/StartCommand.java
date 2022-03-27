@@ -3,6 +3,7 @@ package telegramBot.service.commandBot.receiver.start;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegramBot.service.commandBot.Command;
@@ -29,6 +30,7 @@ public class StartCommand implements Command {
     }
 
     @Override
+    @Transactional
     public SendMessage execute(Update update)  {
         long numberUser = update.getMessage().getChatId();
         if(!visitorsService.havPhoneNumber(numberUser)) {

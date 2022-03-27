@@ -1,10 +1,10 @@
 package telegramBot.service.entetiesService;
 
-import db.enteties.Pass;
-import db.enteties.Visits;
+import telegramBot.enteties.Pass;
+import telegramBot.enteties.Visits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import db.repositories.VisitsRepository;
+import telegramBot.repositories.VisitsRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,7 +46,7 @@ public class VisitsService {
      * Получение информации о визитах
      * @param chatId - идентификатор студента в Телеграмме
      */
-    public Optional<Visits> getVisit(Long chatId, Integer passId) {
+    public Optional<List<Visits>> getVisit(Long chatId, Integer passId) {
         Optional<List<Pass>> pass = passService.getPassByChatId(chatId);
         return pass.map(passes -> passes.get(passId).getVisits());
     }

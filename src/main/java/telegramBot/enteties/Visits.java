@@ -1,27 +1,29 @@
-package db.enteties;
+package telegramBot.enteties;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import telegramBot.enteties.key.VisitsKey;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "visits")
+@IdClass(VisitsKey.class)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class Visits {
+    @Id
     @Column(name="pass_id")
     @NotBlank
     private Integer pass;
 
+    @Id
     @Column(name="date_visit")
     private LocalDate dateVisit;
 

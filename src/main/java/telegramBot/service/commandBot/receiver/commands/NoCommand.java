@@ -2,6 +2,7 @@ package telegramBot.service.commandBot.receiver.commands;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegramBot.service.commandBot.CommandEditSendMessage;
@@ -25,6 +26,7 @@ public class NoCommand implements CommandEditSendMessage {
     }
 
     @Override
+    @Transactional
     public EditMessageText execute(Update update) {
         // добавить в список тех, кто в текущий день не приходит
         passService.clickButtonNo(true);

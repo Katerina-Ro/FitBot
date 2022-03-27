@@ -1,6 +1,6 @@
-package db.repositories;
+package telegramBot.repositories;
 
-import db.enteties.Visits;
+import telegramBot.enteties.Visits;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +13,7 @@ import java.util.Optional;
 /**
  * {@link Repository для работы с сущностью {@link Visits }
  */
-@Repository
+//@Repository
 public interface VisitsRepository extends JpaRepository<Visits, Integer> {
 
     @Query("SELECT v From Visits v WHERE v.visits.dateVisit = :dateVisit")

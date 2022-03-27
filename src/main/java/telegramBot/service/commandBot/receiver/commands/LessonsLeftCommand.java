@@ -1,6 +1,6 @@
 package telegramBot.service.commandBot.receiver.commands;
 
-import db.enteties.Pass;
+import telegramBot.enteties.Pass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;

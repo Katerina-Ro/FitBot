@@ -1,13 +1,13 @@
 package telegramBot.service.entetiesService;
 
-import db.enteties.Pass;
-import db.enteties.Visitors;
-import db.enteties.Visits;
+import telegramBot.enteties.Pass;
+import telegramBot.enteties.Visitors;
+import telegramBot.enteties.Visits;
 import telegramBot.comparator.PassVisitsComparator;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import db.repositories.PassRepository;
+import telegramBot.repositories.PassRepository;
 
 import javax.annotation.Nullable;
 import java.time.LocalDate;
@@ -35,7 +35,7 @@ public class PassService {
      * Вычет занятия из абонемента, если студент нажал "Да"
      */
     public boolean deductVisitIfYes(Pass pass) {
-        if (haveDayInPassByCompare(pass)) {
+        if (haveDayInPassCalculate(pass)) {
             LocalDate currencyDay = LocalDate.now(ZoneId.of("GMT+03:00"));
             Visits visits = new Visits();
             visits.setCountVisit(pass.getVisitLimit() - 1);
@@ -69,7 +69,7 @@ public class PassService {
      * Вычет занятия, если до 23:59:00.000000000 не было ответа (ни "Да", ни "Нет")
      */
     public void deductVisitWithOutAnswer(Pass pass, Boolean isClickButtonNo) {
-        if (!deductVisitIfYes(pass) && haveDayInPassByCompare(pass) && isMidnightCurrencyDay()
+        if (!deductVisitIfYes(pass) && haveDayInPassCalculate(pass) && isMidnightCurrencyDay()
                 && !clickButtonNo(isClickButtonNo)) {
             deductVisitIfYes(pass);
         }
@@ -85,10 +85,16 @@ public class PassService {
      */
     public int calculateClassesLeft(Pass pass) {
         int classesLeft = 0;
+        int cumulativeTotal = 0;
         if (betweenDate(pass)) {
-            if (haveDayInPassByCompare(pass)) {
-                classesLeft = pass.getVisitLimit() - pass.getVisits().getCountVisit();
+            if (haveDayInPassCalculate(pass)) {
+                List<Visits> listVisits = pass.getVisits();
+                for (Visits v: listVisits) {
+                    int countVisitInOneDay = v.getCountVisit();
+                     cumulativeTotal += countVisitInOneDay;
+                }
             }
+            classesLeft = pass.getVisitLimit() - cumulativeTotal;
         }
         return classesLeft;
     }
@@ -118,7 +124,7 @@ public class PassService {
      * @return true, если абонемент действующий
      */
     private boolean validateActualPass(Pass pass) {
-        return betweenDate(pass) && haveDayInPassByCompare(pass);
+        return betweenDate(pass) && haveDayInPassCalculate(pass);
     }
 
     /**
@@ -173,7 +179,9 @@ public class PassService {
             pass.get().setDateEnd(dateEnd);
             pass.get().setVisitLimit(visitLimit);
             if (visits != null) {
-                pass.get().setVisits(visits);
+                List<Visits> listVisits = pass.get().getVisits();
+                listVisits.add(visits);
+                pass.get().setVisits(listVisits);
             }
             return true;
         }

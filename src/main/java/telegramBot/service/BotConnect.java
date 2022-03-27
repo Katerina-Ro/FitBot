@@ -13,6 +13,7 @@ import telegramBot.service.commandBot.receiver.BotCommandCallBackQueryEdit;
 import telegramBot.service.commandBot.receiver.BotCommandForceReply;
 import telegramBot.service.commandBot.receiver.BotCommandSendMessage;
 
+import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
 /**
@@ -67,6 +68,12 @@ public class BotConnect extends TelegramLongPollingBot {
                 e.printStackTrace();
             }
         }
+    }
+
+    void botDisConnect() {
+        LocalDateTime localDateTimeCurrency = LocalDateTime.now();
+        log.info(String.format("Бот отключен %s", localDateTimeCurrency));
+        System.exit(0);
     }
 }
 
