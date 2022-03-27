@@ -18,9 +18,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class Visits {
-    @Column(name="gym_pass")
+    @Column(name="pass_id")
     @NotBlank
-    private Pass gymPass;
+    private Pass pass;
 
     @Column(name="date_visit")
     private LocalDate dateVisit;
@@ -30,7 +30,7 @@ public class Visits {
 
     @Override
     public String toString() {
-        return "Номер абонемента " + gymPass + '\'' +
+        return "Номер абонемента " + pass + '\'' +
                 ", Дата посещения " + dateVisit + '\'' +
                 ", Количество посещений " + countVisit;
     }

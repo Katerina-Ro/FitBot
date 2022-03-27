@@ -32,19 +32,18 @@ public class Visitors {
     @NotBlank
     private String name;
 
-    @Column(name="patronymic")
+    @Column(name="patronumic")
     private String patronymic;
 
-    @Column(name="gym_pass")
     @NotBlank
-    private Pass gymPass;
+    private Pass pass;
 
     @Override
     public String toString() {
-        return "Номер телефона посетителя " + telephoneNum + '\'' +
-                ", Фамилия " + surname + '\'' +
-                ", Имя " + name + '\'' +
+        return "Номер телефона посетителя " + telephoneNum +
+                ", Фамилия " + surname +
+                ", Имя " + name +
                 ", Отчество (может быть не указано) " + patronymic + '\'' +
-                ", Информация об абонементе " + gymPass;
+                ", Информация об абонементе " + pass;
     }
 }

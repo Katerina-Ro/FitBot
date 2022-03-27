@@ -17,7 +17,7 @@ import service.entetiesService.VisitorsService;
  * возвращает сообщение типа {@link SendMessage}
  */
 @Service
-public class PhoneNumber implements Command {
+public class PhoneNumberCommand implements Command {
     private static final String ASK_MESSAGE = "Вы придете сегодня на занятие?";
     private static final String NO_NUMBER_ERROR_MESSAGE = "Мы передадим информацию, что Вы сегодня придете. " +
             "Но Ваш номер телефона еще не занесен в базу студии. \n" +
@@ -28,7 +28,7 @@ public class PhoneNumber implements Command {
     private final VisitorsService visitorsService;
 
     @Autowired
-    public PhoneNumber(VisitorsService visitorsService) {
+    public PhoneNumberCommand(VisitorsService visitorsService) {
         this.visitorsService = visitorsService;
     }
 

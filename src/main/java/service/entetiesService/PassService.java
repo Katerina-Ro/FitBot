@@ -69,7 +69,7 @@ public class PassService {
         Optional<Visitors> visitor = visitorsRepository.findById(chatId);
         // возможно, дописать, чтобы кидал ошибку, а в ошибке на финализации сохранял на время в память запись и
         // после вычитал или отправлять эту инфу админу, чтобы ручками вычитал
-        return visitor.map(Visitors::getGymPass).orElseThrow();
+        return visitor.map(Visitors::getPass).orElseThrow();
     }
 
     private boolean isMidnightCurrencyDay() {

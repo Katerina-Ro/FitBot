@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import service.commandBot.Command;
-import service.commandBot.CommandEditSendMessage;
 import service.commandBot.receiver.start.StartCommand;
 
 /**
@@ -23,7 +22,7 @@ public class BotCommandForceReply {
     @Autowired
     public BotCommandForceReply(@Qualifier("phoneNumber") Command phoneNumber){
         this.phoneNumber = phoneNumber;
-        this.commandMapForceReply = ImmutableMap.<String, CommandEditSendMessage>builder()
+        this.commandMapForceReply = ImmutableMap.<String, Command>builder()
                 .put(StartCommand.getNO_USER_IN_DB_BY_CHAT_ID(), this.phoneNumber)
                 .build();
     }
