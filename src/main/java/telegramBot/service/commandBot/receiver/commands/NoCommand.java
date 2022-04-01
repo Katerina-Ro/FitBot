@@ -22,9 +22,8 @@ import java.util.Optional;
  */
 @Service
 public class NoCommand implements CommandEditSendMessage {
-    private final VisitorsService visitorsService;
-
     private static final String NO_MESSAGE = "Приходите в следующий раз. Хорошего дня";
+    private final VisitorsService visitorsService;
     private final PassService passService;
 
     @Autowired
