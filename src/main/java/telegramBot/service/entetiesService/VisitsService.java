@@ -1,6 +1,7 @@
 package telegramBot.service.entetiesService;
 
-import telegramBot.enteties.Pass;
+import lombok.Getter;
+import lombok.Setter;
 import telegramBot.enteties.Visits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,17 +13,16 @@ import java.util.Optional;
 
 @Service
 public class VisitsService {
+    @Getter
     private final VisitsRepository visitsRepository;
-    private final PassService passService;
 
     private static final String message = "Нет занятий в абонементе";
     private static final String messagePassException = "Абонемент не занесен в базу или произошел разрыв соединения " +
             "с базой данных. Попробуйте еще раз";
 
     @Autowired
-    public VisitsService(VisitsRepository visitsRepository, PassService passService) {
+    public VisitsService(VisitsRepository visitsRepository) {
         this.visitsRepository = visitsRepository;
-        this.passService = passService;
     }
 
     /**
@@ -40,15 +40,6 @@ public class VisitsService {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Получение информации о визитах
-     * @param chatId - идентификатор студента в Телеграмме
-     */
-    public Optional<List<Visits>> getVisit(Long chatId, Integer passId) {
-        Optional<List<Pass>> pass = passService.getPassByChatId(chatId);
-        return pass.map(passes -> passes.get(passId).getVisits());
     }
 
     /**

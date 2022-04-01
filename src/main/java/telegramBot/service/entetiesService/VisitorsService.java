@@ -1,5 +1,7 @@
 package telegramBot.service.entetiesService;
 
+import lombok.Getter;
+import lombok.Setter;
 import telegramBot.enteties.Pass;
 import telegramBot.enteties.Visitors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,23 +9,17 @@ import org.springframework.stereotype.Service;
 import telegramBot.repositories.VisitorsRepository;
 
 import javax.annotation.Nullable;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class VisitorsService {
+    @Getter
     private final VisitorsRepository visitorsRepository;
-    private final PassService passService;
-    private final VisitsService visitsService;
 
     @Autowired
-    public VisitorsService(VisitorsRepository visitorsRepository, PassService passService, VisitsService visitsService) {
+    public VisitorsService(VisitorsRepository visitorsRepository) {
         this.visitorsRepository = visitorsRepository;
-        this.passService = passService;
-        this.visitsService = visitsService;
     }
 
     /**
@@ -39,6 +35,24 @@ public class VisitorsService {
      */
     public boolean existPhoneNumber(String phoneNumber) {
         return visitorsRepository.findTelephoneNum(phoneNumber) != null;
+    }
+
+    /**
+     * Получение информации об абонементе
+     * @param chatId - уникальный номер пользователя в telegram bot
+     */
+    public Optional<List<Pass>> getPassByChatId(Long chatId) {
+        Optional<Visitors> visitor = getVisitor(chatId);
+        return visitor.map(Visitors::getPassList);
+    }
+
+    /**
+     * Получение информации об абонементе
+     * @param phoneNumber - номер телефона студента
+     */
+    public Optional<List<Pass>> getPassByChatId(String phoneNumber) {
+        Optional<Visitors> visitors = getVisitor(phoneNumber);
+        return visitors.map(Visitors::getPassList);
     }
 
     /**
@@ -78,23 +92,6 @@ public class VisitorsService {
     }
 
     /**
-     * Получить список всех студентов, кто придет в текущий день
-     */
-    public List<Visitors> getVisitorsListToDay() {
-        List<Visitors> listVisitorsToDay = new ArrayList<>();
-        LocalDate currencyDay = LocalDate.now(ZoneId.of("GMT+03:00"));
-        Optional<List<Integer>> listPassId = visitsService.getListPassId(currencyDay);
-        if (listPassId.isPresent()) {
-            for(Integer i: listPassId.get()) {
-                Long chatId = passService.getChatId(i);
-                Optional<Visitors> visitors = getVisitor(chatId);
-                visitors.ifPresent(listVisitorsToDay::add);
-            }
-        }
-        return listVisitorsToDay;
-    }
-
-    /**
      * Получить информацию о студенте по chatId
      * @param chatId - идентификатор студента в Телеграмме
      */
@@ -108,14 +105,6 @@ public class VisitorsService {
      */
     public Optional<Visitors> getVisitor(String phoneNumber) {
         return visitorsRepository.findVisitorByPhoneNumber(phoneNumber.trim());
-    }
-
-    /**
-     * Получить данные студента по номеру абонемента
-     * @param passId - номер абонемента
-     */
-    public Optional<Visitors> getVisitor(Integer passId) {
-        return getVisitor(passService.getChatId(passId));
     }
 
     /**

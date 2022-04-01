@@ -1,9 +1,14 @@
-package telegramBot.dto;
+package appStudentAttedanceRecord.db.dto;
 
+import lombok.Getter;
+import lombok.Setter;
 import telegramBot.enteties.Pass;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 
+@Getter
+@Setter
 public class DontPlanToComeToDay {
     private Long chatId;
     @NotBlank
@@ -14,6 +19,7 @@ public class DontPlanToComeToDay {
     private String name;
     private String patronymic;
     private Pass passList;
+    private LocalDate currencyDate = LocalDate.now();
 
     @Override
     public String toString() {

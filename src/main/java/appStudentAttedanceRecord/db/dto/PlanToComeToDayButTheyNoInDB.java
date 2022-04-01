@@ -1,4 +1,4 @@
-package telegramBot.dto;
+package appStudentAttedanceRecord.db.dto;
 
 import javax.validation.constraints.NotBlank;
 
