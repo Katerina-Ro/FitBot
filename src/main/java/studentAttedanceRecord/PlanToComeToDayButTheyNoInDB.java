@@ -1,4 +1,4 @@
-package appStudentAttedanceRecord.db.dto;
+package studentAttedanceRecord;
 
 import javax.validation.constraints.NotBlank;
 

@@ -15,7 +15,7 @@ public class UnknownCommand implements CommandEditSendMessage {
     private static final String MESSAGE_UNKNOWNCOMMAND = "Выберите одну из предложенных кнопок";
 
     @Override
-    public EditMessageText execute(Update update) {
+    public synchronized EditMessageText execute(Update update) {
         return SendMessageUtils.sendEditMessage (update, MESSAGE_UNKNOWNCOMMAND,
                 Buttons.getKeyBoardStartMenu());
     }

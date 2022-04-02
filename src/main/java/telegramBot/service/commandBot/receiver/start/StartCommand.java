@@ -23,7 +23,7 @@ public class StartCommand implements Command {
 
     @Override
     //@Transactional
-    public SendMessage execute(Update update)  {
+    public synchronized SendMessage execute(Update update)  {
         SendMessage sendMessage = SendMessageUtils.sendMessage(update,START_MESSAGE, false);
         sendMessage.setReplyMarkup(Buttons.getKeyBoardStartMenu());
         return sendMessage;

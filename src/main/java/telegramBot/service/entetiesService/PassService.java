@@ -1,7 +1,7 @@
 package telegramBot.service.entetiesService;
 
-import appStudentAttedanceRecord.db.dto.DontPlanToComeToDay;
-import appStudentAttedanceRecord.db.dto.PlanToComeToDay;
+import studentAttedanceRecord.DontPlanToComeToDay;
+import studentAttedanceRecord.PlanToComeToDay;
 import lombok.Getter;
 import lombok.Setter;
 import telegramBot.enteties.Pass;

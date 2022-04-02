@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
  * Вспомогательный класс для формирования ответов боту типа SendMessage и EditMessageText
  */
 public class SendMessageUtils {
-    public static Long getChatIdUser(Update update) {
+    public static synchronized Long getChatIdUser(Update update) {
         if (update.hasCallbackQuery()) {
             System.out.println("Это hasCallbackQuery");
             return update.getCallbackQuery().getMessage().getChatId();
@@ -21,7 +21,7 @@ public class SendMessageUtils {
         }
     }
 
-    public static SendMessage sendMessage(Update update, String sentMessage, boolean isForceReply){
+    public static synchronized SendMessage sendMessage(Update update, String sentMessage, boolean isForceReply){
         String chatIdUser;
         if (update.hasCallbackQuery()) {
             chatIdUser = String.valueOf(update.getCallbackQuery().getMessage().getChatId());
@@ -55,7 +55,7 @@ public class SendMessageUtils {
                 .build();
     }
 
-    public static EditMessageText sendEditMessage(Update update, String sentMessage, InlineKeyboardMarkup
+    public synchronized static EditMessageText sendEditMessage(Update update, String sentMessage, InlineKeyboardMarkup
             inlineKeyboardMarkup){
         return EditMessageText
                 .builder()

@@ -28,7 +28,7 @@ public class LessonsLeftCommand implements CommandEditSendMessage{
 
     @Override
     @Transactional
-    public EditMessageText execute(Update update) {
+    public synchronized EditMessageText execute(Update update) {
         Long numberUser = SendMessageUtils.getChatIdUser(update);
         Optional<Pass> pass = passService.getActualPassByChatId(numberUser);
         Optional<String> classesLeft;

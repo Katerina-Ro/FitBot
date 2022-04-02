@@ -22,7 +22,7 @@ public class InfoCommand implements CommandEditSendMessage {
             "Нажимая на кнопку 'Нет', Вы предупреждаете, что сегодня не придете. Занятие не будет списано \n ";
 
     @Override
-    public EditMessageText execute(Update update) {
+    public synchronized EditMessageText execute(Update update) {
         return SendMessageUtils.sendEditMessage(update, INFO_MESSAGE,
                 MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
     }

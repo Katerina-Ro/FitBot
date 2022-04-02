@@ -48,6 +48,8 @@ public class BotConnect extends TelegramLongPollingBot {
 
     // настроить время polling
 
+
+
     @Override
     public void onUpdateReceived(Update update) {
         if (update.getMessage() != null && update.hasMessage()) {

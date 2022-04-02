@@ -1,6 +1,6 @@
 package telegramBot.service.commandBot.receiver.commands;
 
-import appStudentAttedanceRecord.db.dto.PlanToComeToDay;
+import studentAttedanceRecord.PlanToComeToDay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +36,7 @@ public class YesCommand implements CommandEditSendMessage {
 
     @Override
     @Transactional
-    public EditMessageText execute(Update update) {
+    public synchronized EditMessageText execute(Update update) {
         Long numberUser = SendMessageUtils.getChatIdUser(update);
         PlanToComeToDay planToComeToDay = new PlanToComeToDay();
         Optional<Visitors> visitors = visitorsService.getVisitor(numberUser);

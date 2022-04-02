@@ -1,6 +1,6 @@
 package telegramBot.service.commandBot.receiver.commands;
 
-import appStudentAttedanceRecord.db.dto.DontPlanToComeToDay;
+import studentAttedanceRecord.DontPlanToComeToDay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +34,7 @@ public class NoCommand implements CommandEditSendMessage {
 
     @Override
     @Transactional
-    public EditMessageText execute(Update update) {
+    public synchronized EditMessageText execute(Update update) {
         Long numberUser = SendMessageUtils.getChatIdUser(update);
         // добавить в список тех, кто в текущий день не приходит
         DontPlanToComeToDay dontPlanToComeToDay = new DontPlanToComeToDay();
