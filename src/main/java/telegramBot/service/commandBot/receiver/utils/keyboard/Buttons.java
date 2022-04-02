@@ -8,7 +8,7 @@ import telegramBot.service.commandBot.COMMANDS;
 @Getter
 public class Buttons {
     private static final String BUTTON_GET_LESSONS_LEFT = "Осталось занятий";
-    private static final String BUTTON_INFO = "Для чего бот??";
+    private static final String BUTTON_INFO = "Для чего бот?";
     private static final String BUTTON_YES_LABEL = "Да";
     private static final String BUTTON_NO_LABEL = "Нет";
     private static final String BUTTON_BACK_TO_START = "Назад, в главное меню";

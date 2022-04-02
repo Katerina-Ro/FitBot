@@ -11,6 +11,16 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
  * Вспомогательный класс для формирования ответов боту типа SendMessage и EditMessageText
  */
 public class SendMessageUtils {
+    public static Long getChatIdUser(Update update) {
+        if (update.hasCallbackQuery()) {
+            System.out.println("Это hasCallbackQuery");
+            return update.getCallbackQuery().getMessage().getChatId();
+        } else {
+            System.out.println("Это не hasCallbackQuery");
+            return update.getMessage().getChatId();
+        }
+    }
+
     public static SendMessage sendMessage(Update update, String sentMessage, boolean isForceReply){
         String chatIdUser;
         if (update.hasCallbackQuery()) {

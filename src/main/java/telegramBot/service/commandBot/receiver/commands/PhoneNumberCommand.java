@@ -14,6 +14,8 @@ import telegramBot.service.commandBot.receiver.utils.keyboard.Buttons;
 import telegramBot.service.commandBot.receiver.utils.keyboard.MakerInlineKeyboardMarkup;
 import telegramBot.service.entetiesService.VisitorsService;
 
+import javax.transaction.Transactional;
+
 /**
  * Класс-Receiver для обработки запроса (есть ли введенный номер телефона в базе данных),
  * возвращает сообщение типа {@link SendMessage}
@@ -35,8 +37,10 @@ public class PhoneNumberCommand implements Command {
     }
 
     @Override
+    @Transactional
     public SendMessage execute(Update update) {
-        long numberUser = update.getMessage().getChatId();
+        Long numberUser = SendMessageUtils.getChatIdUser(update);
+        System.out.println("Это phonenumber ");
         String phoneNumber = update.getMessage().getText();
         if (CheckingInputLinesUtil.checkEmptyString(phoneNumber) && FindingDataUtil.isPhoneNumber(phoneNumber)) {
             if (visitorsService.havPhoneNumber(numberUser)) {

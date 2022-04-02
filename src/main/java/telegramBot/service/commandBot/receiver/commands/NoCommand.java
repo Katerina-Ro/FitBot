@@ -35,7 +35,7 @@ public class NoCommand implements CommandEditSendMessage {
     @Override
     @Transactional
     public EditMessageText execute(Update update) {
-        long numberUser = update.getMessage().getChatId();
+        Long numberUser = SendMessageUtils.getChatIdUser(update);
         // добавить в список тех, кто в текущий день не приходит
         DontPlanToComeToDay dontPlanToComeToDay = new DontPlanToComeToDay();
         Optional<Visitors> visitors = visitorsService.getVisitor(numberUser);

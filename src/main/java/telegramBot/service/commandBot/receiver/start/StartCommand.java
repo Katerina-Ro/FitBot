@@ -30,10 +30,11 @@ public class StartCommand implements Command {
     }
 
     @Override
-    //@Transactional
+    @Transactional
     public SendMessage execute(Update update)  {
-        //long numberUser = update.getMessage().getChatId();
+        Long numberUser = SendMessageUtils.getChatIdUser(update);
         /*
+        System.out.println("это startcommand ");
         if(!visitorsService.havPhoneNumber(numberUser)) {
             return messageError(update);
         } */
@@ -43,6 +44,7 @@ public class StartCommand implements Command {
     }
 
     private SendMessage messageError(Update update){
-        return SendMessageUtils.sendMessage(update, NO_USER_IN_DB_BY_CHAT_ID, true);
+        return SendMessageUtils.sendMessage(update, START_MESSAGE + " \n " + " \n "
+                + NO_USER_IN_DB_BY_CHAT_ID, true);
     }
 }

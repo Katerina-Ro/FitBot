@@ -89,15 +89,17 @@ public class PassService {
      * @return true, если есть как минимум 1 занятие
      */
     public boolean haveDayInPassCalculate(Pass pass) {
-        return calculateClassesLeft(pass) > 0;
+        Optional<String> countDayInPass = calculateClassesLeft(pass);
+        return countDayInPass.filter(s -> Integer.parseInt(s) > 0).isPresent();
     }
 
     /**
      * Расчет оставшегося количества занятий у конкретного студента
      * @param pass - информация об абонементе
+     * @return
      */
-    public int calculateClassesLeft(Pass pass) {
-        int classesLeft = 0;
+    public Optional<String> calculateClassesLeft(Pass pass) {
+        String classesLeft = null;
         int cumulativeTotal = 0;
         if (betweenDate(pass)) {
             if (haveDayInPassCalculate(pass)) {
@@ -107,9 +109,9 @@ public class PassService {
                     cumulativeTotal += countVisitInOneDay;
                 }
             }
-            classesLeft = pass.getVisitLimit() - cumulativeTotal;
+            classesLeft = String.valueOf(pass.getVisitLimit() - cumulativeTotal);
         }
-        return classesLeft;
+        return Optional.ofNullable(classesLeft);
     }
 
     /**
@@ -236,13 +238,15 @@ public class PassService {
      * @param pass - информация об абонементе
      * @return количество оставшихся занятий в абонементе после прибавления
      */
-    public int plusClasses(Pass pass, Integer inputNumber) {
+    public Optional<String> plusClasses(Pass pass, Integer inputNumber) {
         pass.setVisitLimit(inputNumber);
-        Integer classesLeft = calculateClassesLeft(pass);
-        int numMinusVisits = inputNumber - classesLeft;
-        boolean isSuccess = visitsService.minusVisit(pass.getNumPass(), numMinusVisits);
-        log.info(String.format("К оставшимся дням в абонементе %s прибавлено %s занятий. Из таблицы о посещениях " +
-                "удалены день и количество посещений? %s", pass.getVisitLimit(), inputNumber, isSuccess));
+        Optional<String> classesLeft = calculateClassesLeft(pass);
+        if (classesLeft.isPresent()) {
+            int numMinusVisits = inputNumber - Integer.parseInt(classesLeft.get());
+            boolean isSuccess = visitsService.minusVisit(pass.getNumPass(), numMinusVisits);
+            log.info(String.format("К оставшимся дням в абонементе %s прибавлено %s занятий. Из таблицы о посещениях " +
+                    "удалены день и количество посещений? %s", pass.getVisitLimit(), inputNumber, isSuccess));
+        }
         return classesLeft;
     }
 }

@@ -29,14 +29,14 @@ public class LessonsLeftCommand implements CommandEditSendMessage{
     @Override
     @Transactional
     public EditMessageText execute(Update update) {
-        long numberUser = update.getMessage().getChatId();
+        Long numberUser = SendMessageUtils.getChatIdUser(update);
         Optional<Pass> pass = passService.getActualPassByChatId(numberUser);
-        Integer classesLeft = null;
-        if (pass.isPresent()) {
-            classesLeft = passService.calculateClassesLeft(pass.get());
-        }
+        Optional<String> classesLeft;
+        classesLeft = pass.map(value -> String.format("Ждем Вас сегодня на занятиях. " + "У Вас осталось %s занятий",
+                    passService.calculateClassesLeft(value))).or(() -> Optional.of("Нет информации о Вашем абонементе. " +
+                    "Обратитесь к администратору"));
         return SendMessageUtils.sendEditMessage(update,
-                String.format("У Вас осталось %s занятий", classesLeft),
+                classesLeft.get(),
                 MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
     }
 }

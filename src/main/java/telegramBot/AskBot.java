@@ -20,7 +20,7 @@ public class AskBot {
     public static void main(String[] args) throws TelegramApiException {
         //ApiContextInitializer.init();
 
-        TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
+       new TelegramBotsApi(DefaultBotSession.class);
         SpringApplication.run(AskBot.class, args);
     }
 }

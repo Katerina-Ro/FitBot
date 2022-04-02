@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import telegramBot.enteties.Pass;
 import telegramBot.enteties.Visitors;
 import telegramBot.service.commandBot.CommandEditSendMessage;
 import telegramBot.service.commandBot.COMMANDS;
@@ -22,8 +23,11 @@ import java.util.Optional;
  */
 @Service
 public class YesCommand implements CommandEditSendMessage {
+    private static final String NO_HAVE_CLASSES_IN_PASS = "Не осталось занятий в абонементе либо нет информации " +
+            "об абонементе в базе данных";
     private final VisitorsService visitorsService;
     private final PassService passService;
+
     @Autowired
     public YesCommand(VisitorsService visitorsService, PassService passService) {
         this.visitorsService = visitorsService;
@@ -33,35 +37,27 @@ public class YesCommand implements CommandEditSendMessage {
     @Override
     @Transactional
     public EditMessageText execute(Update update) {
-        long numberUser = update.getMessage().getChatId();
-        //Optional<Pass> pass = planToConeService.getActualPassByChatId(numberUser);
-        // получить номер телефона, имя
-        // вписать дто, что придет в мар, где ключ номер телефона
-        // если номера телефона нет, то вписать в список лист, что придет
-        /*
-
-        if (pass.isPresent()) {
-            planToComeToDay.setChatId(numberUser);
-            boolean isSuccess = planToConeService.deductVisitIfYes(pass.get());
-            if (!isSuccess) {
-               // если неуспешно, то сформировать инфу для админа
-            }
-
-        } */
+        Long numberUser = SendMessageUtils.getChatIdUser(update);
         PlanToComeToDay planToComeToDay = new PlanToComeToDay();
         Optional<Visitors> visitors = visitorsService.getVisitor(numberUser);
+        Optional<Pass> pass;
+        Optional<String> classesLeft;
         if (visitors.isPresent()) {
             Visitors v = visitors.get();
             planToComeToDay.setChatId(v.getChatId());
             planToComeToDay.setName(v.getName());
             planToComeToDay.setTelephoneNum(v.getTelephoneNum());
+            // добавляем в список (map) тех, кто придет, и отправляем администратору
             passService.getMapVisitorsToDay().put(v.getTelephoneNum(), planToComeToDay);
+            pass = passService.getPassByPassNumber(Integer.valueOf(v.getTelephoneNum()));
+            classesLeft = pass.map(value -> String.format("Ждем Вас сегодня на занятиях. " + "У Вас осталось %s занятий",
+                    passService.calculateClassesLeft(value))).or(() -> Optional.of("Нет информации о Вашем абонементе. " +
+                    "Обратитесь к администратору"));
+        } else {
+            classesLeft = Optional.of("Нет о Вас информации. Обратитесь к администратору");
         }
-        Integer classesLeft = 0;
-        // classesLeft = passService.calculateClassesLeft(pass.get());
-
         return SendMessageUtils.sendEditMessage(update,
-                String.format("Ждем Вас сегодня на занятиях. У Вас осталось %s занятий", classesLeft),
+                classesLeft.get(),
                 MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
     }
 }

@@ -9,6 +9,7 @@ public enum COMMANDS {
     YES("Да"),
     NO("Нет"),
     BUTTON_BACK_TO_START ("Назад, в главное меню"),
+    IS_NUMBER ("номер"),
     LESSONS_LEFT("Осталось занятий");
 
     private final String command;

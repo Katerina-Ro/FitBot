@@ -14,13 +14,15 @@ import telegramBot.service.commandBot.receiver.utils.keyboard.MakerInlineKeyboar
  */
 @Service
 public class InfoCommand implements CommandEditSendMessage {
-    private static final String EXCLAMATION_MARK = String.valueOf(0x0021);
-    private static final String INFO_MESSAGE = "Бот предназначен для опроса студентов о посещении занятий. \n " +
-            "Нажимая на кнопку 'Да', Вы подтверждаете, что придете на занятие. Занятие автоматически спишется " +
-            "с Вашего абонемента. \n " +
-            "Нажимая на кнопку 'Нет', Вы предупреждаете, что сегодня не придете. Занятие не будет списано \n " +
-            "Обратите внимание" + EXCLAMATION_MARK + " , если Вы не ответите ни Да, ни Нет до 23.59 текущего дня, то занятие " +
-            "будет автоматически списано с Вашего абонемента.";
+    private static final String QUESTION_MARK = String.valueOf(Character.toChars(0x2753));
+    private static final String INFO_MESSAGE = "Для чего этот бот" +
+            QUESTION_MARK +
+            " \n " +
+            " \n " +
+            "Бот предназначен для опроса студентов о посещении занятий. \n " + " \n " +
+            "Нажимая на кнопку 'Да', Вы подтверждаете, что придете на занятие. Занятие будет списано " +
+            "с Вашего абонемента. \n " + " \n " +
+            "Нажимая на кнопку 'Нет', Вы предупреждаете, что сегодня не придете. Занятие не будет списано \n ";
 
     @Override
     public EditMessageText execute(Update update) {
