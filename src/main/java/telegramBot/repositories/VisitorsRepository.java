@@ -11,7 +11,6 @@ import java.util.Optional;
 /**
  * {@link Repository для работы с сущностью {@link Visitors }
  */
-//@Repository
 public interface VisitorsRepository extends JpaRepository<Visitors, Long> {
 
     @Query("SELECT v From Visitors v WHERE v.telephoneNum = :telephoneNum")

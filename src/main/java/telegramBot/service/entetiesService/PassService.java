@@ -7,12 +7,10 @@ import lombok.Setter;
 import telegramBot.enteties.Pass;
 import telegramBot.enteties.Visitors;
 import telegramBot.enteties.Visits;
-import telegramBot.comparator.PassVisitsComparator;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import telegramBot.repositories.PassRepository;
-import telegramBot.repositories.VisitorsRepository;
 
 import javax.annotation.Nullable;
 import java.sql.Date;
@@ -35,14 +33,12 @@ public class PassService {
     @Getter
     private final PassRepository passRepository;
     private final VisitsService visitsService;
-    private final VisitorsRepository visitorsRepository;
     private final VisitorsService visitorsService;
 
     @Autowired
-    public PassService(PassRepository passRepository, VisitsService visitsService, VisitorsRepository visitorsRepository, VisitorsService visitorsService) {
+    public PassService(PassRepository passRepository, VisitsService visitsService, VisitorsService visitorsService) {
         this.passRepository = passRepository;
         this.visitsService = visitsService;
-        this.visitorsRepository = visitorsRepository;
         this.visitorsService = visitorsService;
     }
 
@@ -53,7 +49,6 @@ public class PassService {
     public boolean clickButtonNo(Boolean isClickButtonNo) {
         return isClickButtonNo;
     }
-
 
     /**
      * Получение информации об актуальном абонементе
@@ -184,18 +179,6 @@ public class PassService {
             return true;
         }
         return false;
-    }
-
-
-    /**
-     * Проверка, есть ли еще день в абонементе у конкретного студента
-     * @param pass - информация об абонементе
-     * @return true, если есть как минимум 1 занятие
-     */
-    private boolean haveDayInPassByCompare(Pass pass) {
-        Comparator<Pass> compPass = new PassVisitsComparator();
-        int resultCompare = compPass.compare(pass, pass);
-        return resultCompare >= 0;
     }
 
     /**
