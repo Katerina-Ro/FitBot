@@ -17,13 +17,13 @@ import telegramBot.service.commandBot.receiver.start.StartCommand;
 @Getter
 public class BotCommandForceReply {
     private final ImmutableMap<String, Command> commandMapForceReply;
-    private final Command phoneNumber;
+    private final Command phoneNumberCommand;
 
     @Autowired
-    public BotCommandForceReply(@Qualifier("phoneNumber") Command phoneNumber){
-        this.phoneNumber = phoneNumber;
+    public BotCommandForceReply(@Qualifier("phoneNumberCommand") Command phoneNumberCommand){
+        this.phoneNumberCommand = phoneNumberCommand;
         this.commandMapForceReply = ImmutableMap.<String, Command>builder()
-                .put(StartCommand.getNO_USER_IN_DB_BY_CHAT_ID(), this.phoneNumber)
+                .put(StartCommand.getNO_USER_IN_DB_BY_CHAT_ID(), this.phoneNumberCommand)
                 .build();
     }
     public SendMessage findCommand(String commandIdentifier, Update update) {

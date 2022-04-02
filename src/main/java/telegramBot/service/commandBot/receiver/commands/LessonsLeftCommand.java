@@ -1,6 +1,5 @@
 package telegramBot.service.commandBot.receiver.commands;
 
-import appStudentAttedanceRecord.db.service.PlanToComeService;
 import org.springframework.transaction.annotation.Transactional;
 import telegramBot.enteties.Pass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +20,20 @@ import java.util.Optional;
  */
 @Service
 public class LessonsLeftCommand implements CommandEditSendMessage{
-    private final PlanToComeService planToConeService;
+    private final PassService passService;
     @Autowired
-    public LessonsLeftCommand(PlanToComeService planToConeService) {
-        this.planToConeService = planToConeService;
+    public LessonsLeftCommand(PassService passService) {
+        this.passService = passService;
     }
 
     @Override
     @Transactional
     public EditMessageText execute(Update update) {
         long numberUser = update.getMessage().getChatId();
-        Optional<Pass> pass = planToConeService.getActualPassByChatId(numberUser);
+        Optional<Pass> pass = passService.getActualPassByChatId(numberUser);
         Integer classesLeft = null;
         if (pass.isPresent()) {
-            classesLeft = planToConeService.calculateClassesLeft(pass.get());
+            classesLeft = passService.calculateClassesLeft(pass.get());
         }
         return SendMessageUtils.sendEditMessage(update,
                 String.format("У Вас осталось %s занятий", classesLeft),

@@ -1,5 +1,6 @@
 package telegramBot.service.commandBot.receiver.utils;
 
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -10,38 +11,49 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
  * Вспомогательный класс для формирования ответов боту типа SendMessage и EditMessageText
  */
 public class SendMessageUtils {
-    public static SendMessage sendMessage(Update update, String sentMessage, boolean forceReply){
-        long chatIdUser;
+    public static SendMessage sendMessage(Update update, String sentMessage, boolean isForceReply){
+        String chatIdUser;
         if (update.hasCallbackQuery()) {
-            chatIdUser = update.getCallbackQuery().getMessage().getChatId();
+            chatIdUser = String.valueOf(update.getCallbackQuery().getMessage().getChatId());
         } else {
-            chatIdUser = update.getMessage().getChatId();
+            chatIdUser = String.valueOf(update.getMessage().getChatId());
         }
-        SendMessage sendMessage = new SendMessage()
-                .enableHtml(true)
-                .setChatId(chatIdUser)
-                .setText(sentMessage);
-        if (forceReply) {
+        if (isForceReply) {
             ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();
-            int messageId;
+            forceReplyKeyboard.setSelective(true);
+            Integer messageId;
             if (update.hasCallbackQuery()) {
                 messageId = update.getCallbackQuery().getMessage().getMessageId();
             } else {
                 messageId = update.getMessage().getMessageId();
             }
-            sendMessage.setReplyToMessageId(messageId);
-            sendMessage.setReplyMarkup(forceReplyKeyboard.setSelective(true));
+            return SendMessage
+                    .builder()
+                    .chatId(chatIdUser)
+                    .text(sentMessage)
+                    //.enableHtml(true)
+                    .parseMode(ParseMode.HTML)
+                    .replyToMessageId(messageId)
+                    .replyMarkup(forceReplyKeyboard)
+                    .build();
         }
-        return sendMessage;
+        return SendMessage
+                .builder()
+                .chatId(chatIdUser)
+                .text(sentMessage)
+                //.enableHtml(true)
+                .build();
     }
 
     public static EditMessageText sendEditMessage(Update update, String sentMessage, InlineKeyboardMarkup
             inlineKeyboardMarkup){
-        return new EditMessageText()
-                .setText(sentMessage)
-                .setMessageId(update.getCallbackQuery().getMessage().getMessageId())
-                .setChatId(update.getCallbackQuery().getMessage().getChatId())
-                .enableHtml(true)
-                .setReplyMarkup(inlineKeyboardMarkup);
+        return EditMessageText
+                .builder()
+                .text(sentMessage)
+                .messageId(update.getCallbackQuery().getMessage().getMessageId())
+                .chatId(String.valueOf(update.getCallbackQuery().getMessage().getChatId()))
+                .parseMode(ParseMode.HTML)
+                .replyMarkup(inlineKeyboardMarkup)
+                .build();
     }
 }

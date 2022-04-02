@@ -1,14 +1,20 @@
 package telegramBot.service.entetiesService;
 
 import lombok.Getter;
-import lombok.Setter;
 import telegramBot.enteties.Pass;
 import telegramBot.enteties.Visitors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import telegramBot.enteties.Visits;
+import telegramBot.repositories.PassRepository;
 import telegramBot.repositories.VisitorsRepository;
+import telegramBot.repositories.VisitsRepository;
 
 import javax.annotation.Nullable;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,10 +22,14 @@ import java.util.Optional;
 public class VisitorsService {
     @Getter
     private final VisitorsRepository visitorsRepository;
+    private final PassRepository passRepository;
+    private final VisitsRepository visitsRepository;
 
     @Autowired
-    public VisitorsService(VisitorsRepository visitorsRepository) {
+    public VisitorsService(VisitorsRepository visitorsRepository, PassRepository passRepository, VisitsRepository visitsRepository) {
         this.visitorsRepository = visitorsRepository;
+        this.passRepository = passRepository;
+        this.visitsRepository = visitsRepository;
     }
 
     /**
@@ -164,5 +174,32 @@ public class VisitorsService {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Получение информации о визитах
+     * @param chatId - идентификатор студента в Телеграмме
+     */
+    public Optional<List<Visits>> getVisit(Long chatId, Integer passId) {
+        Optional<List<Pass>> pass = getPassByChatId(chatId);
+        return pass.map(passes -> passes.get(passId).getVisits());
+    }
+
+    /**
+     * Получить список всех студентов, кто придет в текущий день
+     */
+    public List<Visitors> getVisitorsListToDay() {
+        List<Visitors> listVisitorsToDay = new ArrayList<>();
+        LocalDate currencyDay = LocalDate.now(ZoneId.of("GMT+03:00"));
+        Date sqlDate = Date.valueOf(currencyDay);
+        Optional<List<Integer>> listPassId =  visitsRepository.findAllPassIdByCurrencyDay(sqlDate);
+        if (listPassId.isPresent()) {
+            for(Integer i: listPassId.get()) {
+                Long chatId = passRepository.findChatIdByPassId(i);
+                Optional<Visitors> visitors = getVisitor(chatId);
+                visitors.ifPresent(listVisitorsToDay::add);
+            }
+        }
+        return listVisitorsToDay;
     }
 }

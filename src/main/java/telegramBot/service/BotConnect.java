@@ -2,6 +2,7 @@ package telegramBot.service;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -50,24 +51,24 @@ public class BotConnect extends TelegramLongPollingBot {
     // настроить время polling
 
     @Override
+    @SneakyThrows
     public void onUpdateReceived(Update update) {
         if (update.getMessage() != null && update.hasMessage()) {
-            try {
+            System.out.println("update.getMessage() = " + update.getMessage());
                 execute(botCommandSendMessage.findCommand(update.getMessage().getText(), update));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
         } else if (update.hasCallbackQuery()) {
+            System.out.println("Это CallbackQuery");
             String commandIdentifier = update.getCallbackQuery().getData();
-            try {
+            System.out.println("commandIdentifier = " + commandIdentifier);
+            System.out.println("update " + update);
                 if (update.getMessage().isReply()) {
+                    System.out.println("Это isReply ");
                     execute(botCommandForceReply.findCommand(commandIdentifier, update));
                 }
+            System.out.println("Это не isReply ");
                 execute(botCommandCallbackQueryEdit.findCommand(commandIdentifier, update));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
             }
-        }
+
     }
 
     void botDisConnect() {

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import telegramBot.service.commandBot.Command;
 import telegramBot.service.commandBot.receiver.utils.CheckingInputLinesUtil;
 import telegramBot.service.commandBot.receiver.utils.FindingDataUtil;
@@ -38,12 +40,13 @@ public class PhoneNumberCommand implements Command {
         String phoneNumber = update.getMessage().getText();
         if (CheckingInputLinesUtil.checkEmptyString(phoneNumber) && FindingDataUtil.isPhoneNumber(phoneNumber)) {
             if (visitorsService.havPhoneNumber(numberUser)) {
-                return SendMessageUtils.sendMessage(update, ASK_MESSAGE, false)
-                        .setReplyMarkup(MakerInlineKeyboardMarkup.get2x2InlineKeyboardMarkup(
-                                Buttons.getKeyBoardYes(),
-                                Buttons.getKeyBoardNo(),
-                                Buttons.getKeyBoardButtonLessonLeft(),
-                                Buttons.getKeyBoardBackToStart()));
+                SendMessage sendMessage = SendMessageUtils.sendMessage(update, ASK_MESSAGE, false);
+                sendMessage.setReplyMarkup(MakerInlineKeyboardMarkup.get2x2InlineKeyboardMarkup(
+                        Buttons.getKeyBoardYes(),
+                        Buttons.getKeyBoardNo(),
+                        Buttons.getKeyBoardButtonLessonLeft(),
+                        Buttons.getKeyBoardBackToStart()));
+                return sendMessage;
             } else {
                 return messageError(update);
             }
@@ -53,8 +56,10 @@ public class PhoneNumberCommand implements Command {
 
     private SendMessage messageError(Update update) {
         // вписать в список, что этот номер придет сегодня. Номера нет в базе данных
-        return SendMessageUtils.sendMessage(update, NO_NUMBER_ERROR_MESSAGE, false)
-                .setReplyMarkup(MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
+        SendMessage sendMessage = SendMessageUtils.sendMessage(update, NO_NUMBER_ERROR_MESSAGE, false);
+                sendMessage.setReplyMarkup(MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(
+                        Buttons.getKeyBoardBackToStart()));
+        return sendMessage;
     }
 
     private SendMessage messageErrorInputNumber(Update update) {

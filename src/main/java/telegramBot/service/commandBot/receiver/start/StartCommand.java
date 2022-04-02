@@ -30,14 +30,16 @@ public class StartCommand implements Command {
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public SendMessage execute(Update update)  {
-        long numberUser = update.getMessage().getChatId();
+        //long numberUser = update.getMessage().getChatId();
+        /*
         if(!visitorsService.havPhoneNumber(numberUser)) {
             return messageError(update);
-        }
-        return SendMessageUtils.sendMessage(update,START_MESSAGE, false)
-                .setReplyMarkup(Buttons.getKeyBoardStartMenu());
+        } */
+        SendMessage sendMessage = SendMessageUtils.sendMessage(update,START_MESSAGE, false);
+        sendMessage.setReplyMarkup(Buttons.getKeyBoardStartMenu());
+        return sendMessage;
     }
 
     private SendMessage messageError(Update update){

@@ -8,6 +8,7 @@ import telegramBot.enteties.key.VisitsKey;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
@@ -25,7 +26,7 @@ public class Visits {
 
     @Id
     @Column(name="date_visit")
-    private LocalDate dateVisit;
+    private Date dateVisit;
 
     @Column(name="count_visit")
     private Integer countVisit;

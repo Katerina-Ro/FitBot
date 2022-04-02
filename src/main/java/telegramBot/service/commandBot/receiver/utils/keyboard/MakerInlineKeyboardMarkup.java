@@ -166,42 +166,6 @@ public class MakerInlineKeyboardMarkup {
         return inlineKeyboardMarkup5;
     }
 
-    /** Получаем клавиатуру типа ReplyKeyboardMarkup на 1 кнопку
-     * @param nameButton - название кнопки
-     * @return клавиатура типа ReplyKeyboardMarkup
-     */
-    public static ReplyKeyboardMarkup makeListReplyKeyboardButtonAfterInlineButton(String nameButton){
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        row.add(nameButton);
-        keyboard.add(row);
-        return makeListReplyKeyboardButton().setKeyboard(keyboard);
-    }
-
-    /**
-     * Вспомогательный метод для формирвоания кнопки типа ReplyKeyboardButton
-     * @return кнопку типа ReplyKeyboardButton
-     */
-    public static ReplyKeyboardMarkup makeListReplyKeyboardButton() {
-        return new ReplyKeyboardMarkup()
-                /* selective Этот параметр нужен, чтобы показывать клавиатуру только определённым пользователям.
-                Цели: 1) пользователи, которые были @упомянуты в поле text объекта Message; 2) если сообщения бота
-                является ответом (содержит поле reply_to_message_id), авторы этого сообщения.
-                Пример: Пользователь отправляет запрос на смену языка бота. Бот отправляет клавиатуру со списком
-                языков, видимую только этому пользователю.
-                 */
-                .setSelective(true)
-                /* one_time_keyboard Указывает клиенту скрыть клавиатуру после использования (после нажатия на кнопку).
-               Её по-прежнему можно будет открыть через иконку в поле ввода сообщения. По умолчанию False.
-               */
-                .setOneTimeKeyboard(true)
-                /* resize_keyboard Указывает клиенту подогнать высоту клавиатуры под количество кнопок (сделать её
-               меньше, если кнопок мало). По умолчанию False, то есть клавиатура всегда такого же размера, как и
-               стандартная клавиатура устройства.
-               */
-                .setResizeKeyboard(true);
-    }
-
     /**
      * Получаем кнопку типа InlineKeyboardButton
      * @param text - текст кнопки
