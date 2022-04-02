@@ -13,7 +13,15 @@ import javax.sql.DataSource;
 @ComponentScan("db")
 @PropertySource(value = "../../resources/application.yml")
 public class ConnectingConfig {
-
+    @Bean
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/passdb?serverTimezone=Europe/Minsk&useSSL=false");
+        dataSource.setUsername("bot_user");
+        dataSource.setPassword("dothisfrom2022");
+        return dataSource;
+    }
 
 /*
     @Getter
