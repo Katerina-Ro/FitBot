@@ -17,7 +17,7 @@ import java.util.Optional;
 
 /**
  * Класс-Receiver команды {@link COMMANDS} {@link CommandEditSendMessage}
- */
+*/
 @Service
 public class LessonsLeftCommand implements CommandEditSendMessage{
     private final PassService passService;
@@ -27,7 +27,7 @@ public class LessonsLeftCommand implements CommandEditSendMessage{
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public synchronized EditMessageText execute(Update update) {
         Long numberUser = SendMessageUtils.getChatIdUser(update);
         Optional<Pass> pass = passService.getActualPassByChatId(numberUser);

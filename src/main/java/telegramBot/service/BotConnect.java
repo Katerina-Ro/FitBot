@@ -3,6 +3,7 @@ package telegramBot.service;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -10,10 +11,12 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import telegramBot.AskBot;
 import telegramBot.service.commandBot.receiver.BotCommandCallBackQueryEdit;
 import telegramBot.service.commandBot.receiver.BotCommandSendMessage;
 
-import java.time.LocalDateTime;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Logger;
 
 /**
@@ -24,6 +27,8 @@ import java.util.logging.Logger;
 @Getter
 public class BotConnect extends TelegramLongPollingBot {
     private static final Logger log = Logger.getLogger("BotConnect.class");
+    private Timer mTimer = new Timer ();
+    //private MyTimerTask myTimerTask = new MyTimerTask ();
     final int RECONNECT_PAUSE = 10000;
 
     private final BotCommandSendMessage botCommandSendMessage;
@@ -36,8 +41,8 @@ public class BotConnect extends TelegramLongPollingBot {
     @Value("${bot.token}")
     private String botToken;
     @Setter
-    @Value("${bot.timeout}")
-    private String timeOut;
+    @Value("${bot.token}")
+    private String timeout;
 
     @Autowired
     public BotConnect(BotCommandSendMessage botCommandSendMessage,
@@ -46,90 +51,54 @@ public class BotConnect extends TelegramLongPollingBot {
         this.botCommandCallbackQueryEdit = botCommandCallbackQueryEdit;
     }
 
-    // настроить время polling
-
-
-
     @Override
     public void onUpdateReceived(Update update) {
         if (update.getMessage() != null && update.hasMessage()) {
             try {
-                log.info("TelegramAPI started. Look for messages");
                 execute(botCommandSendMessage.findCommand(update.getMessage().getText(), update));
-            } catch (TelegramApiException e) {
-                log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                        + e.getMessage());
-                System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                        + e.getMessage());
-                try {
-                    Thread.sleep(RECONNECT_PAUSE);
-                } catch (InterruptedException e1) {
-                    System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                            + e.getMessage());
-                    e1.printStackTrace();
-                    return;
-                }
-                    botConnect();
             } catch (Exception e) {
-                log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                        + e.getMessage());
-                System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                        + e.getMessage());
+                /*
                 try {
                     Thread.sleep(RECONNECT_PAUSE);
                 } catch (InterruptedException e1) {
-                    System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                            + e.getMessage());
                     e1.printStackTrace();
                     return;
+                } */
+                try {
+                    botConnect();
+                } catch (TelegramApiException ex) {
+                    ex.printStackTrace();
                 }
-                botConnect();
             }
         } else if (update.hasCallbackQuery()) {
             String commandIdentifier = update.getCallbackQuery().getData();
             try {
                 execute(botCommandCallbackQueryEdit.findCommand(commandIdentifier, update));
-            } catch (TelegramApiException e) {
-                log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                        + e.getMessage());
-                try {
-                    Thread.sleep(RECONNECT_PAUSE);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                    return;
-                }
-                botConnect();
             } catch (Exception e) {
-                log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                        + e.getMessage());
-                System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                        + e.getMessage());
                 try {
                     Thread.sleep(RECONNECT_PAUSE);
                 } catch (InterruptedException e1) {
-                    System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                            + e.getMessage());
                     e1.printStackTrace();
                     return;
                 }
-                botConnect();
+                try {
+                    botConnect();
+                } catch (TelegramApiException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
 
-    void botDisConnect() {
-        LocalDateTime localDateTimeCurrency = LocalDateTime.now();
-        log.info(String.format("Бот отключен %s", localDateTimeCurrency));
-        System.exit(0);
-    }
+    public void botConnect() throws TelegramApiException {
 
-    public void botConnect() {
-        try {
+            /*
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-            telegramBotsApi.registerBot(this);
+            telegramBotsApi.registerBot(this);*/
+        //new TelegramBotsApi(DefaultBotSession.class);
+            SpringApplication.run(AskBot.class);
+            /*
         } catch (TelegramApiException e) {
-            log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                    + e.getMessage());
             try {
                 Thread.sleep(RECONNECT_PAUSE);
             } catch (InterruptedException e1) {
@@ -137,7 +106,20 @@ public class BotConnect extends TelegramLongPollingBot {
                 return;
             }
             botConnect();
-        }
+        } */
     }
+
+    /*
+    public void starterTimer() {
+        mTimer.schedule(myTimerTask, 1000);
+    }
+
+    private class MyTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            botConnect();
+        }
+    } */
 }
 

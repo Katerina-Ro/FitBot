@@ -33,7 +33,7 @@ public class NoCommand implements CommandEditSendMessage {
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public synchronized EditMessageText execute(Update update) {
         Long numberUser = SendMessageUtils.getChatIdUser(update);
         // добавить в список тех, кто в текущий день не приходит

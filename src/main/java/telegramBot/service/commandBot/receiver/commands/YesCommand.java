@@ -35,7 +35,7 @@ public class YesCommand implements CommandEditSendMessage {
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public synchronized EditMessageText execute(Update update) {
         Long numberUser = SendMessageUtils.getChatIdUser(update);
         PlanToComeToDay planToComeToDay = new PlanToComeToDay();
