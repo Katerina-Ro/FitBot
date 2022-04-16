@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 import java.sql.Date;
 
 @Entity
-@Table(name = "visits")
+@Table(name = "pass_schema.visits")
 @IdClass(VisitsKey.class)
 @NoArgsConstructor
 @AllArgsConstructor

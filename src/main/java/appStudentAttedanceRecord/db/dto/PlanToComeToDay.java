@@ -11,7 +11,7 @@ import java.time.ZoneId;
 @Getter
 @Setter
 public class PlanToComeToDay {
-    private String chatId;
+    private Long chatId;
     @NotBlank
     private String telephoneNum;
     @NotBlank
@@ -30,7 +30,7 @@ public class PlanToComeToDay {
         this.name = name;
     }
 
-    public PlanToComeToDay(String chatId, String telephoneNum, String surname, String name, String patronymic, Pass passList, LocalDate currencyDate) {
+    public PlanToComeToDay(Long chatId, String telephoneNum, String surname, String name, String patronymic, Pass passList, LocalDate currencyDate) {
         this.chatId = chatId;
         this.telephoneNum = telephoneNum;
         this.surname = surname;

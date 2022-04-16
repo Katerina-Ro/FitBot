@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import telegramBot.enteties.Pass;
 import telegramBot.enteties.Visitors;
-import telegramBot.enteties.Visits;
 import telegramBot.repositories.PassRepository;
 import telegramBot.repositories.VisitorsRepository;
 import telegramBot.repositories.VisitsRepository;
@@ -36,39 +35,31 @@ public class VisitorsService {
     /**
      * Проверка, есть ли у этого chatId номер телефона в базе
      */
-    public boolean havPhoneNumber(String chatId) {
-        Optional<String> visitors = visitorsRepository.findVisitorByChatId(chatId);
-        boolean b = false;
-        if (visitors.isPresent()) {
-            b = true;
-        }
-        return b;
+    public boolean havPhoneNumber(Long chatId) {
+        Optional<String> phoneNumberInDB = visitorsRepository.findTelephoneNumByChatId(chatId);
+        return phoneNumberInDB.isPresent();
     }
 
     public boolean havChatId(String phoneNumber) {
-        Optional<Visitors> visitors = visitorsRepository.findChatIdByPhoneNumber(phoneNumber);
-        String chatId = null;
-        if (visitors.isPresent()) {
-            chatId = visitors.get().getChatId();
-        }
-        return chatId != null;
+        Optional<Long> chatIDinDB = visitorsRepository.findChatIdByPhoneNumber(phoneNumber);
+        return chatIDinDB.isPresent();
     }
 
     /**
      * Проверка, есть ли номер телефона в базе
      */
     public boolean existPhoneNumber(String phoneNumber) {
-        return visitorsRepository.findTelephoneNum(phoneNumber) != null;
+        return visitorsRepository.existsById(phoneNumber);
     }
 
     /**
      * Получение информации об абонементе
      * @param chatId - уникальный номер пользователя в telegram bot
-     */
-    public Optional<List<Pass>> getPassByChatId(String chatId) {
+
+    public Optional<List<Pass>> getPassByChatId(Long chatId) {
         Optional<Visitors> visitor = getVisitorByPhone(chatId);
         return visitor.map(Visitors::getPassList);
-    }
+    }*/
 
     /**
      * Получение информации об абонементе
@@ -82,12 +73,12 @@ public class VisitorsService {
     /**
      * Заносим номер телефона в базу данных по chatId
      */
-    public void createVisitorsBot(String chatId, String phoneNumber) {
+    public void createVisitorsBot(Long chatId, String phoneNumber) {
         System.out.println("вписываем телефон в базу данных");
         Visitors visitor = new Visitors();
         visitor.setChatId(chatId);
         visitor.setTelephoneNum(phoneNumber);
-        visitorsRepository.save(visitor);
+        visitorsRepository.create(phoneNumber, chatId);
     }
 
     /**
@@ -116,7 +107,7 @@ public class VisitorsService {
      * Получить информацию о студенте по chatId
      * @param chatId - идентификатор студента в Телеграмме
      */
-    public Optional<String> getVisitorByChatId(String chatId) {
+    public Optional<Visitors> getVisitorByChatId(Long chatId) {
         return visitorsRepository.findVisitorByChatId(chatId);
     }
 
@@ -192,11 +183,11 @@ public class VisitorsService {
     /**
      * Получение информации о визитах
      * @param chatId - идентификатор студента в Телеграмме
-     */
-    public Optional<List<Visits>> getVisit(String chatId, Integer passId) {
+
+    public Optional<List<Visits>> getVisit(Long chatId, Integer passId) {
         Optional<List<Pass>> pass = getPassByChatId(chatId);
         return pass.map(passes -> passes.get(passId).getVisits());
-    }
+    }*/
 
     /**
      * Получить список всех студентов, кто придет в текущий день
@@ -209,8 +200,7 @@ public class VisitorsService {
         if (listPassId.isPresent()) {
             for(Integer i: listPassId.get()) {
                 String phoneNumber = passRepository.findPhoneNumberByPassId(i);
-                String chatId = visitorsRepository.findChatIDByPhoneNumber(phoneNumber);
-                Optional<Visitors> visitors = getVisitorByPhone(chatId);
+                Optional<Visitors> visitors = getVisitorByPhone(phoneNumber);
                 visitors.ifPresent(listVisitorsToDay::add);
             }
         }

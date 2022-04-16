@@ -11,11 +11,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
  * Вспомогательный класс для формирования ответов боту типа SendMessage и EditMessageText
 */
 public class SendMessageUtils {
-    public static String getChatIdUser(Update update) {
+    public static Long getChatIdUser(Update update) {
         if (update.hasCallbackQuery()) {
-            return String.valueOf(update.getCallbackQuery().getMessage().getChatId());
+            return update.getCallbackQuery().getMessage().getChatId();
         } else {
-            return String.valueOf(update.getMessage().getChatId());
+            return update.getMessage().getChatId();
         }
     }
 

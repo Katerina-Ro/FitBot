@@ -17,10 +17,10 @@ import telegramBot.service.entetiesService.VisitorsService;
 @Service
 public class StartCommand implements Command {
     private static final String IMAGE_WAVING_HAND = String.valueOf(Character.toChars(0x1F44B));
-    private static final String START_MESSAGE = "Привет " + IMAGE_WAVING_HAND + " \n Это бот для опроса о посещении";
+    private static final String START_MESSAGE = "Привет " + IMAGE_WAVING_HAND + " \n Вы придете сегодня на занятие?";
     @Getter
-    private static final String NO_USER_IN_DB_BY_CHAT_ID = "Введите Ваш номер телефона, который Вы указывали " +
-            "в качестве контакта, начиная с 7. Пример ввода: 7 9991231234";
+    private static final String NO_USER_IN_DB_BY_CHAT_ID = "Привет. Это бот для опроса о посещении. Введите Ваш номер " +
+            "телефона, который Вы указывали в качестве контакта, начиная с 7. Пример ввода: 79991231234";
     private final VisitorsService visitorsService;
 
     @Autowired
@@ -32,7 +32,7 @@ public class StartCommand implements Command {
     @Override
     //@Transactional
     public SendMessage execute(Update update)  {
-        String chatIdUser = SendMessageUtils.getChatIdUser(update);
+        Long chatIdUser = SendMessageUtils.getChatIdUser(update);
         if(!visitorsService.havPhoneNumber(chatIdUser)) {
             return messageError(update);
         }

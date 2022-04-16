@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Entity
-@Table(name = "visitors")
+@Table(name = "pass_schema.visitors")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -18,7 +18,7 @@ import java.util.List;
 public class Visitors {
 
     @Column(name="chat_id") //, unique = true)
-    private String chatId;
+    private Long chatId;
 
     @Id
     @Column(name="tel_num", nullable = false) //, unique = true)
@@ -34,8 +34,9 @@ public class Visitors {
     @Column(name="patronumic")
     private String patronymic;
 
-    @OneToMany //(cascade = CascadeType.ALL)
-    private List<telegramBot.enteties.Pass> passList;
+    @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //@JoinColumn(name = "visitors_tel_num")
+    private List<Pass> passList;
 
     @Override
     public String toString() {

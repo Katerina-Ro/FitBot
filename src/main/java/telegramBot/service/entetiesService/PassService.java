@@ -54,28 +54,21 @@ public class PassService {
      * Получение информации об актуальном абонементе
      * @param chatId - идентификатор студента в Телеграмм
      */
-    public Optional<Pass> getActualPassByChatId(String chatId) {
-        Optional<Visitors> visitor = visitorsService.getVisitorByPhone(chatId);
+    public Optional<List<Pass>> getActualPassByChatId(Long chatId) {
+        Optional<Visitors> visitor = visitorsService.getVisitorByChatId(chatId);
         if (visitor.isPresent()) {
             List<Pass> list = visitor.get().getPassList();
+            List<Pass> listActualPass = new ArrayList<>();
             if (list != null && !list.isEmpty()) {
                 for (Pass p: list) {
-                    if (validateActualPass(p)) {
-                        return Optional.ofNullable(p);
+                    if (haveDayInPassCalculate(p)) {
+                        listActualPass.add(p);
+                        return Optional.ofNullable(listActualPass);
                     }
                 }
             }
         }
         return Optional.empty();
-    }
-
-    /**
-     * Проверка, что текущий день находится между датой начала и конца абонемента, и в абонементе есть заняти
-     * @param pass - информация об абонементе
-     * @return true, если абонемент действующий
-     */
-    public boolean validateActualPass(Pass pass) {
-        return betweenDate(pass) && haveDayInPassCalculate(pass);
     }
 
     /**
@@ -88,6 +81,17 @@ public class PassService {
         return countDayInPass.filter(s -> Integer.parseInt(s) > 0).isPresent();
     }
 
+    public String getClassesLeftFromAllPass(List<Pass> passList) {
+        int classesLeftFromAllPass = 0;
+        for (Pass p: passList) {
+            Optional<String> classesLeftFromOnePass = calculateClassesLeft(p);
+            if (classesLeftFromOnePass.isPresent()) {
+                classesLeftFromAllPass += Integer.parseInt(classesLeftFromOnePass.get());
+            }
+        }
+        return String.valueOf(classesLeftFromAllPass);
+    }
+
     /**
      * Расчет оставшегося количества занятий у конкретного студента
      * @param pass - информация об абонементе
@@ -96,12 +100,10 @@ public class PassService {
         String classesLeft = null;
         int cumulativeTotal = 0;
         if (betweenDate(pass)) {
-            if (haveDayInPassCalculate(pass)) {
-                List<Visits> listVisits = pass.getVisits();
-                for (Visits v: listVisits) {
-                    int countVisitInOneDay = v.getCountVisit();
-                    cumulativeTotal += countVisitInOneDay;
-                }
+            List<Visits> listVisits = pass.getVisits();
+            for (Visits v: listVisits) {
+                int countVisitInOneDay = v.getCountVisit();
+                cumulativeTotal += countVisitInOneDay;
             }
             classesLeft = String.valueOf(pass.getVisitLimit() - cumulativeTotal);
         }

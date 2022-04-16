@@ -34,10 +34,10 @@ public class NoCommand implements CommandEditSendMessage {
     @Override
     //@Transactional
     public EditMessageText execute(Update update) {
-        String numberUser = SendMessageUtils.getChatIdUser(update);
+        Long numberUser = SendMessageUtils.getChatIdUser(update);
         // добавить в список тех, кто в текущий день не приходит
         DontPlanToComeToDay dontPlanToComeToDay = new DontPlanToComeToDay();
-        Optional<Visitors> visitors = visitorsService.getVisitorByPhone(numberUser);
+        Optional<Visitors> visitors = visitorsService.getVisitorByChatId(numberUser);
         if (visitors.isPresent()) {
             Visitors v = visitors.get();
             dontPlanToComeToDay.setChatId(v.getChatId());

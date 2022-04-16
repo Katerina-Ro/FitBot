@@ -34,7 +34,7 @@ public class PhoneNumberCommand implements Command {
 
     @Override
     public SendMessage execute(Update update) {
-        String numberUser = SendMessageUtils.getChatIdUser(update);
+        Long numberUser = SendMessageUtils.getChatIdUser(update);
         String phoneNumber = update.getMessage().getText().trim();
         if (!visitorsService.havChatId(phoneNumber)) {
             visitorsService.createVisitorsBot(numberUser, phoneNumber.trim());

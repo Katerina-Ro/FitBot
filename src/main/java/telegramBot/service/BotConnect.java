@@ -123,7 +123,6 @@ public class BotConnect extends TelegramLongPollingBot {
                     e1.printStackTrace();
                     return;
                 }
-               // botConnect();
             }
         }
     }

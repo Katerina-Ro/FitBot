@@ -12,6 +12,7 @@ import telegramBot.service.commandBot.receiver.utils.keyboard.Buttons;
 import telegramBot.service.commandBot.receiver.utils.keyboard.MakerInlineKeyboardMarkup;
 import telegramBot.service.entetiesService.PassService;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,14 +29,15 @@ public class LessonsLeftCommand implements CommandEditSendMessage{
     @Override
    // @Transactional
     public EditMessageText execute(Update update) {
-        String numberUser = SendMessageUtils.getChatIdUser(update);
-        Optional<Pass> pass = passService.getActualPassByChatId(numberUser);
-        Optional<String> classesLeft;
-        classesLeft = pass.map(value -> String.format("Ждем Вас сегодня на занятиях. " + "У Вас осталось %s занятий",
-                    passService.calculateClassesLeft(value))).or(() -> Optional.of("Нет информации о Вашем абонементе. " +
-                    "Обратитесь к администратору"));
+        Long numberUser = SendMessageUtils.getChatIdUser(update);
+        Optional<List<Pass>> passList = passService.getActualPassByChatId(numberUser);
+        String classesLeft = String.valueOf(0);
+        if (passList.isPresent()) {
+            classesLeft = String.format("Ждем Вас сегодня на занятиях. У Вас осталось %s занятий ",
+                    passService.getClassesLeftFromAllPass(passList.get()));
+        }
         return SendMessageUtils.sendEditMessage(update,
-                classesLeft.get(),
+                classesLeft,
                 MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
     }
 }

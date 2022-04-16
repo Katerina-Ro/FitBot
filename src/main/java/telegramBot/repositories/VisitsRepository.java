@@ -15,6 +15,6 @@ import java.util.Optional;
  */
 public interface VisitsRepository extends JpaRepository<Visits, Integer> {
 
-    @Query(value = "SELECT * From visits WHERE dateVisit = :dateVisit", nativeQuery = true)
+    @Query(value = "SELECT * From pass_schema.visits WHERE dateVisit = :dateVisit", nativeQuery = true)
     Optional<List<Integer>> findAllPassIdByCurrencyDay(@Param("dateVisit") Date currencyDay);
 }

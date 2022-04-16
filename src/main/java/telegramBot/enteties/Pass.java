@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "pass_table")
+@Table(name = "pass_schema.pass_table")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -23,6 +23,8 @@ public class Pass {
     private Integer numPass;
 
     @Column(name="tel_num", nullable = false)//, unique = true)
+    //@ManyToOne(fetch = FetchType.EAGER)
+    //@JoinColumn(name = "", mappedBy = "pass")
     @NotBlank
     private String phoneNumber;
 
@@ -44,8 +46,8 @@ public class Pass {
     @Column(name="date_freeze")
     private LocalDate dateStartFreeze;
 
-    @OneToMany //(cascade = CascadeType.ALL)
-    private List<telegramBot.enteties.Visits> visits;
+    @OneToMany (cascade = CascadeType.ALL)
+    private List<Visits> visits;
 
     @Override
     public String toString() {

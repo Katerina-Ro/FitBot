@@ -36,9 +36,9 @@ public class YesCommand implements CommandEditSendMessage {
     @Override
     //@Transactional
     public EditMessageText execute(Update update) {
-        String numberUser = SendMessageUtils.getChatIdUser(update);
+        Long numberUser = SendMessageUtils.getChatIdUser(update);
         PlanToComeToDay planToComeToDay = new PlanToComeToDay();
-        Optional<Visitors> visitors = visitorsService.getVisitorByPhone(numberUser);
+        Optional<Visitors> visitors = visitorsService.getVisitorByChatId(numberUser);
         Optional<Pass> pass;
         Optional<String> classesLeft;
         if (visitors.isPresent()) {
@@ -48,15 +48,17 @@ public class YesCommand implements CommandEditSendMessage {
             planToComeToDay.setTelephoneNum(v.getTelephoneNum());
             // добавляем в список (map) тех, кто придет, и отправляем администратору
             passService.getMapVisitorsToDay().put(v.getTelephoneNum(), planToComeToDay);
-            pass = passService.getPassByPassNumber(Integer.valueOf(v.getTelephoneNum()));
+
+            /*
+            pass = passService.getPassByPassNumber(v.);
             classesLeft = pass.map(value -> String.format("Ждем Вас сегодня на занятиях. " + "У Вас осталось %s занятий",
                     passService.calculateClassesLeft(value))).or(() -> Optional.of("Нет информации о Вашем абонементе. " +
-                    "Обратитесь к администратору"));
+                    "Обратитесь к администратору")); */
         } else {
             classesLeft = Optional.of("Нет о Вас информации. Обратитесь к администратору");
         }
         return SendMessageUtils.sendEditMessage(update,
-                classesLeft.get(),
+                "Ждем Вас на занятиях. Хорошего дня",
                 MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
     }
 }
