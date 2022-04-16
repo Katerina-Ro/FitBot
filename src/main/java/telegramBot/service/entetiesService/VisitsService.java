@@ -1,11 +1,9 @@
 package telegramBot.service.entetiesService;
 
 import lombok.Getter;
-import lombok.Setter;
-import telegramBot.enteties.Pass;
-import telegramBot.enteties.Visits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import telegramBot.enteties.Visits;
 import telegramBot.repositories.VisitsRepository;
 
 import java.sql.Date;

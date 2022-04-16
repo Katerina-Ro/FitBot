@@ -1,16 +1,17 @@
 package telegramBot.service.entetiesService;
 
 import lombok.Getter;
-import telegramBot.enteties.Pass;
-import telegramBot.enteties.Visitors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import telegramBot.enteties.Pass;
+import telegramBot.enteties.Visitors;
 import telegramBot.enteties.Visits;
 import telegramBot.repositories.PassRepository;
 import telegramBot.repositories.VisitorsRepository;
 import telegramBot.repositories.VisitsRepository;
 
 import javax.annotation.Nullable;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -35,9 +36,22 @@ public class VisitorsService {
     /**
      * Проверка, есть ли у этого chatId номер телефона в базе
      */
-    public boolean havPhoneNumber(Long chatId) {
-        Optional<Visitors> visitors = visitorsRepository.findById(chatId);
-        return visitors.filter(value -> value.getTelephoneNum() != null).isPresent();
+    public boolean havPhoneNumber(String chatId) {
+        Optional<String> visitors = visitorsRepository.findVisitorByChatId(chatId);
+        boolean b = false;
+        if (visitors.isPresent()) {
+            b = true;
+        }
+        return b;
+    }
+
+    public boolean havChatId(String phoneNumber) {
+        Optional<Visitors> visitors = visitorsRepository.findChatIdByPhoneNumber(phoneNumber);
+        String chatId = null;
+        if (visitors.isPresent()) {
+            chatId = visitors.get().getChatId();
+        }
+        return chatId != null;
     }
 
     /**
@@ -51,8 +65,8 @@ public class VisitorsService {
      * Получение информации об абонементе
      * @param chatId - уникальный номер пользователя в telegram bot
      */
-    public Optional<List<Pass>> getPassByChatId(Long chatId) {
-        Optional<Visitors> visitor = getVisitor(chatId);
+    public Optional<List<Pass>> getPassByChatId(String chatId) {
+        Optional<Visitors> visitor = getVisitorByPhone(chatId);
         return visitor.map(Visitors::getPassList);
     }
 
@@ -60,22 +74,19 @@ public class VisitorsService {
      * Получение информации об абонементе
      * @param phoneNumber - номер телефона студента
      */
-    public Optional<List<Pass>> getPassByChatId(String phoneNumber) {
-        Optional<Visitors> visitors = getVisitor(phoneNumber);
+    public Optional<List<Pass>> getPassByPhoneNumber(String phoneNumber) {
+        Optional<Visitors> visitors = getVisitorByPhone(phoneNumber);
         return visitors.map(Visitors::getPassList);
     }
 
     /**
      * Заносим номер телефона в базу данных по chatId
      */
-    public void createVisitorsBot(Long chatId, String phoneNumber, String name, @Nullable String surname) {
+    public void createVisitorsBot(String chatId, String phoneNumber) {
+        System.out.println("вписываем телефон в базу данных");
         Visitors visitor = new Visitors();
         visitor.setChatId(chatId);
         visitor.setTelephoneNum(phoneNumber);
-        visitor.setName(name);
-        if (surname != null) {
-            visitor.setSurname(surname);
-        }
         visitorsRepository.save(visitor);
     }
 
@@ -105,15 +116,15 @@ public class VisitorsService {
      * Получить информацию о студенте по chatId
      * @param chatId - идентификатор студента в Телеграмме
      */
-    public Optional<Visitors> getVisitor(Long chatId) {
-        return visitorsRepository.findById(chatId);
+    public Optional<String> getVisitorByChatId(String chatId) {
+        return visitorsRepository.findVisitorByChatId(chatId);
     }
 
     /**
      * Получить данные студента по номеру телефона
      * @param phoneNumber - номер телефона студента
      */
-    public Optional<Visitors> getVisitor(String phoneNumber) {
+    public Optional<Visitors> getVisitorByPhone(String phoneNumber) {
         return visitorsRepository.findVisitorByPhoneNumber(phoneNumber.trim());
     }
 
@@ -123,7 +134,9 @@ public class VisitorsService {
      * @return true, если удаление прошло успешно
      */
     public boolean deleteVisitors(Long chatId) {
-        visitorsRepository.deleteById(chatId);
+        BigDecimal bigDecimal = BigDecimal.valueOf(chatId);
+        Integer chatIdForDB = Integer.valueOf(String.valueOf(bigDecimal));
+        //visitorsRepository.deleteById(chatIdForDB);
         return true;
     }
 
@@ -131,7 +144,7 @@ public class VisitorsService {
      * Удаление информации о студенте (доступно только админам)
      * @param phoneNumber - номер телефона студента
      * @return true, если удаление прошло успешно
-     */
+
     public boolean deleteVisitors(String phoneNumber) {
         Optional<Visitors> visitor = getVisitor(phoneNumber);
         if (visitor.isPresent()) {
@@ -140,7 +153,7 @@ public class VisitorsService {
             return true;
         }
         return false;
-    }
+    } */
 
     /**
      * Обновление информации о студенте
@@ -150,7 +163,7 @@ public class VisitorsService {
      * @return true, если обновление прошло успешно
      */
     public boolean updateInfoOfVisitor(String phoneNumber, String surname, String patronymic) {
-        Optional<Visitors> visitors = getVisitor(phoneNumber);
+        Optional<Visitors> visitors = getVisitorByPhone(phoneNumber);
         if (visitors.isPresent()) {
             visitors.get().setSurname(surname);
             visitors.get().setPatronymic(patronymic);
@@ -167,7 +180,7 @@ public class VisitorsService {
      * @return true, если номер телефона изменен
      */
     public boolean changePhoneNumberOfVisitor(String phoneNumber, String newPhoneNumber) {
-        Optional<Visitors> visitors = getVisitor(phoneNumber);
+        Optional<Visitors> visitors = getVisitorByPhone(phoneNumber);
         if (visitors.isPresent()) {
             visitors.get().setTelephoneNum(newPhoneNumber);
             visitorsRepository.save(visitors.get());
@@ -180,7 +193,7 @@ public class VisitorsService {
      * Получение информации о визитах
      * @param chatId - идентификатор студента в Телеграмме
      */
-    public Optional<List<Visits>> getVisit(Long chatId, Integer passId) {
+    public Optional<List<Visits>> getVisit(String chatId, Integer passId) {
         Optional<List<Pass>> pass = getPassByChatId(chatId);
         return pass.map(passes -> passes.get(passId).getVisits());
     }
@@ -195,8 +208,9 @@ public class VisitorsService {
         Optional<List<Integer>> listPassId =  visitsRepository.findAllPassIdByCurrencyDay(sqlDate);
         if (listPassId.isPresent()) {
             for(Integer i: listPassId.get()) {
-                Long chatId = passRepository.findChatIdByPassId(i);
-                Optional<Visitors> visitors = getVisitor(chatId);
+                String phoneNumber = passRepository.findPhoneNumberByPassId(i);
+                String chatId = visitorsRepository.findChatIDByPhoneNumber(phoneNumber);
+                Optional<Visitors> visitors = getVisitorByPhone(chatId);
                 visitors.ifPresent(listVisitorsToDay::add);
             }
         }

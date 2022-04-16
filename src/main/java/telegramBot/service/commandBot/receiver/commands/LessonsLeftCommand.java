@@ -1,11 +1,10 @@
 package telegramBot.service.commandBot.receiver.commands;
 
-import org.springframework.transaction.annotation.Transactional;
-import telegramBot.enteties.Pass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import telegramBot.enteties.Pass;
 import telegramBot.service.commandBot.CommandEditSendMessage;
 import telegramBot.service.commandBot.COMMANDS;
 import telegramBot.service.commandBot.receiver.utils.SendMessageUtils;
@@ -27,9 +26,9 @@ public class LessonsLeftCommand implements CommandEditSendMessage{
     }
 
     @Override
-    @Transactional
+   // @Transactional
     public EditMessageText execute(Update update) {
-        Long numberUser = SendMessageUtils.getChatIdUser(update);
+        String numberUser = SendMessageUtils.getChatIdUser(update);
         Optional<Pass> pass = passService.getActualPassByChatId(numberUser);
         Optional<String> classesLeft;
         classesLeft = pass.map(value -> String.format("Ждем Вас сегодня на занятиях. " + "У Вас осталось %s занятий",

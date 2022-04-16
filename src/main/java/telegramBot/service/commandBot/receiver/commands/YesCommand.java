@@ -3,7 +3,6 @@ package telegramBot.service.commandBot.receiver.commands;
 import appStudentAttedanceRecord.db.dto.PlanToComeToDay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegramBot.enteties.Pass;
@@ -35,11 +34,11 @@ public class YesCommand implements CommandEditSendMessage {
     }
 
     @Override
-    @Transactional
+    //@Transactional
     public EditMessageText execute(Update update) {
-        Long numberUser = SendMessageUtils.getChatIdUser(update);
+        String numberUser = SendMessageUtils.getChatIdUser(update);
         PlanToComeToDay planToComeToDay = new PlanToComeToDay();
-        Optional<Visitors> visitors = visitorsService.getVisitor(numberUser);
+        Optional<Visitors> visitors = visitorsService.getVisitorByPhone(numberUser);
         Optional<Pass> pass;
         Optional<String> classesLeft;
         if (visitors.isPresent()) {

@@ -9,34 +9,22 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 /**
  * Вспомогательный класс для формирования ответов боту типа SendMessage и EditMessageText
- */
+*/
 public class SendMessageUtils {
-    public static Long getChatIdUser(Update update) {
+    public static String getChatIdUser(Update update) {
         if (update.hasCallbackQuery()) {
-            System.out.println("Это hasCallbackQuery");
-            return update.getCallbackQuery().getMessage().getChatId();
+            return String.valueOf(update.getCallbackQuery().getMessage().getChatId());
         } else {
-            System.out.println("Это не hasCallbackQuery");
-            return update.getMessage().getChatId();
+            return String.valueOf(update.getMessage().getChatId());
         }
     }
 
     public static SendMessage sendMessage(Update update, String sentMessage, boolean isForceReply){
-        String chatIdUser;
-        if (update.hasCallbackQuery()) {
-            chatIdUser = String.valueOf(update.getCallbackQuery().getMessage().getChatId());
-        } else {
-            chatIdUser = String.valueOf(update.getMessage().getChatId());
-        }
+        String chatIdUser = String.valueOf(getChatIdUser(update));
         if (isForceReply) {
             ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();
             forceReplyKeyboard.setSelective(true);
-            Integer messageId;
-            if (update.hasCallbackQuery()) {
-                messageId = update.getCallbackQuery().getMessage().getMessageId();
-            } else {
-                messageId = update.getMessage().getMessageId();
-            }
+            Integer messageId = getMessageID(update);
             return SendMessage
                     .builder()
                     .chatId(chatIdUser)
@@ -57,13 +45,22 @@ public class SendMessageUtils {
 
     public static EditMessageText sendEditMessage(Update update, String sentMessage, InlineKeyboardMarkup
             inlineKeyboardMarkup){
+        Integer messageId = getMessageID(update);
         return EditMessageText
                 .builder()
                 .text(sentMessage)
-                .messageId(update.getCallbackQuery().getMessage().getMessageId())
-                .chatId(String.valueOf(update.getCallbackQuery().getMessage().getChatId()))
+                .messageId(messageId)
+                .chatId(String.valueOf(getChatIdUser(update)))
                 .parseMode(ParseMode.HTML)
                 .replyMarkup(inlineKeyboardMarkup)
                 .build();
+    }
+
+    private static Integer getMessageID(Update update) {
+        if (update.hasCallbackQuery()) {
+            return update.getCallbackQuery().getMessage().getMessageId();
+        } else {
+            return update.getMessage().getMessageId();
+        }
     }
 }

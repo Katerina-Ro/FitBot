@@ -9,7 +9,6 @@ import telegramBot.enteties.key.VisitsKey;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.sql.Date;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "visits")

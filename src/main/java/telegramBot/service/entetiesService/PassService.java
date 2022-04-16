@@ -4,12 +4,12 @@ import appStudentAttedanceRecord.db.dto.DontPlanToComeToDay;
 import appStudentAttedanceRecord.db.dto.PlanToComeToDay;
 import lombok.Getter;
 import lombok.Setter;
-import telegramBot.enteties.Pass;
-import telegramBot.enteties.Visitors;
-import telegramBot.enteties.Visits;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import telegramBot.enteties.Pass;
+import telegramBot.enteties.Visitors;
+import telegramBot.enteties.Visits;
 import telegramBot.repositories.PassRepository;
 
 import javax.annotation.Nullable;
@@ -54,8 +54,8 @@ public class PassService {
      * Получение информации об актуальном абонементе
      * @param chatId - идентификатор студента в Телеграмм
      */
-    public Optional<Pass> getActualPassByChatId(Long chatId) {
-        Optional<Visitors> visitor = visitorsService.getVisitor(chatId);
+    public Optional<Pass> getActualPassByChatId(String chatId) {
+        Optional<Visitors> visitor = visitorsService.getVisitorByPhone(chatId);
         if (visitor.isPresent()) {
             List<Pass> list = visitor.get().getPassList();
             if (list != null && !list.isEmpty()) {
@@ -91,7 +91,6 @@ public class PassService {
     /**
      * Расчет оставшегося количества занятий у конкретного студента
      * @param pass - информация об абонементе
-     * @return
      */
     public Optional<String> calculateClassesLeft(Pass pass) {
         String classesLeft = null;
@@ -144,14 +143,6 @@ public class PassService {
      */
     public Optional<Pass> getPassByPassNumber(Integer numberPass) {
         return passRepository.findById(numberPass);
-    }
-
-    /**
-     * Получить ChatId студента по номеру абонемента
-     * @param passId - номер абонемента
-     */
-    public Long getChatId(Integer passId) {
-        return passRepository.findChatIdByPassId(passId);
     }
 
     /**

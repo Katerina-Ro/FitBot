@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class DontPlanToComeToDay {
-    private Long chatId;
+    private String chatId;
     @NotBlank
     private String telephoneNum;
     @NotBlank

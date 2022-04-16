@@ -19,7 +19,8 @@ public class CheckingInputLinesUtil {
      * @return возвращаеся true, если строка состоит только из цифр
      */
     public static boolean isNumbers(String line) {
-        return line.trim().matches("[0-9]");
+        System.out.println("Строка содержить только цифры?");
+        return line.trim().matches("[0-9]+");
     }
 
     /**
@@ -29,6 +30,7 @@ public class CheckingInputLinesUtil {
      * должно быть 11 цифр
      */
     public static boolean checkLengthLine(String line) {
+        System.out.println("зашли в проверку длины номера телефона");
         if (line.trim().length() == 11) {
             return true;
         }

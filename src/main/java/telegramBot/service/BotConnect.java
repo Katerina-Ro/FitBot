@@ -6,12 +6,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import telegramBot.service.commandBot.COMMANDS;
 import telegramBot.service.commandBot.receiver.BotCommandCallBackQueryEdit;
 import telegramBot.service.commandBot.receiver.BotCommandSendMessage;
+//import telegramBot.service.commandBot.receiver.BotCommandEditSendMessage;
+import telegramBot.service.commandBot.receiver.utils.FindingDataUtil;
 
 import java.time.LocalDateTime;
 import java.util.logging.Logger;
@@ -28,6 +29,7 @@ public class BotConnect extends TelegramLongPollingBot {
 
     private final BotCommandSendMessage botCommandSendMessage;
     private final BotCommandCallBackQueryEdit botCommandCallbackQueryEdit;
+    //private final BotCommandEditSendMessage botCommandSendMessageAnswer;
 
     @Setter
     @Value("${bot.name}")
@@ -35,15 +37,18 @@ public class BotConnect extends TelegramLongPollingBot {
     @Setter
     @Value("${bot.token}")
     private String botToken;
+    /*
     @Setter
     @Value("${bot.timeout}")
-    private String timeOut;
+    private String timeOut; */
 
     @Autowired
     public BotConnect(BotCommandSendMessage botCommandSendMessage,
-                      BotCommandCallBackQueryEdit botCommandCallbackQueryEdit) {
+                      BotCommandCallBackQueryEdit botCommandCallbackQueryEdit)
+                      {
         this.botCommandSendMessage = botCommandSendMessage;
         this.botCommandCallbackQueryEdit = botCommandCallbackQueryEdit;
+        //this.botCommandSendMessageAnswer = botCommandSendMessageAnswer;
     }
 
     // настроить время polling
@@ -53,7 +58,11 @@ public class BotConnect extends TelegramLongPollingBot {
         if (update.getMessage() != null && update.hasMessage()) {
             try {
                 log.info("TelegramAPI started. Look for messages");
-                execute(botCommandSendMessage.findCommand(update.getMessage().getText(), update));
+                String commandIdentifier = update.getMessage().getText();
+                if (FindingDataUtil.isPhoneNumber(update.getMessage().getText())) {
+                   commandIdentifier = update.getMessage().getReplyToMessage().getText();
+                }
+                execute(botCommandSendMessage.findCommand(commandIdentifier, update));
             } catch (TelegramApiException e) {
                 log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
                         + e.getMessage());
@@ -67,7 +76,7 @@ public class BotConnect extends TelegramLongPollingBot {
                     e1.printStackTrace();
                     return;
                 }
-                    botConnect();
+                //botConnect();
             } catch (Exception e) {
                 log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
                         + e.getMessage());
@@ -81,10 +90,14 @@ public class BotConnect extends TelegramLongPollingBot {
                     e1.printStackTrace();
                     return;
                 }
-                botConnect();
+               // botConnect();
             }
         } else if (update.hasCallbackQuery()) {
+            System.out.println("");
+            System.out.println("Это CallbackQuery");
+            System.out.println("");
             String commandIdentifier = update.getCallbackQuery().getData();
+            System.out.println("update.getCallbackQuery()     " + update.getCallbackQuery());
             try {
                 execute(botCommandCallbackQueryEdit.findCommand(commandIdentifier, update));
             } catch (TelegramApiException e) {
@@ -96,7 +109,7 @@ public class BotConnect extends TelegramLongPollingBot {
                     e1.printStackTrace();
                     return;
                 }
-                botConnect();
+               // botConnect();
             } catch (Exception e) {
                 log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
                         + e.getMessage());
@@ -110,7 +123,7 @@ public class BotConnect extends TelegramLongPollingBot {
                     e1.printStackTrace();
                     return;
                 }
-                botConnect();
+               // botConnect();
             }
         }
     }
@@ -120,7 +133,7 @@ public class BotConnect extends TelegramLongPollingBot {
         log.info(String.format("Бот отключен %s", localDateTimeCurrency));
         System.exit(0);
     }
-
+/*
     public void botConnect() {
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
@@ -136,6 +149,6 @@ public class BotConnect extends TelegramLongPollingBot {
             }
             botConnect();
         }
-    }
+    } */
 }
 

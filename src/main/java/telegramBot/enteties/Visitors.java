@@ -16,29 +16,26 @@ import java.util.List;
 @Getter
 @Setter
 public class Visitors {
-    @Id
-    @GeneratedValue(strategy =  GenerationType.SEQUENCE)
-    @Column(name="chat_id", unique = true)
-    private Long chatId;
 
-    @Column(name="tel_num", unique = true)
+    @Column(name="chat_id") //, unique = true)
+    private String chatId;
+
+    @Id
+    @Column(name="tel_num", nullable = false) //, unique = true)
     @NotBlank
     private String telephoneNum;
 
     @Column(name="surname")
-    @NotBlank
     private String surname;
 
     @Column(name="name")
-    @NotBlank
     private String name;
 
     @Column(name="patronumic")
     private String patronymic;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pass_id")
-    private List<Pass> passList;
+    @OneToMany //(cascade = CascadeType.ALL)
+    private List<telegramBot.enteties.Pass> passList;
 
     @Override
     public String toString() {
