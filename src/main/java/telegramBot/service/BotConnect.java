@@ -9,12 +9,15 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegramBot.service.commandBot.COMMANDS;
+import telegramBot.service.commandBot.receiver.BotCommandCallBackQuery;
 import telegramBot.service.commandBot.receiver.BotCommandCallBackQueryEdit;
 import telegramBot.service.commandBot.receiver.BotCommandSendMessage;
 //import telegramBot.service.commandBot.receiver.BotCommandEditSendMessage;
 import telegramBot.service.commandBot.receiver.utils.FindingDataUtil;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.logging.Logger;
 
 /**
@@ -29,7 +32,7 @@ public class BotConnect extends TelegramLongPollingBot {
 
     private final BotCommandSendMessage botCommandSendMessage;
     private final BotCommandCallBackQueryEdit botCommandCallbackQueryEdit;
-    //private final BotCommandEditSendMessage botCommandSendMessageAnswer;
+    private final BotCommandCallBackQuery botCommandCallBackQuery;
 
     @Setter
     @Value("${bot.name}")
@@ -44,17 +47,27 @@ public class BotConnect extends TelegramLongPollingBot {
 
     @Autowired
     public BotConnect(BotCommandSendMessage botCommandSendMessage,
-                      BotCommandCallBackQueryEdit botCommandCallbackQueryEdit)
-                      {
+                      BotCommandCallBackQueryEdit botCommandCallbackQueryEdit,
+                      BotCommandCallBackQuery botCommandCallBackQuery) {
         this.botCommandSendMessage = botCommandSendMessage;
         this.botCommandCallbackQueryEdit = botCommandCallbackQueryEdit;
-        //this.botCommandSendMessageAnswer = botCommandSendMessageAnswer;
+        this.botCommandCallBackQuery = botCommandCallBackQuery;
     }
 
     // настроить время polling
 
     @Override
     public void onUpdateReceived(Update update) {
+        LocalTime localTime = LocalTime.now(ZoneId.of("GMT+03:00"));
+
+        if ("15:00:30.856375700".equals(String.valueOf(localTime))) {
+            String commandIdentifier = "/start";
+            try {
+                execute(botCommandSendMessage.findCommand(commandIdentifier, update));
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
         if (update.getMessage() != null && update.hasMessage()) {
             try {
                 log.info("TelegramAPI started. Look for messages");
@@ -74,7 +87,6 @@ public class BotConnect extends TelegramLongPollingBot {
                     System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
                             + e.getMessage());
                     e1.printStackTrace();
-                    return;
                 }
                 //botConnect();
             } catch (Exception e) {
@@ -88,16 +100,18 @@ public class BotConnect extends TelegramLongPollingBot {
                     System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
                             + e.getMessage());
                     e1.printStackTrace();
-                    return;
                 }
                // botConnect();
             }
         } else if (update.hasCallbackQuery()) {
-            System.out.println("");
-            System.out.println("Это CallbackQuery");
-            System.out.println("");
             String commandIdentifier = update.getCallbackQuery().getData();
-            System.out.println("update.getCallbackQuery()     " + update.getCallbackQuery());
+            if (COMMANDS.BUTTON_BACK_TO_START.getCommand().equals(commandIdentifier)) {
+                try {
+                    execute(botCommandCallBackQuery.findCommand(commandIdentifier, update));
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            }
             try {
                 execute(botCommandCallbackQueryEdit.findCommand(commandIdentifier, update));
             } catch (TelegramApiException e) {

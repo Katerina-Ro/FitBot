@@ -1,13 +1,13 @@
-package telegramBot.service.entetiesService;
+package telegramBot.service.modelService;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import telegramBot.enteties.Pass;
-import telegramBot.enteties.Visitors;
-import telegramBot.repositories.PassRepository;
-import telegramBot.repositories.VisitorsRepository;
-import telegramBot.repositories.VisitsRepository;
+import telegramBot.model.Pass;
+import telegramBot.model.Visitors;
+import telegramBot.repositories.IPassRepository;
+import telegramBot.repositories.IVisitorsRepository;
+import telegramBot.repositories.IVisitsRepository;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
@@ -21,15 +21,19 @@ import java.util.Optional;
 @Service
 public class VisitorsService {
     @Getter
-    private final VisitorsRepository visitorsRepository;
-    private final PassRepository passRepository;
-    private final VisitsRepository visitsRepository;
+    private final IVisitorsRepository visitorsRepository;
+    private final IPassRepository passRepository;
+    private final IVisitsRepository visitsRepository;
+    private final VisitsService visitsService;
+    private final PassService passService;
 
     @Autowired
-    public VisitorsService(VisitorsRepository visitorsRepository, PassRepository passRepository, VisitsRepository visitsRepository) {
+    public VisitorsService(IVisitorsRepository visitorsRepository, IPassRepository passRepository, IVisitsRepository visitsRepository, VisitsService visitsService, PassService passService) {
         this.visitorsRepository = visitorsRepository;
         this.passRepository = passRepository;
         this.visitsRepository = visitsRepository;
+        this.visitsService = visitsService;
+        this.passService = passService;
     }
 
     /**
@@ -49,7 +53,8 @@ public class VisitorsService {
      * Проверка, есть ли номер телефона в базе
      */
     public boolean existPhoneNumber(String phoneNumber) {
-        return visitorsRepository.existsById(phoneNumber);
+        Optional<Visitors> visitor = visitorsRepository.findVisitorByPhoneNumber(phoneNumber);
+        return visitor.isPresent();
     }
 
     /**
@@ -78,7 +83,7 @@ public class VisitorsService {
         Visitors visitor = new Visitors();
         visitor.setChatId(chatId);
         visitor.setTelephoneNum(phoneNumber);
-        visitorsRepository.create(phoneNumber, chatId);
+        visitorsRepository.create(visitor);
     }
 
     /**
@@ -100,7 +105,7 @@ public class VisitorsService {
             listPass.add(pass);
             visitor.setPassList(listPass);
         }
-        visitorsRepository.save(visitor);
+        visitorsRepository.create(visitor);
     }
 
     /**
@@ -153,12 +158,23 @@ public class VisitorsService {
      * @param patronymic - отчество
      * @return true, если обновление прошло успешно
      */
-    public boolean updateInfoOfVisitor(String phoneNumber, String surname, String patronymic) {
+    public boolean updateInfoOfVisitor(String phoneNumber, @Nullable String name, @Nullable String surname,
+                                       @Nullable String patronymic, @Nullable String newPhoneNumber) {
         Optional<Visitors> visitors = getVisitorByPhone(phoneNumber);
         if (visitors.isPresent()) {
-            visitors.get().setSurname(surname);
-            visitors.get().setPatronymic(patronymic);
-            visitorsRepository.save(visitors.get());
+            if (name != null) {
+                visitors.get().setName(name);
+            }
+            if (surname != null) {
+                visitors.get().setSurname(surname);
+            }
+            if (patronymic != null) {
+                visitors.get().setPatronymic(patronymic);
+            }
+            if (newPhoneNumber != null) {
+                visitors.get().setTelephoneNum(newPhoneNumber);
+            }
+            visitorsRepository.updateByPhoneNumber(visitors.get());
             return true;
         }
         return false;
@@ -169,7 +185,7 @@ public class VisitorsService {
      * @param phoneNumber - имеющийся в базе номер телефона студента
      * @param newPhoneNumber - новый номер телефона
      * @return true, если номер телефона изменен
-     */
+
     public boolean changePhoneNumberOfVisitor(String phoneNumber, String newPhoneNumber) {
         Optional<Visitors> visitors = getVisitorByPhone(phoneNumber);
         if (visitors.isPresent()) {
@@ -178,7 +194,7 @@ public class VisitorsService {
             return true;
         }
         return false;
-    }
+    } */
 
     /**
      * Получение информации о визитах
@@ -196,12 +212,14 @@ public class VisitorsService {
         List<Visitors> listVisitorsToDay = new ArrayList<>();
         LocalDate currencyDay = LocalDate.now(ZoneId.of("GMT+03:00"));
         Date sqlDate = Date.valueOf(currencyDay);
-        Optional<List<Integer>> listPassId =  visitsRepository.findAllPassIdByCurrencyDay(sqlDate);
+        Optional<List<Integer>> listPassId = visitsService.getPassIdBySpecifiedDay(sqlDate);
         if (listPassId.isPresent()) {
             for(Integer i: listPassId.get()) {
-                String phoneNumber = passRepository.findPhoneNumberByPassId(i);
-                Optional<Visitors> visitors = getVisitorByPhone(phoneNumber);
-                visitors.ifPresent(listVisitorsToDay::add);
+                Optional<String> phoneNumber = passRepository.findPhoneNumberByPassId(i);
+                if (phoneNumber.isPresent()) {
+                    Optional<Visitors> visitors = getVisitorByPhone(phoneNumber.get());
+                    visitors.ifPresent(listVisitorsToDay::add);
+                }
             }
         }
         return listVisitorsToDay;

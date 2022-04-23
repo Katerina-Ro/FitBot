@@ -1,19 +1,30 @@
 package telegramBot.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import telegramBot.enteties.Visitors;
+import telegramBot.model.Visitors;
 
 import java.util.Optional;
 
 /**
  * {@link Repository для работы с сущностью {@link Visitors}
  */
-public interface VisitorsRepository extends JpaRepository<Visitors, String> {
+public interface IVisitorsRepository {
 
+    Optional<Visitors> findVisitorByPhoneNumber(String phoneNumber);
+
+    Optional<String> findTelephoneNumByChatId(Long chatId);
+
+    Optional<Visitors> findVisitorByChatId(Long chatId);
+
+    Optional<Long> findChatIdByPhoneNumber(String phoneNumber);
+
+    boolean create(Visitors visitor);
+
+    boolean updateByPhoneNumber(Visitors updateVisitors);
+
+    boolean deleteVisitor(String phoneNumber);
+
+    /*
     @Query("SELECT v FROM Visitors v WHERE v.telephoneNum = :telephoneNum")
     Optional<Visitors> findVisitorByPhoneNumber(@Param("telephoneNum") String phoneNumber);
 
@@ -24,7 +35,7 @@ public interface VisitorsRepository extends JpaRepository<Visitors, String> {
 
     /*
     @Query("SELECT v.telephoneNum FROM Visitors v WHERE v.chatId = :chatId")
-    Optional<String> isExistTelephoneNum(@Param("telephoneNum")String phoneNumber); */
+    Optional<String> isExistTelephoneNum(@Param("telephoneNum")String phoneNumber);
 
     //@Query(name="SELECT tel_num FROM pass_schema.visitors WHERE chat_id = :chatId", nativeQuery = true)
     //@Query("SELECT v FROM Visitors v WHERE v.chatId = :chatId")
@@ -40,5 +51,5 @@ public interface VisitorsRepository extends JpaRepository<Visitors, String> {
     @Modifying
     @Query(value = "UPDATE pass_schema.visitors SET chat_id = :chatId WHERE tel_num = :phoneNumber",
             nativeQuery = true)
-    void create(@Param("phoneNumber") String phoneNumber, @Param("chatId") Long chatId);
+    void create(@Param("phoneNumber") String phoneNumber, @Param("chatId") Long chatId); */
 }

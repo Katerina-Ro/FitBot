@@ -2,7 +2,7 @@ package appStudentAttedanceRecord.db.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import telegramBot.enteties.Pass;
+import telegramBot.model.Pass;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;

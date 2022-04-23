@@ -3,14 +3,12 @@ package telegramBot.service.commandBot.receiver.commands;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import telegramBot.service.commandBot.Command;
-import telegramBot.service.commandBot.CommandEditSendMessage;
 import telegramBot.service.commandBot.receiver.utils.SendMessageUtils;
 import telegramBot.service.commandBot.receiver.utils.keyboard.Buttons;
 import telegramBot.service.commandBot.receiver.utils.keyboard.MakerInlineKeyboardMarkup;
-import telegramBot.service.entetiesService.VisitorsService;
+import telegramBot.service.modelService.VisitorsService;
 
 /**
  * Класс-Receiver для обработки запроса (есть ли введенный номер телефона в базе данных),

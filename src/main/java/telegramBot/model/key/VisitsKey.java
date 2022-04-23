@@ -1,4 +1,4 @@
-package telegramBot.enteties.key;
+package telegramBot.model.key;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

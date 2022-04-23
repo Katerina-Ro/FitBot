@@ -9,7 +9,7 @@ import telegramBot.service.commandBot.Command;
 import telegramBot.service.commandBot.COMMANDS;
 import telegramBot.service.commandBot.receiver.utils.SendMessageUtils;
 import telegramBot.service.commandBot.receiver.utils.keyboard.Buttons;
-import telegramBot.service.entetiesService.VisitorsService;
+import telegramBot.service.modelService.VisitorsService;
 
 /**
  * Стартовый класс для обработки сообщения {@link COMMANDS} - "/start" {@link Command}

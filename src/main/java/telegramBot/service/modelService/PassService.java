@@ -1,4 +1,4 @@
-package telegramBot.service.entetiesService;
+package telegramBot.service.modelService;
 
 import appStudentAttedanceRecord.db.dto.DontPlanToComeToDay;
 import appStudentAttedanceRecord.db.dto.PlanToComeToDay;
@@ -7,13 +7,13 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import telegramBot.enteties.Pass;
-import telegramBot.enteties.Visitors;
-import telegramBot.enteties.Visits;
-import telegramBot.repositories.PassRepository;
+import telegramBot.model.Pass;
+import telegramBot.model.Visitors;
+import telegramBot.model.Visits;
+import telegramBot.repositories.IPassRepository;
 
 import javax.annotation.Nullable;
-import java.sql.Date;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -31,19 +31,19 @@ public class PassService {
     private Map<String, DontPlanToComeToDay> mapDontCome = new HashMap<>();
 
     @Getter
-    private final PassRepository passRepository;
+    private final IPassRepository passRepository;
     private final VisitsService visitsService;
     private final VisitorsService visitorsService;
 
     @Autowired
-    public PassService(PassRepository passRepository, VisitsService visitsService, VisitorsService visitorsService) {
+    public PassService(IPassRepository passRepository, VisitsService visitsService, VisitorsService visitorsService) {
         this.passRepository = passRepository;
         this.visitsService = visitsService;
         this.visitorsService = visitorsService;
     }
 
-    public void createOrUpdatePass(Pass pass) {
-        passRepository.save(pass);
+    public void updatePass(Pass pass) {
+        passRepository.update(pass);
     }
 
     public boolean clickButtonNo(Boolean isClickButtonNo) {
@@ -56,14 +56,16 @@ public class PassService {
      */
     public Optional<List<Pass>> getActualPassByChatId(Long chatId) {
         Optional<Visitors> visitor = visitorsService.getVisitorByChatId(chatId);
+        Optional<List<Pass>> passListFromDB;
         if (visitor.isPresent()) {
-            List<Pass> list = visitor.get().getPassList();
-            List<Pass> listActualPass = new ArrayList<>();
-            if (list != null && !list.isEmpty()) {
-                for (Pass p: list) {
+            String phoneNumber = visitor.get().getTelephoneNum();
+            passListFromDB = passRepository.findPassByPhone(phoneNumber);
+            if (passListFromDB.isPresent()) {
+                List<Pass> listActualPass = new ArrayList<>();
+                for (Pass p: passListFromDB.get()) {
                     if (haveDayInPassCalculate(p)) {
                         listActualPass.add(p);
-                        return Optional.ofNullable(listActualPass);
+                        return Optional.of(listActualPass);
                     }
                 }
             }
@@ -117,10 +119,11 @@ public class PassService {
         if (haveDayInPassCalculate(pass)) {
             LocalDate currencyDay = LocalDate.now(ZoneId.of("GMT+03:00"));
             Visits visits = new Visits();
+            visits.setPass(pass.getNumPass());
             visits.setCountVisit(pass.getVisitLimit() - 1);
-            visits.setDateVisit(Date.valueOf(currencyDay));
-            boolean isSuccess = visitsService.createVisit(pass.getNumPass(), currencyDay);
-            createOrUpdatePass(pass);
+            visits.setDateVisit(currencyDay);
+            boolean isSuccess = visitsService.createVisit(visits);
+            updatePass(pass);
             log.info(String.format("Вычтено занятие из абонемента %s, т.к. отметил боту 'Да' за %s день. " +
                             "Создание записи в таблице Посещений прошло успешно? %s", pass.getNumPass(),
                     currencyDay, isSuccess));
@@ -144,7 +147,7 @@ public class PassService {
      * @param numberPass - номер телефона студента
      */
     public Optional<Pass> getPassByPassNumber(Integer numberPass) {
-        return passRepository.findById(numberPass);
+        return passRepository.findPassByPassId(numberPass);
     }
 
     /**
@@ -214,12 +217,12 @@ public class PassService {
      * @param pass - информация об абонементе
      * @return количество оставшихся занятий в абонементе после прибавления
      */
-    public Optional<String> plusClasses(Pass pass, Integer inputNumber) {
+    public Optional<String> plusClasses(Pass pass, Integer inputNumber, @NotBlank LocalDate specifiedDate) {
         pass.setVisitLimit(inputNumber);
         Optional<String> classesLeft = calculateClassesLeft(pass);
         if (classesLeft.isPresent()) {
             int numMinusVisits = inputNumber - Integer.parseInt(classesLeft.get());
-            boolean isSuccess = visitsService.minusVisit(pass.getNumPass(), numMinusVisits);
+            boolean isSuccess = visitsService.minusVisit(pass.getNumPass(), numMinusVisits, specifiedDate);
             log.info(String.format("К оставшимся дням в абонементе %s прибавлено %s занятий. Из таблицы о посещениях " +
                     "удалены день и количество посещений? %s", pass.getVisitLimit(), inputNumber, isSuccess));
         }

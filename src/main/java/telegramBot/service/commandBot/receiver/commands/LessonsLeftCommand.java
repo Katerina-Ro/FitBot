@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import telegramBot.enteties.Pass;
+import telegramBot.model.Pass;
 import telegramBot.service.commandBot.CommandEditSendMessage;
 import telegramBot.service.commandBot.COMMANDS;
 import telegramBot.service.commandBot.receiver.utils.SendMessageUtils;
 import telegramBot.service.commandBot.receiver.utils.keyboard.Buttons;
 import telegramBot.service.commandBot.receiver.utils.keyboard.MakerInlineKeyboardMarkup;
-import telegramBot.service.entetiesService.PassService;
+import telegramBot.service.modelService.PassService;
 
 import java.util.List;
 import java.util.Optional;
