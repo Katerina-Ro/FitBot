@@ -111,32 +111,34 @@ public class BotConnect extends TelegramLongPollingBot {
                 } catch (TelegramApiException e) {
                     e.printStackTrace();
                 }
-            }
-            try {
-                execute(botCommandCallbackQueryEdit.findCommand(commandIdentifier, update));
-            } catch (TelegramApiException e) {
-                log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                        + e.getMessage());
+            } else {
                 try {
-                    Thread.sleep(RECONNECT_PAUSE);
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                    return;
-                }
-               // botConnect();
-            } catch (Exception e) {
-                log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                        + e.getMessage());
-                System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
-                        + e.getMessage());
-                try {
-                    Thread.sleep(RECONNECT_PAUSE);
-                } catch (InterruptedException e1) {
+                    execute(botCommandCallbackQueryEdit.findCommand(commandIdentifier, update));
+                } catch (TelegramApiException e) {
+                    log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
+                            + e.getMessage());
+                    try {
+                        Thread.sleep(RECONNECT_PAUSE);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                        return;
+                    }
+                    // botConnect();
+                } catch (Exception e) {
+                    log.info("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
+                            + e.getMessage());
                     System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
                             + e.getMessage());
-                    e1.printStackTrace();
-                    return;
-                }
+                    try {
+                        Thread.sleep(RECONNECT_PAUSE);
+                    } catch (InterruptedException e1) {
+                        System.out.println("Cant Connect. Pause " + RECONNECT_PAUSE / 1000 + "sec and try again. Error: "
+                                + e.getMessage());
+                        e1.printStackTrace();
+                        return;
+                    }
+            }
+
             }
         }
     }

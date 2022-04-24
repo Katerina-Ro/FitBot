@@ -11,6 +11,7 @@ import telegramBot.model.Pass;
 import telegramBot.model.Visitors;
 import telegramBot.model.Visits;
 import telegramBot.repositories.IPassRepository;
+import telegramBot.repositories.impl.VisitsRepository;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotBlank;
@@ -34,12 +35,14 @@ public class PassService {
     private final IPassRepository passRepository;
     private final VisitsService visitsService;
     private final VisitorsService visitorsService;
+    private final VisitsRepository visitsRepository;
 
     @Autowired
-    public PassService(IPassRepository passRepository, VisitsService visitsService, VisitorsService visitorsService) {
+    public PassService(IPassRepository passRepository, VisitsService visitsService, VisitorsService visitorsService, VisitsRepository visitsRepository) {
         this.passRepository = passRepository;
         this.visitsService = visitsService;
         this.visitorsService = visitorsService;
+        this.visitsRepository = visitsRepository;
     }
 
     public void updatePass(Pass pass) {
@@ -53,6 +56,8 @@ public class PassService {
     /**
      * Получение информации об актуальном абонементе
      * @param chatId - идентификатор студента в Телеграмм
+     * @return список абонементов. По логике кода заложено, что может быть несколько активных абонементов.
+     * Но, по идее (в реальности), должен быть только один
      */
     public Optional<List<Pass>> getActualPassByChatId(Long chatId) {
         Optional<Visitors> visitor = visitorsService.getVisitorByChatId(chatId);
@@ -71,6 +76,14 @@ public class PassService {
             }
         }
         return Optional.empty();
+    }
+
+    public Optional<List<Integer>> passNumberActivePassList(List<Pass> listPass) {
+        List<Integer> listPassNumberActivePass = new ArrayList<>();
+        for (Pass p: listPass) {
+            listPassNumberActivePass.add(p.getNumPass());
+        }
+        return Optional.of(listPassNumberActivePass);
     }
 
     /**
@@ -102,10 +115,12 @@ public class PassService {
         String classesLeft = null;
         int cumulativeTotal = 0;
         if (betweenDate(pass)) {
-            List<Visits> listVisits = pass.getVisits();
-            for (Visits v: listVisits) {
-                int countVisitInOneDay = v.getCountVisit();
-                cumulativeTotal += countVisitInOneDay;
+            Optional<List<Visits>> listVisits = visitsRepository.findAllVisitsByPassId(pass.getNumPass());
+            if (listVisits.isPresent()) {
+                for (Visits v: listVisits.get()) {
+                    int countVisitInOneDay = v.getCountVisit();
+                    cumulativeTotal += countVisitInOneDay;
+                }
             }
             classesLeft = String.valueOf(pass.getVisitLimit() - cumulativeTotal);
         }
@@ -168,11 +183,12 @@ public class PassService {
             pass.get().setDateEnd(dateEnd);
             pass.get().setVisitLimit(visitLimit);
             if (visits != null) {
-                List<Visits> listVisits = pass.get().getVisits();
-                listVisits.add(visits);
-                pass.get().setVisits(listVisits);
+                Optional<List<Visits>> listVisits = visitsRepository.findAllVisitsByPassId(pass.get().getNumPass());
+                if (listVisits.isPresent()) {
+                    listVisits.get().add(visits);
+                    return true;
+                }
             }
-            return true;
         }
         return false;
     }

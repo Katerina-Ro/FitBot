@@ -56,20 +56,7 @@ public class VisitsRepository implements IVisitsRepository {
 
     @Override
     public boolean updateVisit(Visits visit) {
-        Map<String, Object> paramsMap = new HashMap<>();
-        Integer passId = visit.getPass();
-        Date dateVisit = null;
-        if (visit.getDateVisit() != null) {
-           dateVisit = Date.valueOf(visit.getDateVisit());
-        }
-        Integer countVisits = visit.getCountVisit();
-        paramsMap.put("passId", passId);
-        if (dateVisit != null) {
-            paramsMap.put("dateVisit", dateVisit);
-        }
-        if (countVisits != null) {
-            paramsMap.put("countVisits", countVisits);
-        }
+        Map<String, Object> paramsMap = getParamMap(visit);
         int updatedVisit = jdbcTemplate.update(updateVisit, paramsMap);
         return updatedVisit > 0;
     }
@@ -88,5 +75,23 @@ public class VisitsRepository implements IVisitsRepository {
             visit.setCountVisit(rs.getInt("count_visit"));
             return visit;
         }
+    }
+
+    private Map<String, Object> getParamMap(Visits visit) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        Integer passId = visit.getPass();
+        Date dateVisit = null;
+        if (visit.getDateVisit() != null) {
+            dateVisit = Date.valueOf(visit.getDateVisit());
+        }
+        Integer countVisits = visit.getCountVisit();
+        paramsMap.put("passId", passId);
+        if (dateVisit != null) {
+            paramsMap.put("dateVisit", dateVisit);
+        }
+        if (countVisits != null) {
+            paramsMap.put("countVisits", countVisits);
+        }
+        return paramsMap;
     }
 }

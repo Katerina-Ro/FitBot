@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,14 +15,12 @@ public class Visitors {
     private String surname;
     private String name;
     private String patronymic;
-    private List<Pass> passList;
 
     @Override
     public String toString() {
         return "Номер телефона посетителя " + telephoneNum +
                 ", Фамилия " + surname +
                 ", Имя " + name +
-                ", Отчество (может быть не указано) " + patronymic + '\'' +
-                ", Информация об абонементе " + passList;
+                ", Отчество (может быть не указано) " + patronymic;
     }
 }

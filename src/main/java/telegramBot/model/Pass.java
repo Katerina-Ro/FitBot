@@ -5,7 +5,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -20,13 +19,12 @@ public class Pass {
     private Integer visitLimit;
     private Integer freezeLimit;
     private LocalDate dateStartFreeze;
-    private List<Visits> visits;
 
     @Override
     public String toString() {
-        return "Дата начала действия абонемента " + dateStart + '\'' +
+        return "Номер телефона владельца абонемента " + phoneNumber + '\'' +
+                ", Дата начала действия абонемента " + dateStart + '\'' +
                 ", До какого числа абонемент (включительно) " + dateEnd + '\'' +
-                ", На какое количество занятий куплен абонемент " + visitLimit + '\'' +
-                ", Информация об абонементе " + visits;
+                ", На какое количество занятий куплен абонемент " + visitLimit;
     }
 }

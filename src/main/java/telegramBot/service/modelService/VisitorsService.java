@@ -3,11 +3,9 @@ package telegramBot.service.modelService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import telegramBot.model.Pass;
 import telegramBot.model.Visitors;
 import telegramBot.repositories.IPassRepository;
 import telegramBot.repositories.IVisitorsRepository;
-import telegramBot.repositories.IVisitsRepository;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
@@ -23,17 +21,15 @@ public class VisitorsService {
     @Getter
     private final IVisitorsRepository visitorsRepository;
     private final IPassRepository passRepository;
-    private final IVisitsRepository visitsRepository;
+    //private final IVisitsRepository visitsRepository;
     private final VisitsService visitsService;
-    private final PassService passService;
 
     @Autowired
-    public VisitorsService(IVisitorsRepository visitorsRepository, IPassRepository passRepository, IVisitsRepository visitsRepository, VisitsService visitsService, PassService passService) {
+    public VisitorsService(IVisitorsRepository visitorsRepository, IPassRepository passRepository,
+                          VisitsService visitsService) {
         this.visitorsRepository = visitorsRepository;
         this.passRepository = passRepository;
-        this.visitsRepository = visitsRepository;
         this.visitsService = visitsService;
-        this.passService = passService;
     }
 
     /**
@@ -69,11 +65,11 @@ public class VisitorsService {
     /**
      * Получение информации об абонементе
      * @param phoneNumber - номер телефона студента
-     */
+
     public Optional<List<Pass>> getPassByPhoneNumber(String phoneNumber) {
         Optional<Visitors> visitors = getVisitorByPhone(phoneNumber);
         return visitors.map(Visitors::getPassList);
-    }
+    }  */
 
     /**
      * Заносим номер телефона в базу данных по chatId
@@ -88,7 +84,7 @@ public class VisitorsService {
 
     /**
      * Занесение данных о студенте (только для админов)
-     */
+
     public void createVisitorsAdmin(String phoneNumber, String name, @Nullable String surname,
                                     @Nullable String patronymic, @Nullable Pass pass) {
         Visitors visitor = new Visitors();
@@ -106,7 +102,7 @@ public class VisitorsService {
             visitor.setPassList(listPass);
         }
         visitorsRepository.create(visitor);
-    }
+    }  */
 
     /**
      * Получить информацию о студенте по chatId
