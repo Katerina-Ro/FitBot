@@ -6,6 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ForceReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 
 /**
  * Вспомогательный класс для формирования ответов боту типа SendMessage и EditMessageText
@@ -19,6 +20,10 @@ public class SendMessageUtils {
         }
     }
 
+    public static Boolean removeForceReplyKeyboard() {
+        return new ReplyKeyboardRemove().getRemoveKeyboard();
+    }
+
     public static SendMessage sendMessage(Update update, String sentMessage, boolean isForceReply){
         String chatIdUser = String.valueOf(getChatIdUser(update));
         if (isForceReply) {
@@ -29,7 +34,6 @@ public class SendMessageUtils {
                     .builder()
                     .chatId(chatIdUser)
                     .text(sentMessage)
-                    //.enableHtml(true)
                     .parseMode(ParseMode.HTML)
                     .replyToMessageId(messageId)
                     .replyMarkup(forceReplyKeyboard)
@@ -39,7 +43,6 @@ public class SendMessageUtils {
                 .builder()
                 .chatId(chatIdUser)
                 .text(sentMessage)
-                //.enableHtml(true)
                 .build();
     }
 

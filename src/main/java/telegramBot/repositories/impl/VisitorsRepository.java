@@ -38,13 +38,15 @@ public class VisitorsRepository implements IVisitorsRepository {
             "WHERE pass_schema.visitors.tel_num = :telephoneNum")
     private String findChatIdByPhoneNumber;
 
-    @Value("")
+    @Value("insert into pass_schema.visitors (surname, name, patronumic, tel_num, chat_id) " +
+            "values (:surName, :name, :patronymic, :phoneNumber, :chatId)")
     private String create;
 
-    @Value("UPDATE pass_schema.visitors SET chat_id = :chatId WHERE tel_num = :phoneNumber")
+    @Value("UPDATE pass_schema.visitors SET chat_id = :chatId " +
+            "WHERE pass_schema.visitors.tel_num = :phoneNumber")
     private String updateByPhoneNumber;
 
-    @Value("")
+    @Value("delete from pass_schema.visitors where tel_num = :phoneNumber")
     private String deleteVisitor;
 
     @Override
@@ -52,7 +54,7 @@ public class VisitorsRepository implements IVisitorsRepository {
         List<Visitors> visitor = jdbcTemplate.query(findVisitorByPhoneNumber, Map.of("telephoneNum", phoneNumber),
                 new VisitorsRowMapper());
         if (visitor.size() != 1) {
-            throw new IllegalStateException(String.format("По phoneNumber = %s в базе содержится 2 посетителя: %s ",
+            throw new IllegalStateException(String.format("По phoneNumber = %s в базе содержится 2 chatId: %s ",
                     phoneNumber, visitor));
         }
         return Optional.ofNullable(visitor.get(0));

@@ -1,6 +1,7 @@
 package telegramBot.service;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -12,12 +13,11 @@ import telegramBot.service.commandBot.COMMANDS;
 import telegramBot.service.commandBot.receiver.BotCommandCallBackQuery;
 import telegramBot.service.commandBot.receiver.BotCommandCallBackQueryEdit;
 import telegramBot.service.commandBot.receiver.BotCommandSendMessage;
-//import telegramBot.service.commandBot.receiver.BotCommandEditSendMessage;
 import telegramBot.service.commandBot.receiver.utils.FindingDataUtil;
+import telegramBot.service.commandBot.receiver.utils.SendMessageUtils;
 
+import java.net.MalformedURLException;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.logging.Logger;
 
 /**
@@ -45,10 +45,13 @@ public class BotConnect extends TelegramLongPollingBot {
     @Value("${bot.timeout}")
     private String timeOut; */
 
+
+
+
     @Autowired
     public BotConnect(BotCommandSendMessage botCommandSendMessage,
                       BotCommandCallBackQueryEdit botCommandCallbackQueryEdit,
-                      BotCommandCallBackQuery botCommandCallBackQuery) {
+                      BotCommandCallBackQuery botCommandCallBackQuery) throws MalformedURLException {
         this.botCommandSendMessage = botCommandSendMessage;
         this.botCommandCallbackQueryEdit = botCommandCallbackQueryEdit;
         this.botCommandCallBackQuery = botCommandCallBackQuery;
@@ -56,19 +59,14 @@ public class BotConnect extends TelegramLongPollingBot {
 
     // настроить время polling
 
+
+
+
+
     @Override
     public void onUpdateReceived(Update update) {
-        LocalTime localTime = LocalTime.now(ZoneId.of("GMT+03:00"));
-
-        if ("15:00:30.856375700".equals(String.valueOf(localTime))) {
-            String commandIdentifier = "/start";
-            try {
-                execute(botCommandSendMessage.findCommand(commandIdentifier, update));
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
         if (update.getMessage() != null && update.hasMessage()) {
+            SendMessageUtils.removeForceReplyKeyboard();
             try {
                 log.info("TelegramAPI started. Look for messages");
                 String commandIdentifier = update.getMessage().getText();

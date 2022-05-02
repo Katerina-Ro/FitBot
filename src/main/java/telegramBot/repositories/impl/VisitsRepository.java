@@ -32,7 +32,10 @@ public class VisitsRepository implements IVisitsRepository {
     @Value("SELECT * From pass_schema.visits WHERE pass_id = :passId")
     private String findAllVisitsByPassId;
 
-    @Value("")
+    @Value("update pass_schema.visits " +
+            "set pass_schema.visits.date_visit = :dateVisit, " +
+            "pass_schema.visits.count_visit = :countVisits " +
+            "where pass_schema.visits.pass_id = :passId")
     private String updateVisit;
 
     @Override

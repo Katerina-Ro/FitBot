@@ -28,16 +28,27 @@ public class PassRepository implements IPassRepository {
     @Value("SELECT * FROM pass_schema.pass_table WHERE pass_schema.pass_table.tel_num = :phoneNumber")
     private String findPassByPhone;
 
-    @Value("")
+    @Value("select pass_id, date_start, date_end, visit_limit, tel_num, freeze_limit, date_freeze" +
+            "from pass_schema.pass_table " +
+            "where pass_schema.pass_table.pass_id = :passId" +
+            "and current_date between pass_schema.pass_table.date_start and pass_schema.pass_table.date_start")
     private String findPassByPassId;
 
-    @Value("")
+    @Value("insert into pass_schema.pass_table " +
+            "(pass_id, tel_num, date_start, date_end, visit_limit, freeze_limit, date_freeze)" +
+            "values (:numPass, :phoneNumber, :dateStart, :dateEnd, :visitLimit, :freezeLimit, :dateStartFreeze)")
     private String createPass;
 
-    @Value("")
+    @Value("update pass_schema.pass_table" +
+            "set tel_num = phoneNumber" +
+            ",date_start = dateStart " +
+            ",date_end = dateEnd " +
+            ",visit_limit = visitLimit " +
+            "where pass_id = :numPass")
     private String updatePass;
 
-    @Value("")
+    @Value("delete from pass_schema.pass_table" +
+            "where pass_schema.pass_table.pass_id = :numPass")
     private String deletePass;
 
     @Autowired
