@@ -38,6 +38,9 @@ public class VisitorsRepository implements IVisitorsRepository {
             "WHERE pass_schema.visitors.tel_num = :telephoneNum")
     private String findChatIdByPhoneNumber;
 
+    @Value("SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors")
+    private String findAllChatId = "SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors";
+
     @Value("insert into pass_schema.visitors (surname, name, patronumic, tel_num, chat_id) " +
             "values (:surName, :name, :patronymic, :phoneNumber, :chatId)")
     private String create;
@@ -48,6 +51,7 @@ public class VisitorsRepository implements IVisitorsRepository {
 
     @Value("delete from pass_schema.visitors where tel_num = :phoneNumber")
     private String deleteVisitor;
+
 
     @Override
     public Optional<Visitors> findVisitorByPhoneNumber(String phoneNumber) {
@@ -91,6 +95,10 @@ public class VisitorsRepository implements IVisitorsRepository {
                     phoneNumber, chatId));
         }
         return Optional.ofNullable(chatId.get(0));
+    }
+
+    public List<Long> findAllChatId() {
+        return jdbcTemplate.query(findAllChatId, new ChatIdRowMapper());
     }
 
     @Override

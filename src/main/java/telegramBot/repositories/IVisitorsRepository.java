@@ -3,6 +3,7 @@ package telegramBot.repositories;
 import org.springframework.stereotype.Repository;
 import telegramBot.model.Visitors;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,6 +18,8 @@ public interface IVisitorsRepository {
     Optional<Visitors> findVisitorByChatId(Long chatId);
 
     Optional<Long> findChatIdByPhoneNumber(String phoneNumber);
+
+    List<Long> findAllChatId();
 
     boolean create(Visitors visitor);
 

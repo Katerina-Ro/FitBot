@@ -5,8 +5,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import telegramBot.service.commandBot.COMMANDS;
 
+import java.io.Serializable;
+
 @Getter
-public class Buttons {
+public class Buttons implements Serializable {
     private static final String BUTTON_GET_LESSONS_LEFT = "Осталось занятий";
     private static final String BUTTON_INFO = "Для чего бот?";
     private static final String BUTTON_YES_LABEL = "Да";

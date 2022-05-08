@@ -11,10 +11,7 @@ import javax.sql.DataSource;
 public class DBConfig {
 
     @Bean
-    public DataSource dataSource() {
-        B
-        return dataSource;
-    }
+    publ
 
     @Bean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {

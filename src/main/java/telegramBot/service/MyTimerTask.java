@@ -1,11 +1,13 @@
-package telegramBot;
+package telegramBot.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import config.DBConfig;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import telegramBot.repositories.IVisitorsRepository;
+import telegramBot.repositories.impl.VisitorsRepository;
 import telegramBot.service.commandBot.receiver.utils.keyboard.Buttons;
 
 import java.io.*;
@@ -21,13 +23,7 @@ public class MyTimerTask extends TimerTask {
     private static final String IMAGE_WAVING_HAND = String.valueOf(Character.toChars(0x1F44B));
     private static final String START_MESSAGE = "Привет " + IMAGE_WAVING_HAND + " \nВы придете сегодня на занятие?";
     private static HttpURLConnection conn = null;
-    private final IVisitorsRepository visitorsRepository; // = new VisitorsRepository(new NamedParameterJdbcTemplate(new DBConfig().dataSource()));
-
-    @Autowired
-    public MyTimerTask(IVisitorsRepository visitorsRepository) {
-        this.visitorsRepository = visitorsRepository;
-    }
-
+    private final IVisitorsRepository visitorsRepository = new VisitorsRepository(new NamedParameterJdbcTemplate(new DBConfig().dataSource()));
 
     @Override
     public void run() {

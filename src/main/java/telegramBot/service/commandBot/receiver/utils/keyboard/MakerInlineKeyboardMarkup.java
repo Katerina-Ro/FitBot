@@ -3,6 +3,7 @@ package telegramBot.service.commandBot.receiver.utils.keyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Вспомогательный класс для формирования клавиатуры типа InlineKeyboardMarkup
  */
-public class MakerInlineKeyboardMarkup {
+public class MakerInlineKeyboardMarkup implements Serializable {
     /** Получаем клавиатуру на 1 ряд 1 строку в одну кнопку
      * @param keyboardButtonRow - 1 ряд
      * @return - клавиатура типа: |кнопка|
