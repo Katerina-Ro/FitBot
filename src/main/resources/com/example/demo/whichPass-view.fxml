@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.WhichPassController">
+   <children>
+      <AnchorPane layoutY="124.0" prefHeight="375.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
+         <children>
+            <TableView fx:id="tableWhichPass" prefHeight="375.0" prefWidth="700.0">
+               <columns>
+                  <TableColumn fx:id="passNumberColumn" editable="false" prefWidth="133.59995114803314" text="Номер абонемента" />
+                  <TableColumn fx:id="dateStartPassColumn" editable="false" prefWidth="112.800048828125" text="Дата начала" />
+                  <TableColumn fx:id="dateEndPassColumn" editable="false" prefWidth="132.0" text="Дата окончания" />
+                  <TableColumn fx:id="leftPassColumn" editable="false" prefWidth="132.0" text="Осталось занятий" />
+                  <TableColumn fx:id="buttonChoose" editable="false" prefWidth="187.19989013671875" />
+               </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+      <Label layoutX="21.0" layoutY="14.0" prefHeight="92.0" prefWidth="663.0" style="-fx-background-color: #fafa;" text="В базе по указанным данным найдено несколько абонементов. Выберите нужный" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Lucida Sans Unicode" size="18.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </Label>
+   </children>
+</AnchorPane>

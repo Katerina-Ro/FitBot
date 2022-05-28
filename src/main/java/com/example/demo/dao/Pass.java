@@ -8,12 +8,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class Pass {
-
-    /**
-     * В JavaFX для всех полей класса-модели предпочтительно использовать [Properties].
-     * Property позволяет получать автоматические уведомления при любых изменениях переменных.
-     * Это позволяет поддерживать синхронность представления и данных.
-     */
     private Integer numPass;
     private String phoneNumber;
     private LocalDate dateStart;
@@ -27,6 +21,8 @@ public class Pass {
         return "Номер телефона владельца абонемента " + phoneNumber + '\'' +
                 ", Дата начала действия абонемента " + dateStart + '\'' +
                 ", До какого числа абонемент (включительно) " + dateEnd + '\'' +
-                ", На какое количество занятий куплен абонемент " + visitLimit;
+                ", На какое количество занятий куплен абонемент " + visitLimit + '\'' +
+                ", Количество использованных в данном абонементе заморозок " + freezeLimit + '\'' +
+                ", Дата начала последней заморозки " + dateStartFreeze;
     }
 }

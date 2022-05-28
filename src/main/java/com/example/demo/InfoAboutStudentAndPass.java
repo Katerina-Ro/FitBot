@@ -11,6 +11,7 @@ public class InfoAboutStudentAndPass extends Application {
         //FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("inputPhoneNumber-view.fxml"));
         StackPane root = new StackPane();
         Scene scene = new Scene(root, 664, 804);
+        stage.setResizable(false);
         stage.setTitle ("Информация о студенте/ абонементе");
         stage.setScene(scene);
         stage.show();

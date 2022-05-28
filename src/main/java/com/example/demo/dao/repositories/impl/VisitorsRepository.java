@@ -1,12 +1,13 @@
 package com.example.demo.dao.repositories.impl;
 
 import com.example.demo.dao.Visitors;
+import com.example.demo.dao.repositories.IVisitorsRepository;
+import com.example.demo.exception.SeveralException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import com.example.demo.dao.repositories.IVisitorsRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,8 +25,8 @@ public class VisitorsRepository implements IVisitorsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Value("SELECT v FROM Visitors v WHERE v.telephoneNum = :telephoneNum")
-    private String findVisitorByPhoneNumber;
+    private static final String findVisitorByPhoneNumber = "SELECT * FROM pass_schema.visitors " +
+            "WHERE pass_schema.visitors.tel_num = :telephoneNum";
 
     @Value("SELECT pass_schema.visitors.tel_num FROM pass_schema.visitors " +
             "WHERE pass_schema.visitors.chat_id = :chatId")
@@ -50,12 +51,15 @@ public class VisitorsRepository implements IVisitorsRepository {
     private String deleteVisitor;
 
     @Override
-    public Optional<Visitors> findVisitorByPhoneNumber(String phoneNumber) {
+    public Optional<Visitors> findVisitorByPhoneNumber(String phoneNumber) throws SeveralException {
         List<Visitors> visitor = jdbcTemplate.query(findVisitorByPhoneNumber, Map.of("telephoneNum", phoneNumber),
                 new VisitorsRowMapper());
-        if (visitor.size() != 1) {
-            throw new IllegalStateException(String.format("По phoneNumber = %s в базе содержится 2 chatId: %s ",
+        if (visitor.size() != 1 && !visitor.isEmpty()) {
+            throw new SeveralException(String.format("По phoneNumber = %s в базе содержится 2 chatId: %s ",
                     phoneNumber, visitor));
+        }
+        if (visitor.isEmpty()) {
+            return Optional.empty();
         }
         return Optional.ofNullable(visitor.get(0));
     }
@@ -132,17 +136,6 @@ public class VisitorsRepository implements IVisitorsRepository {
             return rs.getString("tel_num");
         }
     }
-    /*
-    public static class PhoneNumberResultSetExtractor implements ResultSetExtractor<String>{
-        @Override
-        public String extractData(ResultSet rs) throws SQLException, DataAccessException {
-            String g = rs.getString("tel_num");
-            if (rs.next()) {
-                return g;
-            }
-            return StringUtils.EMPTY;
-        }
-    } */
 
     public static class ChatIdRowMapper implements RowMapper<Long>{
 

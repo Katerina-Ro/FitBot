@@ -25,8 +25,8 @@ public class PassRepository implements IPassRepository {
             "WHERE pass_schema.pass_table.pass_id = :numPass")
     private String findPhoneNumberByPassId;
 
-    @Value("SELECT * FROM pass_schema.pass_table WHERE pass_schema.pass_table.tel_num = :phoneNumber")
-    private String findPassByPhone;
+    //@Value()
+    private String findPassByPhone = "SELECT * FROM pass_schema.pass_table WHERE pass_schema.pass_table.tel_num = :phoneNumber";
 
     @Value("select pass_id, date_start, date_end, visit_limit, tel_num, freeze_limit, date_freeze" +
             "from pass_schema.pass_table " +
@@ -68,10 +68,14 @@ public class PassRepository implements IPassRepository {
     }
 
     @Override
-    public Optional<List<Pass>> findPassByPhone(String phoneNumber) {
-        List<Pass> passList = jdbcTemplate.query(findPassByPhone, Map.of("phoneNumber", phoneNumber),
-                new PassRowMapper());
-        return Optional.of(passList);
+    public Optional<List<Pass>> findPassByPhone(String inputPhoneNumber) {
+        if (!inputPhoneNumber.isBlank()) {
+            List<Pass> passList = jdbcTemplate.query(findPassByPhone, Map.of("phoneNumber", inputPhoneNumber),
+                    new PassRowMapper());
+            return Optional.of(passList);
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

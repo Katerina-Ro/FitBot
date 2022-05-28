@@ -1,6 +1,7 @@
 package com.example.demo.dao.repositories;
 
 import com.example.demo.dao.Visitors;
+import com.example.demo.exception.SeveralException;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -10,7 +11,7 @@ import java.util.Optional;
  */
 public interface IVisitorsRepository {
 
-    Optional<Visitors> findVisitorByPhoneNumber(String phoneNumber);
+    Optional<Visitors> findVisitorByPhoneNumber(String phoneNumber) throws SeveralException;
 
     Optional<String> findTelephoneNumByChatId(Long chatId);
 
