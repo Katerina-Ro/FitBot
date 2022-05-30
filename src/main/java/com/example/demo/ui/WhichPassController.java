@@ -1,7 +1,7 @@
 package com.example.demo.ui;
 
 import com.example.demo.dao.Pass;
-import com.example.demo.util.PassRepositoryHelper;
+import com.example.demo.util.FillingFieldsHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,7 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.LocalDate;
 
 public class WhichPassController {
-    private final PassRepositoryHelper passRepositoryHelper;
+    private final FillingFieldsHelper passRepositoryHelper;
 
     @FXML
     private TableView<Pass> tableWhichPass;
@@ -33,7 +33,7 @@ public class WhichPassController {
     private TableColumn<Pass, Integer> passNumberColumn;
 
     public WhichPassController() {
-        this.passRepositoryHelper = new PassRepositoryHelper();
+        this.passRepositoryHelper = new FillingFieldsHelper();
     }
 
     @FXML

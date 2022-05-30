@@ -6,7 +6,9 @@ import com.example.demo.dao.Visitors;
 import com.example.demo.dao.repositories.IVisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
 import com.example.demo.exception.SeveralException;
-import com.example.demo.util.PassRepositoryHelper;
+import com.example.demo.ui.abstractClasses.PassController;
+import com.example.demo.util.FillingFieldsHelper;
+import com.example.demo.util.PatternTemplate;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -27,11 +30,11 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-public class InputPhoneNumberController {
-    private final PassRepositoryHelper passRepositoryHelper;
+public class InputPhoneNumberController extends PassController {
     private final IVisitorsRepository visitorsRepository;
     private ObservableList<Pass> passObservableList;
     private ObservableList<String> visitorsObservableList;
+    Pattern p = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
 
     @FXML
     private TextField inputPhoneNumber;
@@ -80,20 +83,26 @@ public class InputPhoneNumberController {
     private final IntegerProperty visitLimitValueProperty = new SimpleIntegerProperty();
 
 
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Button changePassButton;
+
+
     public InputPhoneNumberController() {
         this.visitorsRepository = new VisitorsRepository(new DBConfig().namedParameterJdbcTemplate());
-        this.passRepositoryHelper = new PassRepositoryHelper();
     }
 
     @FXML
-    private void initialize() {
+    public void initialize(Stage stage) {
         // Введенный номер телефона
-        correctInputLine();
+        correctInputPhoneLine();
         inputPhoneNumber.textProperty().bindBidirectional(phoneNumberProperty, new DefaultStringConverter());
         phoneNumberProperty.addListener((observable, oldValue, newValue) -> {
             if (phoneNumberProperty.length().get() == 11) {
                 // В случае изменения введенного номера телефона, меняются данные полей. Устанавливаем функцию наблюдения
-                passObservableList = passRepositoryHelper.getTablePass(phoneNumberProperty);
+                passObservableList = fillingFieldsHelper.getTablePass(phoneNumberProperty);
                 visitorsObservableList = getFullNameStudent(phoneNumberProperty);
                 if (!passObservableList.isEmpty() && !visitorsObservableList.isEmpty()) {
                     fillStageIfPassObservableListNotEmpty();
@@ -104,16 +113,10 @@ public class InputPhoneNumberController {
                 fillStageIfPassObservableListIsEmpty();
             }
         });
+        backButton.setOnAction(event -> stage.close());
     }
 
-    private void correctInputLine() {
-        Pattern p = Pattern.compile("(\\d+\\.?\\d*)?");
-        int maxCharacters = 11;
-        inputPhoneNumber.textProperty().addListener((observable10, oldValue10, newValue10) -> {
-            if (newValue10.length() > maxCharacters) inputPhoneNumber.deleteNextChar();
-            if (!p.matcher(newValue10).matches()) inputPhoneNumber.setText(oldValue10);
-        });
-    }
+
 
     private ObservableList<String> getFullNameStudent(StringProperty phoneNumber) {
         String inputPhoneNumber = String.valueOf(phoneNumber.get());
@@ -162,6 +165,14 @@ public class InputPhoneNumberController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void correctInputPhoneLine() {
+        int maxCharacters = 11;
+        inputPhoneNumber.textProperty().addListener((observable10, oldValue10, newValue10) -> {
+            if (newValue10.length() > maxCharacters) inputPhoneNumber.deleteNextChar();
+            if (!p.matcher(newValue10).matches()) inputPhoneNumber.setText(oldValue10);
+        });
     }
 
     private void fillStageIfPassObservableListNotEmpty () {

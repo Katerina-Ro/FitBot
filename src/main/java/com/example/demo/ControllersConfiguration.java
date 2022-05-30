@@ -14,7 +14,7 @@ public class ControllersConfiguration {
 
     @Bean(name="mainView")
     public ViewHolder getMainView() throws IOException {
-        return loadView("fxml/studentAttendance-view.fxml");
+        return loadView("fxml/start-view.fxml");
     }
 
     @Bean
