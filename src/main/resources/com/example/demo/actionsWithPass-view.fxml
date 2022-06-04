@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="413.0" prefWidth="672.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.ActionsWithPassController">
+   <children>
+      <AnchorPane layoutY="81.0" prefHeight="332.0" prefWidth="672.0" style="-fx-background-color: #fafafa;">
+         <children>
+            <VBox prefHeight="250.0" prefWidth="332.0" style="-fx-background-color: #f2f0f0;">
+               <children>
+                  <Button fx:id="createPassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Создать абонемент">
+                     <VBox.margin>
+                        <Insets left="35.0" top="35.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="changePassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="251.0" text="Внести изменения в абонемент">
+                     <VBox.margin>
+                        <Insets left="35.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="deletePassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Удалить абонемент">
+                     <VBox.margin>
+                        <Insets left="35.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <Button fx:id="backToMainMenuButton" layoutX="480.0" layoutY="273.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Назад в главное меню" />
+            <VBox layoutX="327.0" prefHeight="250.0" prefWidth="343.0" style="-fx-background-color: #f2f0f0;">
+               <children>
+                  <Button fx:id="freezePassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Заморозить абонемент">
+                     <VBox.margin>
+                        <Insets left="55.0" top="35.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="unFreezePassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Разморозить абонемент">
+                     <VBox.margin>
+                        <Insets left="55.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="getInfoPassButton" mnemonicParsing="false" prefHeight="49.0" prefWidth="254.0" text="Просмотреть информацию об абонементе" textAlignment="CENTER" wrapText="true">
+                     <VBox.margin>
+                        <Insets left="55.0" top="10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <Label layoutX="124.0" layoutY="14.0" prefHeight="60.0" prefWidth="408.0" text="Действия с абонементом" textAlignment="CENTER" textFill="#d7d0d0">
+         <font>
+            <Font name="Mistral" size="48.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

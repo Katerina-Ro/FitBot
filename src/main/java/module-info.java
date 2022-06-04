@@ -30,5 +30,6 @@ module com.example.demo {
     exports com.example.demo;
     exports com.example.demo.ui.abstractClasses to javafx.fxml;
     opens com.example.demo.ui.abstractClasses to javafx.fxml;
+
     //exports com.example.demo5.ui;
 }

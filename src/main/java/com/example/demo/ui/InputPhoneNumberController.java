@@ -6,7 +6,6 @@ import com.example.demo.dao.Visitors;
 import com.example.demo.dao.repositories.IVisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
 import com.example.demo.exception.SeveralException;
-import com.example.demo.ui.abstractClasses.PassController;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.PatternTemplate;
 import javafx.beans.property.*;
@@ -30,8 +29,9 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
-public class InputPhoneNumberController extends PassController {
+public class InputPhoneNumberController {
     private final IVisitorsRepository visitorsRepository;
+    private final FillingFieldsHelper fillingFieldsHelper;
     private ObservableList<Pass> passObservableList;
     private ObservableList<String> visitorsObservableList;
     Pattern p = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
@@ -91,6 +91,7 @@ public class InputPhoneNumberController extends PassController {
 
 
     public InputPhoneNumberController() {
+        this.fillingFieldsHelper = new FillingFieldsHelper();
         this.visitorsRepository = new VisitorsRepository(new DBConfig().namedParameterJdbcTemplate());
     }
 

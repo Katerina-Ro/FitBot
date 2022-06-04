@@ -1,7 +1,13 @@
 package com.example.demo.ui;
 
+import com.example.demo.config.DBConfig;
 import com.example.demo.dao.Pass;
-import com.example.demo.util.FillingFieldsHelper;
+import com.example.demo.dao.repositories.impl.PassRepository;
+import com.example.demo.dao.repositories.impl.VisitorsRepository;
+import com.example.demo.dao.repositories.impl.VisitsRepository;
+import com.example.demo.modelService.PassService;
+import com.example.demo.modelService.VisitorsService;
+import com.example.demo.modelService.VisitsService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -9,11 +15,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.time.LocalDate;
 
 public class WhichPassController {
-    private final FillingFieldsHelper passRepositoryHelper;
+    private final PassService passService;
 
     @FXML
     private TableView<Pass> tableWhichPass;
@@ -33,12 +40,19 @@ public class WhichPassController {
     private TableColumn<Pass, Integer> passNumberColumn;
 
     public WhichPassController() {
-        this.passRepositoryHelper = new FillingFieldsHelper();
+        NamedParameterJdbcTemplate jdbcTemplate = new DBConfig().namedParameterJdbcTemplate();
+        VisitorsRepository visitorsRepository = new VisitorsRepository(jdbcTemplate);
+        PassRepository passRepository = new PassRepository(jdbcTemplate);
+        VisitsService visitsService = new VisitsService(new VisitsRepository(jdbcTemplate));
+        VisitsRepository visitsRepository = new VisitsRepository(jdbcTemplate);
+        this.passService = new PassService(passRepository, visitsService,
+                new VisitorsService(visitorsRepository, passRepository, visitsService),
+                visitsRepository);
     }
 
     @FXML
     void initialize(String phoneNumber) {
-        ObservableList<Pass> passObservableList = FXCollections.observableArrayList(passRepositoryHelper.getListPass(phoneNumber));
+        ObservableList<Pass> passObservableList = FXCollections.observableArrayList(passService.getListPass(phoneNumber));
         if (!passObservableList.isEmpty()) {
             passNumberColumn.setCellValueFactory(new PropertyValueFactory<Pass, Integer>("pass_id"));
             dateStartPassColumn.setCellValueFactory(new PropertyValueFactory<>("date_start"));

@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="453.0" prefWidth="672.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.StartController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="398.0" prefWidth="672.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.StartController">
    <children>
-      <AnchorPane layoutY="81.0" prefHeight="370.0" prefWidth="672.0" style="-fx-background-color: #fafafa;">
+      <AnchorPane layoutY="81.0" prefHeight="318.0" prefWidth="672.0" style="-fx-background-color: #fafafa;">
          <children>
-            <VBox prefHeight="302.0" prefWidth="332.0" style="-fx-background-color: #f2f0f0;">
+            <VBox prefHeight="240.0" prefWidth="332.0" style="-fx-background-color: #f2f0f0;">
                <children>
                   <Button fx:id="whoComeToDayButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Кто сегодня придет на занятие">
                      <VBox.margin>
@@ -23,38 +23,23 @@
                         <Insets left="35.0" top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="getInfoAboutPassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Получить информацию об абонементе">
-                     <VBox.margin>
-                        <Insets left="35.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="changeInfoAboutPassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Изменить данные абонемента">
+                  <Button fx:id="whoNothingSayButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Кто ничего не ответил">
                      <VBox.margin>
                         <Insets left="35.0" top="10.0" />
                      </VBox.margin>
                   </Button>
                </children>
             </VBox>
-            <Button fx:id="settingsBotButton" layoutX="477.0" layoutY="319.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Настройки бота" />
-            <Button fx:id="closeApplicationButton" layoutX="25.0" layoutY="319.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Выйти из приложения" />
-            <VBox layoutX="327.0" prefHeight="302.0" prefWidth="343.0" style="-fx-background-color: #f2f0f0;">
+            <Button fx:id="settingsBotButton" layoutX="477.0" layoutY="261.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Настройки бота" />
+            <Button fx:id="closeApplicationButton" layoutX="31.0" layoutY="261.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Выйти из приложения" />
+            <VBox layoutX="327.0" prefHeight="240.0" prefWidth="343.0" style="-fx-background-color: #f2f0f0;">
                <children>
-                  <Button fx:id="createNewStudentButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Внести информацию о новом студенте">
+                  <Button fx:id="actionWithPassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Действия с абонементом">
                      <VBox.margin>
                         <Insets left="55.0" top="35.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="createNewPassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Внести информацию о новом абонементе">
-                     <VBox.margin>
-                        <Insets left="55.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="getInfoAboutStudentButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Получить информацию о студенте">
-                     <VBox.margin>
-                        <Insets left="55.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="changeInfoAboutStudentButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Изменить данные студента">
+                  <Button fx:id="actionWithStudentButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Действия с карточкой студента">
                      <VBox.margin>
                         <Insets left="55.0" top="10.0" />
                      </VBox.margin>

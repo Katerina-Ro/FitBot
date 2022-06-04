@@ -1,11 +1,17 @@
 package com.example.demo.util;
 
+import com.example.demo.config.DBConfig;
 import com.example.demo.dao.Pass;
 import com.example.demo.dao.repositories.impl.PassRepository;
+import com.example.demo.dao.repositories.impl.VisitorsRepository;
+import com.example.demo.dao.repositories.impl.VisitsRepository;
 import com.example.demo.modelService.PassService;
+import com.example.demo.modelService.VisitorsService;
+import com.example.demo.modelService.VisitsService;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
@@ -15,7 +21,14 @@ public class FillingFieldsHelper {
     Pattern p = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
 
     public FillingFieldsHelper() {
-        this.passService = new PassService(new PassRepository());
+        NamedParameterJdbcTemplate jdbcTemplate = new DBConfig().namedParameterJdbcTemplate();
+        VisitorsRepository visitorsRepository = new VisitorsRepository(jdbcTemplate);
+        PassRepository passRepository = new PassRepository(jdbcTemplate);
+        VisitsService visitsService = new VisitsService(new VisitsRepository(jdbcTemplate));
+        VisitsRepository visitsRepository = new VisitsRepository(jdbcTemplate);
+        this.passService = new PassService(passRepository, visitsService,
+                new VisitorsService(visitorsRepository, passRepository, visitsService),
+                visitsRepository);
     }
 
     public ObservableList<Pass> getTablePass(StringProperty inputPhoneNumber){

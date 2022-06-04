@@ -8,7 +8,6 @@ import com.example.demo.dao.repositories.impl.VisitsRepository;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.Getter;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Log4j2
 @Service
 public class PassService {
     @Getter
@@ -146,9 +144,9 @@ public class PassService {
             visits.setDateVisit(currencyDay);
             boolean isSuccess = visitsService.createVisit(visits);
             updatePass(pass);
-            log.info(String.format("Вычтено занятие из абонемента %s, т.к. отметил боту 'Да' за %s день. " +
+            /*log.info(String.format("Вычтено занятие из абонемента %s, т.к. отметил боту 'Да' за %s день. " +
                             "Создание записи в таблице Посещений прошло успешно? %s", pass.getNumPass(),
-                    currencyDay, isSuccess));
+                    currencyDay, isSuccess)); */
             return true;
         }
         return false;
@@ -206,7 +204,7 @@ public class PassService {
      */
     public boolean isMidnightCurrencyDay() {
         LocalTime currencyTime = LocalTime.now();
-        log.info("Получаем текущее время : " + currencyTime.toString());
+        /* log.info("Получаем текущее время : " + currencyTime.toString()); */
         System.out.println("Получаем текущее время : " + currencyTime);
         return "23:59:00.000000000".equals(currencyTime.toString());
     }
@@ -246,8 +244,8 @@ public class PassService {
         if (classesLeft.isPresent()) {
             int numMinusVisits = inputNumber - Integer.parseInt(classesLeft.get());
             boolean isSuccess = visitsService.minusVisit(pass.getNumPass(), numMinusVisits, specifiedDate);
-            log.info(String.format("К оставшимся дням в абонементе %s прибавлено %s занятий. Из таблицы о посещениях " +
-                    "удалены день и количество посещений? %s", pass.getVisitLimit(), inputNumber, isSuccess));
+            /* log.info(String.format("К оставшимся дням в абонементе %s прибавлено %s занятий. Из таблицы о посещениях " +
+                    "удалены день и количество посещений? %s", pass.getVisitLimit(), inputNumber, isSuccess)); */
         }
         return classesLeft;
     }
