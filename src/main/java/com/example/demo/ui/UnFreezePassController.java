@@ -4,9 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class GetInfoStudentController {
+public class UnFreezePassController {
 
     @FXML
-    void initialize(Stage stageGetInfoStudent, Image image) {
+    void initialize(Stage stageUnFreezePass, Image image) {
+
     }
 }

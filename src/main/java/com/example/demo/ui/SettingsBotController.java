@@ -30,8 +30,8 @@ public class SettingsBotController {
     private Button turnOnBotButton;
 
     @FXML
-    void initialize(Stage newStage) {
-        backButton.setOnAction(event -> {newStage.close();
+    void initialize(Stage stageSettings, Image image) {
+        backButton.setOnAction(event -> {stageSettings.close();
         });
 
     }

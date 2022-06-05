@@ -96,7 +96,7 @@ public class InputPhoneNumberController {
     }
 
     @FXML
-    public void initialize(Stage stage) {
+    public void initialize(Stage stage, Image image) {
         // Введенный номер телефона
         correctInputPhoneLine();
         inputPhoneNumber.textProperty().bindBidirectional(phoneNumberProperty, new DefaultStringConverter());
@@ -104,7 +104,7 @@ public class InputPhoneNumberController {
             if (phoneNumberProperty.length().get() == 11) {
                 // В случае изменения введенного номера телефона, меняются данные полей. Устанавливаем функцию наблюдения
                 passObservableList = fillingFieldsHelper.getTablePass(phoneNumberProperty);
-                visitorsObservableList = getFullNameStudent(phoneNumberProperty);
+                visitorsObservableList = getFullNameStudent(phoneNumberProperty, image);
                 if (!passObservableList.isEmpty() && !visitorsObservableList.isEmpty()) {
                     fillStageIfPassObservableListNotEmpty();
                 } else {
@@ -119,13 +119,13 @@ public class InputPhoneNumberController {
 
 
 
-    private ObservableList<String> getFullNameStudent(StringProperty phoneNumber) {
+    private ObservableList<String> getFullNameStudent(StringProperty phoneNumber, Image image) {
         String inputPhoneNumber = String.valueOf(phoneNumber.get());
         Optional<Visitors> visitor = Optional.empty();
         try {
             visitor = visitorsRepository.findVisitorByPhoneNumber(inputPhoneNumber);
         } catch (SeveralException e) {
-            openWindowWhichPass(String.valueOf(phoneNumber));
+            openWindowWhichPass(String.valueOf(phoneNumber), image);
         }
         ObservableList<String> fullNameFromDB = FXCollections.emptyObservableList();
         StringBuilder sb = new StringBuilder();
@@ -148,14 +148,14 @@ public class InputPhoneNumberController {
         return fullNameFromDB;
     }
 
-    public void openWindowWhichPass(String phoneNumber) {
+    public void openWindowWhichPass(String phoneNumber, Image image) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/whichPass-view.fxml"));
         Parent root1;
         try {
             root1 = fxmlLoader.load();
             Stage stage1 = new Stage();
             stage1.setResizable(false);
-            stage1.getIcons().add(new Image("file:src/main/java/com/example/demo/assets/iconic.png"));
+            stage1.getIcons().add(image);
             stage1.setTitle("Выберите абонемент");
             stage1.setScene(new Scene(root1, 700, 500));
 

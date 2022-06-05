@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class WhoSaysNoTodayController {
     @FXML
@@ -25,7 +27,7 @@ public class WhoSaysNoTodayController {
     private TableView<?> tableWhichPass;
 
     @FXML
-    void initialize() {
+    void initialize(Stage stageWhoSaysNoToday, Image image) {
 
     }
 }

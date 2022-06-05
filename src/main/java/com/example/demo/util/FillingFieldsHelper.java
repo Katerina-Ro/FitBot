@@ -52,8 +52,20 @@ public class FillingFieldsHelper {
         });
     }
 
+    public static void correctInputStringLine(TextField anyString) {
+        anyString.textProperty().addListener((observable1, oldValue1, newValue1) -> {
+            if (!CheckingInputLinesUtil.isLetters(anyString.toString())) anyString.setText(oldValue1);
+        });
+    }
+
     public boolean isDate(TextField dateInput) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         return simpleDateFormat.equals(dateInput);
+    }
+
+    public static boolean isPhoneNumber(String phoneNumber) {
+        return phoneNumber != null && !phoneNumber.isBlank() && phoneNumber.length() == 11
+                && phoneNumber.matches(PatternTemplate.INTEGER_LINE.getTemplate())
+                && phoneNumber.matches(PatternTemplate.FIRST_IN_PHONE.getTemplate());
     }
 }

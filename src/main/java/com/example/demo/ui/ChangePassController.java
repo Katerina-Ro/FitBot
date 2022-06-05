@@ -5,6 +5,7 @@ import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalDateStringConverter;
 import javafx.util.converter.NumberStringConverter;
@@ -50,7 +51,7 @@ public class ChangePassController {
     }
 
     @FXML
-    public void initialize(Stage stage) {
+    public void initialize(Stage stage, Image image) {
         fillingFieldsHelper.correctInputDateLine(dateStartPassInput);
         fillingFieldsHelper.correctInputDateLine(dateEndPassInput);
         fillingFieldsHelper.correctInputDateLine(dateStartFreezeInput);

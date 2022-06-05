@@ -17,9 +17,9 @@
             <Button fx:id="changeButton" layoutX="534.0" layoutY="305.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="136.0" text="Внести изменения в карточку студента" textAlignment="CENTER" wrapText="true" />
             <GridPane layoutY="1.0" prefHeight="288.0" prefWidth="700.0" style="-fx-background-color: #f2f0f0;">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="398.3999877929688" minWidth="10.0" prefWidth="196.19998779296873" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="386.400048828125" minWidth="10.0" prefWidth="333.8000122070313" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="386.400048828125" minWidth="10.0" prefWidth="169.00004882812493" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="398.3999877929688" minWidth="10.0" prefWidth="176.79996337890626" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="386.400048828125" minWidth="10.0" prefWidth="258.3999877929688" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="386.400048828125" minWidth="10.0" prefWidth="266.40001220703124" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -69,7 +69,7 @@
                         <Insets left="15.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="phoneNumberValueDB" prefHeight="40.0" prefWidth="306.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Label fx:id="phoneNumberValueDB" prefHeight="40.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -77,7 +77,7 @@
                         <Insets left="15.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="firstNameValueDB" prefHeight="40.0" prefWidth="305.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Label fx:id="firstNameValueDB" prefHeight="40.0" prefWidth="230.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -85,7 +85,7 @@
                         <Insets left="15.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="nameValueDB" prefHeight="40.0" prefWidth="308.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <Label fx:id="nameValueDB" prefHeight="40.0" prefWidth="230.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -93,7 +93,7 @@
                         <Insets left="15.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="patronymicValueDB" prefHeight="40.0" prefWidth="305.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <Label fx:id="patronymicValueDB" prefHeight="40.0" prefWidth="230.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -101,7 +101,7 @@
                         <Insets left="15.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="newFirstNameValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <TextField fx:id="newFirstNameValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="230.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -109,7 +109,7 @@
                         <Insets left="15.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="newNameValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <TextField fx:id="newNameValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="230.0" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -117,7 +117,7 @@
                         <Insets left="15.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="newPatronymicValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                  <TextField fx:id="newPatronymicValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="230.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                      <font>
                         <Font size="14.0" />
                      </font>

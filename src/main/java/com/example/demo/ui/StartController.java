@@ -33,94 +33,138 @@ public class StartController {
     private Button whoNothingSayButton;
 
     @FXML
-    public void initialize(Stage primaryStage) {
-        whoComeToDayButton.setOnAction(event -> openWindowWhoComeToDay());
-        whoDontComeToDayButton.setOnAction(event -> openWindowWhoDontComeToDay());
-        whoNothingSayButton.setOnAction(event -> );
+    public void initialize(Stage primaryStage, Image image) {
+        whoComeToDayButton.setOnAction(event -> openWindowWhoComeToDay(image));
+        whoDontComeToDayButton.setOnAction(event -> openWindowWhoDontComeToDay(image));
+        whoNothingSayButton.setOnAction(event -> openWindowWhoNothingSay(image));
+        actionWithPassButton.setOnAction(event -> openWindowActionWithPass(image));
+        actionWithStudentButton.setOnAction(event -> openWindowActionWithStudent(image));
         // getInfoAboutPassButton.setOnAction(event -> openWindowGetInfoAboutStudent());
         closeApplicationButton.setOnAction(event -> primaryStage.close());
-        settingsBotButton.setOnAction(actionEvent -> openWindowSettingsBot());
+        settingsBotButton.setOnAction(actionEvent -> openWindowSettingsBot(image));
     }
 
     @FXML
-    public void  openWindowWhoDontComeToDay() {
+    public void openWindowActionWithStudent(Image image) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/actionsWithStudent-view.fxml"));
+        Parent root1;
+        try {
+            root1 = fxmlLoader.load();
+            Stage stageActionWithStudent = new Stage();
+            stageActionWithStudent.setResizable(false);
+            stageActionWithStudent.getIcons().add(image);
+            stageActionWithStudent.setTitle("Действия с карточкой студента");
+            stageActionWithStudent.setScene(new Scene(root1, 672, 375));
+
+            ActionsWithStudentController actionsWithStudentController = fxmlLoader.getController();
+            actionsWithStudentController.initialize(stageActionWithStudent, image);
+
+            stageActionWithStudent.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void openWindowActionWithPass(Image image) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/actionsWithPass-view.fxml"));
+        Parent root1;
+        try {
+            root1 = fxmlLoader.load();
+            Stage stageActionWithPass = new Stage();
+            stageActionWithPass.setResizable(false);
+            stageActionWithPass.getIcons().add(image);
+            stageActionWithPass.setTitle("Действия с абонементом");
+            stageActionWithPass.setScene(new Scene(root1, 672, 413));
+
+            ActionsWithPassController actionsWithPassController = fxmlLoader.getController();
+            actionsWithPassController.initialize(stageActionWithPass, image);
+
+            stageActionWithPass.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void openWindowWhoNothingSay(Image image) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/whoNothingSays-view.fxml"));
+        Parent root1;
+        try {
+            root1 = fxmlLoader.load();
+            Stage stageWhoNothingSay = new Stage();
+            stageWhoNothingSay.setResizable(false);
+            stageWhoNothingSay.getIcons().add(image);
+            stageWhoNothingSay.setTitle("Кто ничего не ответил");
+            stageWhoNothingSay.setScene(new Scene(root1, 700, 480));
+
+            WhoNothingSaysController whoNothingSaysController = fxmlLoader.getController();
+            whoNothingSaysController.initialize(stageWhoNothingSay, image);
+
+            stageWhoNothingSay.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void  openWindowWhoDontComeToDay(Image image) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/whoSaysNoToday-view.fxml"));
         Parent root1;
         try {
             root1 = fxmlLoader.load();
-            Stage stage1 = new Stage();
-            stage1.setResizable(false);
-            stage1.getIcons().add(new Image("file:src/main/java/com/example/demo/assets/iconic.png"));
-            stage1.setTitle("Кто сегодня не придет");
-            stage1.setScene(new Scene(root1, 700, 480));
+            Stage stageWhoDontComeToDay = new Stage();
+            stageWhoDontComeToDay.setResizable(false);
+            stageWhoDontComeToDay.getIcons().add(image);
+            stageWhoDontComeToDay.setTitle("Кто сегодня не придет");
+            stageWhoDontComeToDay.setScene(new Scene(root1, 700, 480));
 
             WhoSaysNoTodayController whoSaysNoTodayController = fxmlLoader.getController();
-            whoSaysNoTodayController.initialize();
+            whoSaysNoTodayController.initialize(stageWhoDontComeToDay, image);
 
-            stage1.show();
+            stageWhoDontComeToDay.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    public void openWindowWhoComeToDay() {
+    public void openWindowWhoComeToDay(Image image) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/whoComeToday-view.fxml"));
         Parent root1;
         try {
             root1 = fxmlLoader.load();
-            Stage stage1 = new Stage();
-            stage1.setResizable(false);
-            stage1.getIcons().add(new Image("file:src/main/java/com/example/demo/assets/iconic.png"));
-            stage1.setTitle("Кто сегодня придет");
-            stage1.setScene(new Scene(root1, 700, 480));
+            Stage stageWhoComeToDay = new Stage();
+            stageWhoComeToDay.setResizable(false);
+            stageWhoComeToDay.getIcons().add(image);
+            stageWhoComeToDay.setTitle("Кто сегодня придет");
+            stageWhoComeToDay.setScene(new Scene(root1, 700, 480));
 
             WhoComeTodayController whoComeTodayController = fxmlLoader.getController();
-            whoComeTodayController.initialize();
+            whoComeTodayController.initialize(stageWhoComeToDay, image);
 
-            stage1.show();
+            stageWhoComeToDay.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    public void openWindowGetInfoAboutStudent() {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/inputPhoneNumber-view.fxml"));
-        Parent root1;
-        try {
-            root1 = fxmlLoader.load();
-            Stage stage1 = new Stage();
-            stage1.setResizable(false);
-            stage1.getIcons().add(new Image("file:src/main/java/com/example/demo/assets/iconic.png"));
-            stage1.setTitle("Данные абонемента");
-            stage1.setScene(new Scene(root1, 700, 500));
-
-            InputPhoneNumberController inputPhoneNumberController = fxmlLoader.getController();
-            inputPhoneNumberController.initialize(stage1);
-
-            stage1.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void openWindowSettingsBot() {
+    public void openWindowSettingsBot(Image image) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/settingsBot-view.fxml"));
         Parent root1;
         try {
             root1 = fxmlLoader.load();
-            Stage stage1 = new Stage();
-            stage1.setResizable(false);
-            stage1.getIcons().add(new Image("file:src/main/java/com/example/demo/assets/iconic.png"));
-            stage1.setTitle("Настройки бота");
-            stage1.setScene(new Scene(root1, 590, 337));
+            Stage stageSettingsBot = new Stage();
+            stageSettingsBot.setResizable(false);
+            stageSettingsBot.getIcons().add(image);
+            stageSettingsBot.setTitle("Настройки бота");
+            stageSettingsBot.setScene(new Scene(root1, 590, 337));
 
             SettingsBotController settingsBotController = fxmlLoader.getController();
-            settingsBotController.initialize(stage1);
+            settingsBotController.initialize(stageSettingsBot, image);
 
-            stage1.show();
+            stageSettingsBot.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
