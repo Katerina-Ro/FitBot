@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import telegramBot.service.commandBot.Command;
 import telegramBot.service.commandBot.COMMANDS;
+import telegramBot.service.commandBot.Command;
 import telegramBot.service.commandBot.receiver.utils.SendMessageUtils;
-import telegramBot.service.commandBot.receiver.utils.keyboard.Buttons;
 import telegramBot.service.modelService.VisitorsService;
 
 /**
@@ -16,8 +15,8 @@ import telegramBot.service.modelService.VisitorsService;
  */
 @Service
 public class StartCommand implements Command {
-    private static final String IMAGE_WAVING_HAND = String.valueOf(Character.toChars(0x1F44B));
-    private static final String START_MESSAGE = "Привет " + IMAGE_WAVING_HAND + " \n Вы придете сегодня на занятие?";
+    private static final String START_MESSAGE = "Вы подключили бота для опроса о посещении. Теперь каждый день Вам будет" +
+            "прихожить опрос о посещении занятия";
     @Getter
     private static final String NO_USER_IN_DB_BY_CHAT_ID = "Привет. Это бот для опроса о посещении. Введите Ваш номер " +
             "телефона, который Вы указывали в качестве контакта, начиная с 7. Пример ввода: 79991231234";
@@ -30,15 +29,12 @@ public class StartCommand implements Command {
 
 
     @Override
-    //@Transactional
     public SendMessage execute(Update update)  {
         Long chatIdUser = SendMessageUtils.getChatIdUser(update);
         if(!visitorsService.havPhoneNumber(chatIdUser)) {
             return messageError(update);
         }
-        SendMessage sendMessage = SendMessageUtils.sendMessage(update,START_MESSAGE, false);
-        sendMessage.setReplyMarkup(Buttons.getKeyBoardStartMenu());
-        return sendMessage;
+        return SendMessageUtils.sendMessage(update,START_MESSAGE, false);
     }
 
     private SendMessage messageError(Update update){

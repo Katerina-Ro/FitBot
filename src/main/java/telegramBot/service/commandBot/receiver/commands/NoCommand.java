@@ -32,7 +32,6 @@ public class NoCommand implements CommandEditSendMessage {
     }
 
     @Override
-    //@Transactional
     public EditMessageText execute(Update update) {
         Long numberUser = SendMessageUtils.getChatIdUser(update);
         // добавить в список тех, кто в текущий день не приходит
@@ -41,7 +40,6 @@ public class NoCommand implements CommandEditSendMessage {
         if (visitors.isPresent()) {
             Visitors v = visitors.get();
             dontPlanToComeToDay.setChatId(v.getChatId());
-            dontPlanToComeToDay.setName(v.getName());
             dontPlanToComeToDay.setTelephoneNum(v.getTelephoneNum());
             passService.getMapDontCome().put(v.getTelephoneNum(), dontPlanToComeToDay);
         }

@@ -9,7 +9,7 @@ import java.time.ZoneId;
 
 @Getter
 @Setter
-public class PlanToComeToDay {
+public class ComeToDay {
     private Long chatId;
     @NotBlank
     private String telephoneNum;
@@ -19,15 +19,15 @@ public class PlanToComeToDay {
     private String patronymic;
     private LocalDate currencyDate = LocalDate.now(ZoneId.of("GMT+03:00"));
 
-    public PlanToComeToDay() {}
+    public ComeToDay() {}
 
-    public PlanToComeToDay(String telephoneNum, String name) {
+    public ComeToDay(String telephoneNum, String name) {
         this.telephoneNum = telephoneNum;
         this.name = name;
     }
 
-    public PlanToComeToDay(Long chatId, String telephoneNum, String surname, String name, String patronymic,
-                           LocalDate currencyDate) {
+    public ComeToDay(Long chatId, String telephoneNum, String surname, String name, String patronymic,
+                     LocalDate currencyDate) {
         this.chatId = chatId;
         this.telephoneNum = telephoneNum;
         this.surname = surname;
@@ -40,6 +40,7 @@ public class PlanToComeToDay {
         return "Номер телефона посетителя " + telephoneNum +
                 ", Фамилия " + surname +
                 ", Имя " + name +
-                ", Отчество (может быть не указано) " + (patronymic != null ? patronymic : "");
+                ", Отчество (может быть не указано) " + (patronymic != null ? patronymic : "") +
+                ", Текущий день " + currencyDate;
     }
 }

@@ -1,9 +1,6 @@
 package telegramBot.service.modelService;
 
-import appStudentAttedanceRecord.db.dto.DontPlanToComeToDay;
-import appStudentAttedanceRecord.db.dto.PlanToComeToDay;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,19 +15,13 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @Service
 public class PassService {
-    @Getter
-    @Setter
-    private Map<String, PlanToComeToDay> mapVisitorsToDay = new HashMap<>();
-
-    @Getter
-    @Setter
-    private Map<String, DontPlanToComeToDay> mapDontCome = new HashMap<>();
-
     @Getter
     private final IPassRepository passRepository;
     private final VisitsService visitsService;

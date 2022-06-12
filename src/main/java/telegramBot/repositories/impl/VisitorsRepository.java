@@ -27,8 +27,7 @@ public class VisitorsRepository implements IVisitorsRepository {
     @Value("SELECT v FROM Visitors v WHERE v.telephoneNum = :telephoneNum")
     private String findVisitorByPhoneNumber;
 
-    @Value("SELECT pass_schema.visitors.tel_num FROM pass_schema.visitors " +
-            "WHERE pass_schema.visitors.chat_id = :chatId")
+    @Value("SELECT pass_schema.visitors.tel_num FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id = :chatId")
     private String findTelephoneNumByChatId;
 
     @Value("SELECT * FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id = :chatId")
@@ -38,8 +37,8 @@ public class VisitorsRepository implements IVisitorsRepository {
             "WHERE pass_schema.visitors.tel_num = :telephoneNum")
     private String findChatIdByPhoneNumber;
 
-    @Value("SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors")
-    private String findAllChatId = "SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors";
+    @Value("SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id is not null")
+    private String findAllChatId;
 
     @Value("insert into pass_schema.visitors (surname, name, patronumic, tel_num, chat_id) " +
             "values (:surName, :name, :patronymic, :phoneNumber, :chatId)")

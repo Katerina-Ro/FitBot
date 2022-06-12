@@ -1,6 +1,6 @@
 package telegramBot.service.commandBot.receiver.commands;
 
-import appStudentAttedanceRecord.db.dto.PlanToComeToDay;
+import appStudentAttedanceRecord.db.dto.ComeToDay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
@@ -34,20 +34,19 @@ public class YesCommand implements CommandEditSendMessage {
     }
 
     @Override
-    //@Transactional
     public EditMessageText execute(Update update) {
         Long numberUser = SendMessageUtils.getChatIdUser(update);
-        PlanToComeToDay planToComeToDay = new PlanToComeToDay();
+        ComeToDay comeToDay = new ComeToDay();
         Optional<Visitors> visitors = visitorsService.getVisitorByChatId(numberUser);
         Optional<Pass> pass;
         Optional<String> classesLeft;
         if (visitors.isPresent()) {
             Visitors v = visitors.get();
-            planToComeToDay.setChatId(v.getChatId());
-            planToComeToDay.setName(v.getName());
-            planToComeToDay.setTelephoneNum(v.getTelephoneNum());
-            // добавляем в список (map) тех, кто придет, и отправляем администратору
-            passService.getMapVisitorsToDay().put(v.getTelephoneNum(), planToComeToDay);
+            comeToDay.setChatId(v.getChatId());
+            comeToDay.setName(v.getName());
+            comeToDay.setTelephoneNum(v.getTelephoneNum());
+            // добавляем в список (map) тех, кто придет, и вписываем в промежуточную таблицу
+
 
             /*
             pass = passService.getPassByPassNumber(v.);

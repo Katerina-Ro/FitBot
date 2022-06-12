@@ -45,9 +45,6 @@ public class BotConnect extends TelegramLongPollingBot {
     @Value("${bot.timeout}")
     private String timeOut; */
 
-
-
-
     @Autowired
     public BotConnect(BotCommandSendMessage botCommandSendMessage,
                       BotCommandCallBackQueryEdit botCommandCallbackQueryEdit,
@@ -57,18 +54,12 @@ public class BotConnect extends TelegramLongPollingBot {
         this.botCommandCallBackQuery = botCommandCallBackQuery;
     }
 
-    // настроить время polling
-
-
-
-
-
     @Override
     public void onUpdateReceived(Update update) {
         if (update.getMessage() != null && update.hasMessage()) {
             SendMessageUtils.removeForceReplyKeyboard();
             try {
-                log.info("TelegramAPI started. Look for messages");
+                log.info("TelegramAPI started");
                 String commandIdentifier = update.getMessage().getText();
                 if (FindingDataUtil.isPhoneNumber(update.getMessage().getText())) {
                    commandIdentifier = update.getMessage().getReplyToMessage().getText();

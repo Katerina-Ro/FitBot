@@ -28,9 +28,9 @@ public class MyTimerTask extends TimerTask {
     @Override
     public void run() {
         String urlToken = "https://api.telegram.org/bot" + botToken + "/sendMessage";
-        String chatId = null;
+        String chatId;
         List<Long> listChatId = visitorsRepository.findAllChatId();
-        if (!listChatId.isEmpty()) {
+        if (listChatId != null && !listChatId.isEmpty()) {
             for (Long l: listChatId) {
                 chatId = String.valueOf(l);
                 ObjectMapper mapper = new ObjectMapper();
@@ -42,7 +42,8 @@ public class MyTimerTask extends TimerTask {
                     e.printStackTrace();
                 }
 
-                String urlParameters = "chat_id="+chatId+"&text="+START_MESSAGE+"&parse_mode="+ ParseMode.HTML+"&reply_markup="+writer;
+                String urlParameters = "chat_id=" + chatId + "&text=" + START_MESSAGE + "&parse_mode = " +
+                        ParseMode.HTML + "&reply_markup = " + writer;
                 byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
 
