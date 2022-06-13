@@ -1,9 +1,13 @@
 package telegramBot.service.commandBot.receiver.utils;
 
+import java.time.LocalTime;
+
 /**
  * Вспомогательный класс для получения данных из сообщения типа String
  */
 public class FindingDataUtil {
+    private final static LocalTime eventTime = LocalTime.of(9, 0, 0);
+
     /**
      * Проверка, первый символ - это цифра 7
      * @param incomingMessage - пришедшее от бота сообщение
@@ -24,34 +28,19 @@ public class FindingDataUtil {
         return false;
     }
 
-    /**
-     * Проверяем, содержит ли сообщение "\n"
-     * @param incomingMessage - пришедшее от бота сообщение
-     * @return true, если содержит
-     */
-    public static boolean containLineBreak(String incomingMessage){
-        boolean containLineBreak = false;
-        if (incomingMessage.contains("\n")){
-            containLineBreak = true;
-        }
-        return containLineBreak;
+    public static boolean isEventTime(LocalTime currentTime) {
+        return eventTime.compareTo(currentTime) == 0;
     }
 
-    /**
-     * Получаем значение строку без знаков "\n"
-     * @param incomingMessage - пришедшее от бота сообщение
-     * @return подстрока от начала до "\n"
-     */
-    public static String findLineByIncomingMessageByN(String incomingMessage){
-        return incomingMessage.substring(0,(incomingMessage.indexOf("\n")));
-    }
+    public long getDelay(LocalTime currentTime) {
+        long currentTimeNano = currentTime.getNano();
+        long eventTimeNano = eventTime.getNano();
+        long difference = currentTimeNano - eventTimeNano;
 
-    /**
-     * Получаем значение типа int из сообщения (подстрока от пробела)
-     * @param incomingMessage - пришедшее от бота сообщение
-     * @return значение типа int
-     */
-    public static int findIdByIncomingMessage(String incomingMessage){
-        return Integer.parseInt(incomingMessage.substring((incomingMessage.indexOf(" "))+1));
+        long period = 86400000;
+        System.out.println("currentTime = " + currentTime + " currentTimeNano " + currentTimeNano
+                + " eventTime " +eventTime + " eventTimeNano ="
+        + eventTimeNano + " difference " + difference + " period - difference = " + (period - difference));
+        return period - difference;
     }
 }
