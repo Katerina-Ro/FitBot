@@ -118,8 +118,6 @@ public class CreateStudentController {
         actionsWithPassController.openWindowCreatePass(image, phoneNumber);
     }
 
-
-
     private void correctInputPhoneLine() {
         int maxCharacters = 11;
         newPhoneNumberValue.textProperty().addListener((observable10, oldValue10, newValue10) -> {

@@ -28,9 +28,8 @@ public class VisitorsRepository implements IVisitorsRepository {
     private static final String findVisitorByPhoneNumber = "SELECT * FROM pass_schema.visitors " +
             "WHERE pass_schema.visitors.tel_num = :telephoneNum";
 
-    @Value("SELECT pass_schema.visitors.tel_num FROM pass_schema.visitors " +
-            "WHERE pass_schema.visitors.chat_id = :chatId")
-    private String findTelephoneNumByChatId;
+    private String findTelephoneNumByChatId = "SELECT pass_schema.visitors.tel_num FROM pass_schema.visitors " +
+            "WHERE pass_schema.visitors.chat_id = :chatId";
 
     @Value("SELECT * FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id = :chatId")
     private String findVisitorByChatId;
