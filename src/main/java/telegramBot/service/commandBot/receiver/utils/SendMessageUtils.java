@@ -20,8 +20,8 @@ public class SendMessageUtils {
         }
     }
 
-    public static Boolean removeForceReplyKeyboard() {
-        return new ReplyKeyboardRemove().getRemoveKeyboard();
+    public static void removeForceReplyKeyboard() {
+        new ReplyKeyboardRemove().getRemoveKeyboard();
     }
 
     public static SendMessage sendMessage(Update update, String sentMessage, boolean isForceReply){

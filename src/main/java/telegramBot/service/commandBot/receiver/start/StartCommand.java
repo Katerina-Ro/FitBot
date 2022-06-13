@@ -16,7 +16,7 @@ import telegramBot.service.modelService.VisitorsService;
 @Service
 public class StartCommand implements Command {
     private static final String START_MESSAGE = "Вы подключили бота для опроса о посещении. Теперь каждый день Вам будет" +
-            "прихожить опрос о посещении занятия";
+            "приходить опрос о посещении занятия";
     @Getter
     private static final String NO_USER_IN_DB_BY_CHAT_ID = "Привет. Это бот для опроса о посещении. Введите Ваш номер " +
             "телефона, который Вы указывали в качестве контакта, начиная с 7. Пример ввода: 79991231234";

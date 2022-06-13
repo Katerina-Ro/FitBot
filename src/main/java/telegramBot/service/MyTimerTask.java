@@ -2,8 +2,8 @@ package telegramBot.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import config.DBConfig;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import telegramBot.repositories.IVisitorsRepository;
@@ -17,9 +17,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.TimerTask;
 
-@Service
+@Log4j2
 public class MyTimerTask extends TimerTask {
-    private static final String botToken = "5132814541:AAFSh1Oj9ihGfi2Vt_SwhTZ9mUaxU0I86t8";
+    private static final String botToken =
     private static final String IMAGE_WAVING_HAND = String.valueOf(Character.toChars(0x1F44B));
     private static final String START_MESSAGE = "Привет " + IMAGE_WAVING_HAND + " \nВы придете сегодня на занятие?";
     private static HttpURLConnection conn = null;
@@ -27,7 +27,7 @@ public class MyTimerTask extends TimerTask {
 
     @Override
     public void run() {
-        String urlToken = "https://api.telegram.org/bot" + botToken + "/sendMessage";
+        String urlToken =
         String chatId;
         List<Long> listChatId = visitorsRepository.findAllChatId();
         if (listChatId != null && !listChatId.isEmpty()) {
@@ -39,13 +39,12 @@ public class MyTimerTask extends TimerTask {
                 try {
                     mapper.writeValue(writer, replyKeyboard);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error(String.format("Не удалось вписать ответ при формировании уведомления: %s", e));
                 }
 
-                String urlParameters = "chat_id=" + chatId + "&text=" + START_MESSAGE + "&parse_mode = " +
-                        ParseMode.HTML + "&reply_markup = " + writer;
+                String urlParameters = "chat_id=" + chatId + "&text=" + START_MESSAGE + "&parse_mode=" +
+                        ParseMode.HTML + "&reply_markup=" + writer;
                 byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
-
 
                 try {
                     URL url = new URL(urlToken);
@@ -59,7 +58,6 @@ public class MyTimerTask extends TimerTask {
                     try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
                         wr.write(postData);
                     }
-
                     StringBuilder content;
 
                     try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
@@ -71,10 +69,8 @@ public class MyTimerTask extends TimerTask {
                             content.append(System.lineSeparator());
                         }
                     }
-                    System.out.println(content);
-
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error(String.format("Ошибка при чтении или записи уведомления: %s", e));
                 } finally {
                     conn.disconnect();
                 }

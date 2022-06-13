@@ -10,10 +10,7 @@ import telegramBot.model.Visits;
 import telegramBot.repositories.IPassRepository;
 import telegramBot.repositories.impl.VisitsRepository;
 
-import javax.annotation.Nullable;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,24 +21,14 @@ import java.util.Optional;
 public class PassService {
     @Getter
     private final IPassRepository passRepository;
-    private final VisitsService visitsService;
     private final VisitorsService visitorsService;
     private final VisitsRepository visitsRepository;
 
     @Autowired
-    public PassService(IPassRepository passRepository, VisitsService visitsService, VisitorsService visitorsService, VisitsRepository visitsRepository) {
+    public PassService(IPassRepository passRepository, VisitorsService visitorsService, VisitsRepository visitsRepository) {
         this.passRepository = passRepository;
-        this.visitsService = visitsService;
         this.visitorsService = visitorsService;
         this.visitsRepository = visitsRepository;
-    }
-
-    public void updatePass(Pass pass) {
-        passRepository.update(pass);
-    }
-
-    public boolean clickButtonNo(Boolean isClickButtonNo) {
-        return isClickButtonNo;
     }
 
     /**
@@ -67,14 +54,6 @@ public class PassService {
             }
         }
         return Optional.empty();
-    }
-
-    public Optional<List<Integer>> passNumberActivePassList(List<Pass> listPass) {
-        List<Integer> listPassNumberActivePass = new ArrayList<>();
-        for (Pass p: listPass) {
-            listPassNumberActivePass.add(p.getNumPass());
-        }
-        return Optional.of(listPassNumberActivePass);
     }
 
     /**
@@ -119,83 +98,6 @@ public class PassService {
     }
 
     /**
-     * Вычет занятия из абонемента, если студент нажал "Да"
-     */
-    public boolean deductVisitIfYes(Pass pass) {
-        if (haveDayInPassCalculate(pass)) {
-            LocalDate currencyDay = LocalDate.now(ZoneId.of("GMT+03:00"));
-            Visits visits = new Visits();
-            visits.setPass(pass.getNumPass());
-            visits.setCountVisit(pass.getVisitLimit() - 1);
-            visits.setDateVisit(currencyDay);
-            boolean isSuccess = visitsService.createVisit(visits);
-            updatePass(pass);
-            log.info(String.format("Вычтено занятие из абонемента %s, т.к. отметил боту 'Да' за %s день. " +
-                            "Создание записи в таблице Посещений прошло успешно? %s", pass.getNumPass(),
-                    currencyDay, isSuccess));
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Вычет занятия, если до 23:59:00.000000000 не было ответа (ни "Да", ни "Нет")
-     */
-    public void deductVisitWithOutAnswer(Pass pass, Boolean isClickButtonNo) {
-        if (!deductVisitIfYes(pass) && haveDayInPassCalculate(pass) && isMidnightCurrencyDay()
-                && !clickButtonNo(isClickButtonNo)) {
-            deductVisitIfYes(pass);
-        }
-    }
-
-    /**
-     * Получение информации об абонементе (для админа)
-     * @param numberPass - номер телефона студента
-     */
-    public Optional<Pass> getPassByPassNumber(Integer numberPass) {
-        return passRepository.findPassByPassId(numberPass);
-    }
-
-    /**
-     * Обновление информации об абонементе
-     * @param phoneNumber - номер телефона студента
-     * @param numberPass - номер абонемента
-     * @param dateStart - дата начала абонемента
-     * @param dateEnd - дата окончания абонемента
-     * @param visitLimit - количество посещений в абонементе
-     * @param visits - информация о посещениях по этому абонементу
-     * @return true, если обновление прошло успешно
-     */
-    public boolean updatePass(String phoneNumber, Integer numberPass, LocalDate dateStart, LocalDate dateEnd,
-                              Integer visitLimit, @Nullable Visits visits) {
-        Optional<Pass> pass = getPassByPassNumber(numberPass);
-        if (pass.isPresent()) {
-            pass.get().setDateStart(dateStart);
-            pass.get().setDateEnd(dateEnd);
-            pass.get().setVisitLimit(visitLimit);
-            if (visits != null) {
-                Optional<List<Visits>> listVisits = visitsRepository.findAllVisitsByPassId(pass.get().getNumPass());
-                if (listVisits.isPresent()) {
-                    listVisits.get().add(visits);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Проверка, полночь или нет
-     * @return true, если полночь
-     */
-    public boolean isMidnightCurrencyDay() {
-        LocalTime currencyTime = LocalTime.now();
-        log.info("Получаем текущее время : " + currencyTime.toString());
-        System.out.println("Получаем текущее время : " + currencyTime);
-        return "23:59:00.000000000".equals(currencyTime.toString());
-    }
-
-    /**
      * Определение, находится ли текущая дата в промежутке между началом и окончанием абонемента
      * @param pass - данные абонемента
      * @return true, если находится
@@ -217,22 +119,5 @@ public class PassService {
             betweenDate = true;
         }
         return betweenDate;
-    }
-
-    /**
-     * Прибавляем занятие в абонементе (доступно только пдмину)
-     * @param pass - информация об абонементе
-     * @return количество оставшихся занятий в абонементе после прибавления
-     */
-    public Optional<String> plusClasses(Pass pass, Integer inputNumber, @NotBlank LocalDate specifiedDate) {
-        pass.setVisitLimit(inputNumber);
-        Optional<String> classesLeft = calculateClassesLeft(pass);
-        if (classesLeft.isPresent()) {
-            int numMinusVisits = inputNumber - Integer.parseInt(classesLeft.get());
-            boolean isSuccess = visitsService.minusVisit(pass.getNumPass(), numMinusVisits, specifiedDate);
-            log.info(String.format("К оставшимся дням в абонементе %s прибавлено %s занятий. Из таблицы о посещениях " +
-                    "удалены день и количество посещений? %s", pass.getVisitLimit(), inputNumber, isSuccess));
-        }
-        return classesLeft;
     }
 }

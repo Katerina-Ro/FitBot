@@ -27,7 +27,6 @@ public class LessonsLeftCommand implements CommandEditSendMessage{
     }
 
     @Override
-   // @Transactional
     public EditMessageText execute(Update update) {
         Long numberUser = SendMessageUtils.getChatIdUser(update);
         Optional<List<Pass>> passList = passService.getActualPassByChatId(numberUser);
@@ -37,8 +36,7 @@ public class LessonsLeftCommand implements CommandEditSendMessage{
                     passService.getClassesLeftFromAllPass(passList.get()));
         }
 
-        return SendMessageUtils.sendEditMessage(update,
-                classesLeft,
+        return SendMessageUtils.sendEditMessage(update, classesLeft,
                 MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
     }
 }

@@ -10,7 +10,6 @@ public class FindingDataUtil {
      * @return подстрока типа String
      */
     public static boolean firstSevenByIncomingMessage(String incomingMessage){
-        System.out.println("зашли в проверку: это цифра 7? ");
         String firstSymbol = incomingMessage.trim().substring(0, 1);
         return "7".equals(firstSymbol);
     }
@@ -18,15 +17,10 @@ public class FindingDataUtil {
     public static boolean isPhoneNumber(String incomingMessage) {
         if (firstSevenByIncomingMessage(incomingMessage)) {
             if (CheckingInputLinesUtil.checkLengthLine(incomingMessage)) {
-                System.out.println("длины номера телефона равна 11. Все верно");
-                System.out.println("");
-                System.out.println("CheckingInputLinesUtil.isNumbers(incomingMessage) = " + CheckingInputLinesUtil.isNumbers(incomingMessage));
                 return CheckingInputLinesUtil.isNumbers(incomingMessage);
-            };
-            System.out.println("длины номера телефона не 11. Неправильный метод");
-           return false;
+            }
+            return false;
         }
-        System.out.println("Первая цифра не 7. Неправильный метод");
         return false;
     }
 

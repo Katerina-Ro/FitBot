@@ -37,8 +37,8 @@ public class VisitorsRepository implements IVisitorsRepository {
             "WHERE pass_schema.visitors.tel_num = :telephoneNum")
     private String findChatIdByPhoneNumber;
 
-    @Value("SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id is not null")
-    private String findAllChatId;
+    //@Value("")
+    private String findAllChatId = "SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id is not null";
 
     @Value("insert into pass_schema.visitors (surname, name, patronumic, tel_num, chat_id) " +
             "values (:surName, :name, :patronymic, :phoneNumber, :chatId)")
@@ -152,7 +152,6 @@ public class VisitorsRepository implements IVisitorsRepository {
     } */
 
     public static class ChatIdRowMapper implements RowMapper<Long>{
-
         @Override
         public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
             return rs.getLong("chat_id");

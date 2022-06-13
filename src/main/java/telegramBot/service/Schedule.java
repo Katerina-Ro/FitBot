@@ -1,19 +1,18 @@
 package telegramBot.service;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
 
 public class Schedule {
 
     public void getSchedule() {
         MyTimerTask myTimerTask = new MyTimerTask();
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        // ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        Timer timer = new Timer();
 
         // периодичность 24 часа   86400000
-        long period = 1;
+        long period = 100000;
         // время задержки перед показом
         long delay = 0L;
-        scheduler.scheduleAtFixedRate(myTimerTask, delay, period, TimeUnit.MINUTES);
+        timer.scheduleAtFixedRate(myTimerTask, delay, period);
     }
 }

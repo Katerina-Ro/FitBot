@@ -1,36 +1,39 @@
 package telegramBot.service.commandBot.receiver.commands;
 
-import appStudentAttedanceRecord.db.dto.ComeToDay;
+import supportTable.ComeToDay;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import telegramBot.model.Pass;
 import telegramBot.model.Visitors;
-import telegramBot.service.commandBot.CommandEditSendMessage;
+import telegramBot.repositories.IComeToDayRepository;
 import telegramBot.service.commandBot.COMMANDS;
+import telegramBot.service.commandBot.CommandEditSendMessage;
 import telegramBot.service.commandBot.receiver.utils.SendMessageUtils;
 import telegramBot.service.commandBot.receiver.utils.keyboard.Buttons;
 import telegramBot.service.commandBot.receiver.utils.keyboard.MakerInlineKeyboardMarkup;
-import telegramBot.service.modelService.PassService;
 import telegramBot.service.modelService.VisitorsService;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
  * Класс-Receiver команды {@link COMMANDS} {@link CommandEditSendMessage}
  */
+@Log4j2
 @Service
 public class YesCommand implements CommandEditSendMessage {
     private static final String NO_HAVE_CLASSES_IN_PASS = "Не осталось занятий в абонементе либо нет информации " +
             "об абонементе в базе данных";
     private final VisitorsService visitorsService;
-    private final PassService passService;
+    private final IComeToDayRepository comeToDayRepository;
 
     @Autowired
-    public YesCommand(VisitorsService visitorsService, PassService passService) {
+    public YesCommand(VisitorsService visitorsService, IComeToDayRepository comeToDayRepository) {
         this.visitorsService = visitorsService;
-        this.passService = passService;
+        this.comeToDayRepository = comeToDayRepository;
     }
 
     @Override
@@ -38,23 +41,25 @@ public class YesCommand implements CommandEditSendMessage {
         Long numberUser = SendMessageUtils.getChatIdUser(update);
         ComeToDay comeToDay = new ComeToDay();
         Optional<Visitors> visitors = visitorsService.getVisitorByChatId(numberUser);
-        Optional<Pass> pass;
-        Optional<String> classesLeft;
         if (visitors.isPresent()) {
             Visitors v = visitors.get();
             comeToDay.setChatId(v.getChatId());
+            comeToDay.setSurname(v.getSurname());
             comeToDay.setName(v.getName());
+            comeToDay.setPatronymic(v.getPatronymic());
             comeToDay.setTelephoneNum(v.getTelephoneNum());
+            comeToDay.setCurrencyDate(LocalDate.now());
             // добавляем в список (map) тех, кто придет, и вписываем в промежуточную таблицу
-
-
-            /*
-            pass = passService.getPassByPassNumber(v.);
-            classesLeft = pass.map(value -> String.format("Ждем Вас сегодня на занятиях. " + "У Вас осталось %s занятий",
-                    passService.calculateClassesLeft(value))).or(() -> Optional.of("Нет информации о Вашем абонементе. " +
-                    "Обратитесь к администратору")); */
+            try {
+                comeToDayRepository.createComeToDay(comeToDay);
+            } catch (DataAccessException e) {
+                log.error(String.format("Ошибка при записи в БД: %s", e));
+                SendMessageUtils.sendEditMessage(update,"Нет о Вас информации в БД. Обратитесь к администратору",
+                        MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
+            }
         } else {
-            classesLeft = Optional.of("Нет о Вас информации. Обратитесь к администратору");
+            SendMessageUtils.sendEditMessage(update,"Нет о Вас информации в БД. Обратитесь к администратору",
+                    MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
         }
         return SendMessageUtils.sendEditMessage(update,
                 "Ждем Вас на занятиях. Хорошего дня",

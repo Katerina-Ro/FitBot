@@ -16,7 +16,6 @@ import telegramBot.service.commandBot.receiver.BotCommandSendMessage;
 import telegramBot.service.commandBot.receiver.utils.FindingDataUtil;
 import telegramBot.service.commandBot.receiver.utils.SendMessageUtils;
 
-import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
@@ -48,7 +47,7 @@ public class BotConnect extends TelegramLongPollingBot {
     @Autowired
     public BotConnect(BotCommandSendMessage botCommandSendMessage,
                       BotCommandCallBackQueryEdit botCommandCallbackQueryEdit,
-                      BotCommandCallBackQuery botCommandCallBackQuery) throws MalformedURLException {
+                      BotCommandCallBackQuery botCommandCallBackQuery) {
         this.botCommandSendMessage = botCommandSendMessage;
         this.botCommandCallbackQueryEdit = botCommandCallbackQueryEdit;
         this.botCommandCallBackQuery = botCommandCallBackQuery;
