@@ -1,5 +1,7 @@
 package com.example.demo.util;
 
+import java.util.regex.Pattern;
+
 /**
  * Вспомогательный класс для проверки введенных пользователем строк на пустоту, null, символы
  */
@@ -19,6 +21,6 @@ public class CheckingInputLinesUtil {
      * @return возвращаеся true, если строка состоит из букв английского или русского алфавита
      */
     public static boolean isLetters(String line) {
-        return line.matches(PatternTemplate.STRING_LINE.getTemplate());
+        return Pattern.compile(PatternTemplate.STRING_LINE.getTemplate()).matcher(line.trim()).matches();
     }
 }

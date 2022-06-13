@@ -17,18 +17,21 @@ import java.util.regex.Pattern;
 
 public class FillingFieldsHelper {
     private final PassService passService;
-    Pattern p = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
-    Pattern firstNumber = Pattern.compile("0?|[123]");
-    Pattern secondNumberIfNoThree = Pattern.compile("[1-9]?");
-    Pattern secondNumberIfThree = Pattern.compile("[01]?");
-    Pattern thirdOrSixthSymbol = Pattern.compile("\\.");
-    Pattern fourthNumber = Pattern.compile("[01]");
-    Pattern fifthNumberIfFourthIsZero = Pattern.compile("[1-9]");
-    Pattern fifthNumberIfFourthIsOne = Pattern.compile("[0-2]");
-    Pattern seventhNumber = Pattern.compile("2");
-    Pattern eightNumber = Pattern.compile("0");
-    Pattern ninthNumber = Pattern.compile("[2-9]");
-    Pattern tenthNumber = Pattern.compile("[0-9]");
+    private static final Pattern integerNum = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
+    private static final Pattern letters = Pattern.compile("[а-яА-Я]");
+    private static final Pattern firstNumberInPhone = Pattern.compile("7");
+    private static final Pattern secondNumberInPhone = Pattern.compile("9");
+    private static final Pattern firstNumber = Pattern.compile("0?|[123]");
+    private static final Pattern secondNumberIfNoThree = Pattern.compile("[1-9]?");
+    private static final Pattern secondNumberIfThree = Pattern.compile("[01]?");
+    private static final Pattern thirdOrSixthSymbol = Pattern.compile("\\.");
+    private static final Pattern fourthNumber = Pattern.compile("[01]");
+    private static final Pattern fifthNumberIfFourthIsZero = Pattern.compile("[1-9]");
+    private static final Pattern fifthNumberIfFourthIsOne = Pattern.compile("[0-2]");
+    private static final Pattern seventhNumber = Pattern.compile("2");
+    private static final Pattern eightNumber = Pattern.compile("0");
+    private static final Pattern ninthNumber = Pattern.compile("[2-9]");
+    private static final Pattern tenthNumber = Pattern.compile("[0-9]");
 
     public FillingFieldsHelper() {
         NamedParameterJdbcTemplate jdbcTemplate = new DBConfig().namedParameterJdbcTemplate();
@@ -46,7 +49,27 @@ public class FillingFieldsHelper {
         return passService.getListPass(phoneNumber);
     }
 
-    public void correctInputDateLine(TextField dateInput) {
+    public static void correctInputPhoneLine(TextField newPhoneNumberValue) {
+        int maxCharacters = 11;
+        newPhoneNumberValue.textProperty().addListener((observable10, oldValue10, newValue10) -> {
+            String newPhoneNumberValueArray = newPhoneNumberValue.getText();
+            if (newValue10.length() > maxCharacters) newPhoneNumberValue.deleteNextChar();
+            if (newPhoneNumberValueArray.length() == 1) {
+                newValue10 = newPhoneNumberValueArray;
+                if (!firstNumberInPhone.matcher(newValue10).matches()) newPhoneNumberValue.setText(oldValue10);
+            }
+            if (newPhoneNumberValueArray.length() == 2) {
+                newValue10 = String.valueOf(newPhoneNumberValueArray.charAt(1));
+                if (!secondNumberInPhone.matcher(newValue10).matches()) newPhoneNumberValue.setText(oldValue10);
+            }
+            if (newPhoneNumberValueArray.length() > 2 && newPhoneNumberValueArray.length() <= 10) {
+                newValue10 = String.valueOf(newPhoneNumberValueArray.charAt(newPhoneNumberValueArray.length() - 1));
+                if (!integerNum.matcher(newValue10).matches()) newPhoneNumberValue.setText(oldValue10);
+            }
+        });
+    }
+
+    public static void correctInputDateLine(TextField dateInput) {
         dateInput.textProperty().addListener((observable, oldValue, newValue) -> {
             String dateInputArray = dateInput.getText();
             if (dateInputArray.length() == 1) {
@@ -100,15 +123,16 @@ public class FillingFieldsHelper {
         });
     }
 
-    public void correctInputIntegerLine(TextField number) {
+    public static void correctInputIntegerLine(TextField number) {
         number.textProperty().addListener((observable11, oldValue11, newValue11) -> {
-            if (!p.matcher(newValue11).matches()) number.setText(oldValue11);
+            if (!integerNum.matcher(newValue11).matches()) number.setText(oldValue11);
         });
     }
 
     public static void correctInputStringLine(TextField anyString) {
-        anyString.textProperty().addListener((observable1, oldValue1, newValue1) -> {
-            if (!CheckingInputLinesUtil.isLetters(anyString.toString())) anyString.setText(oldValue1);
+        anyString.textProperty().addListener((observable50, oldValue50, newValue50) -> {
+            System.out.println("letters.matcher(newValue1).matches() = " + letters.matcher(newValue50).matches());
+            if (!letters.matcher(newValue50).matches()) {anyString.setText(oldValue50);}
         });
     }
 

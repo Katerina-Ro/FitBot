@@ -40,6 +40,7 @@ public class CreateStudentController {
 
     @FXML
     private TextField newFirstNameValue;
+    private final StringProperty newFirstNameValueProperty = new SimpleStringProperty("");
 
     @FXML
     private TextField newNameValue;
@@ -47,6 +48,7 @@ public class CreateStudentController {
 
     @FXML
     private TextField newPatronymicValue;
+    private final StringProperty newPatronymicValueProperty = new SimpleStringProperty("");
 
     @FXML
     private TextField newPhoneNumberValue;
@@ -66,6 +68,10 @@ public class CreateStudentController {
 
     @FXML
     void initialize(Stage stageCreateStudent, Image image) {
+        FillingFieldsHelper.correctInputPhoneLine(newPhoneNumberValue);
+        FillingFieldsHelper.correctInputStringLine(newFirstNameValue);
+        FillingFieldsHelper.correctInputStringLine(newNameValue);
+        FillingFieldsHelper.correctInputStringLine(newPatronymicValue);
         createStudentButton.setDisable(true);
         //createPassButton.setOnAction(event -> openWindowCreatePass(image));
         backButton.setOnAction(event -> stageCreateStudent.close());
@@ -73,11 +79,6 @@ public class CreateStudentController {
 
     @FXML
     public void createStudent() {
-        correctInputPhoneLine();
-        FillingFieldsHelper.correctInputStringLine(newFirstNameValue);
-        FillingFieldsHelper.correctInputStringLine(newNameValue);
-        FillingFieldsHelper.correctInputStringLine(newPatronymicValue);
-
         newPhoneNumberValue.textProperty().bindBidirectional(newPhoneNumberValueProperty, new DefaultStringConverter());
         newPhoneNumberValueProperty.addListener((observable, oldValue, newValue) -> {
             if (FillingFieldsHelper.isPhoneNumber(newPhoneNumberValue.getText()) && !newNameValue.getText().isBlank()) {

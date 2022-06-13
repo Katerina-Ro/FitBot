@@ -52,11 +52,11 @@ public class ChangePassController {
 
     @FXML
     public void initialize(Stage stage, Image image) {
-        fillingFieldsHelper.correctInputDateLine(dateStartPassInput);
-        fillingFieldsHelper.correctInputDateLine(dateEndPassInput);
-        fillingFieldsHelper.correctInputDateLine(dateStartFreezeInput);
-        fillingFieldsHelper.correctInputIntegerLine(countFreezeInput);
-        fillingFieldsHelper.correctInputIntegerLine(countVisitInput);
+        FillingFieldsHelper.correctInputDateLine(dateStartPassInput);
+        FillingFieldsHelper.correctInputDateLine(dateEndPassInput);
+        FillingFieldsHelper.correctInputDateLine(dateStartFreezeInput);
+        FillingFieldsHelper.correctInputIntegerLine(countFreezeInput);
+        FillingFieldsHelper.correctInputIntegerLine(countVisitInput);
 
         if (countFreezeInput != null || countVisitInput != null || dateStartPassInput != null || dateStartFreezeInput != null
                 || dateEndPassInput != null) {
@@ -67,7 +67,7 @@ public class ChangePassController {
 
 
     private Optional<LocalDate> getDateStartPassForInputDB(TextField date) {
-        fillingFieldsHelper.correctInputDateLine(date);
+        FillingFieldsHelper.correctInputDateLine(date);
         dateStartPassInputProperty.setValue(getLocalDateFromTextField(date));
         dateStartPassInputProperty.addListener((observable13, oldValue13, newValue13) -> {
             if (fillingFieldsHelper.isDate(date)) {
@@ -83,7 +83,7 @@ public class ChangePassController {
     }
 
     private Integer getCountVisitForInputDB(TextField countVisitInput) {
-        fillingFieldsHelper.correctInputIntegerLine(countVisitInput);
+        FillingFieldsHelper.correctInputIntegerLine(countVisitInput);
         countVisitInputProperty.setValue(getIntegerFromTextField(countVisitInput));
         countVisitInputProperty.addListener((observable14, oldValue14, newValue14) -> {
             countVisitInputProperty.setValue(newValue14);
@@ -93,7 +93,7 @@ public class ChangePassController {
     }
 
     private Integer getCountFreezeForInputDB(TextField countFreeze) {
-        fillingFieldsHelper.correctInputIntegerLine(countFreeze);
+        FillingFieldsHelper.correctInputIntegerLine(countFreeze);
         countFreezeInputProperty.setValue(getIntegerFromTextField(countFreeze));
         countFreezeInputProperty.addListener((observable17, oldValue17, newValue17) -> {
             countFreezeInputProperty.setValue(newValue17);
