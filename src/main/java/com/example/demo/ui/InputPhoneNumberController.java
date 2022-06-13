@@ -117,8 +117,6 @@ public class InputPhoneNumberController {
         backButton.setOnAction(event -> stage.close());
     }
 
-
-
     private ObservableList<String> getFullNameStudent(StringProperty phoneNumber, Image image) {
         String inputPhoneNumber = String.valueOf(phoneNumber.get());
         Optional<Visitors> visitor = Optional.empty();

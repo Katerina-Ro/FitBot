@@ -13,12 +13,22 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
 public class FillingFieldsHelper {
     private final PassService passService;
     Pattern p = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
+    Pattern firstNumber = Pattern.compile("0?|[123]");
+    Pattern secondNumberIfNoThree = Pattern.compile("[1-9]?");
+    Pattern secondNumberIfThree = Pattern.compile("[01]?");
+    Pattern thirdOrSixthSymbol = Pattern.compile("\\.");
+    Pattern fourthNumber = Pattern.compile("[01]");
+    Pattern fifthNumberIfFourthIsZero = Pattern.compile("[1-9]");
+    Pattern fifthNumberIfFourthIsOne = Pattern.compile("[0-2]");
+    Pattern seventhNumber = Pattern.compile("2");
+    Pattern eightNumber = Pattern.compile("0");
+    Pattern ninthNumber = Pattern.compile("[2-9]");
+    Pattern tenthNumber = Pattern.compile("[0-9]");
 
     public FillingFieldsHelper() {
         NamedParameterJdbcTemplate jdbcTemplate = new DBConfig().namedParameterJdbcTemplate();
@@ -37,12 +47,56 @@ public class FillingFieldsHelper {
     }
 
     public void correctInputDateLine(TextField dateInput) {
-        Pattern p2=Pattern.compile("(\\d+\\.?\\d*)?");
-        Pattern pa = Pattern.compile("^(0?[1-9]|[12][0-9]|3[01])[\\/\\-\\.](0?[1-9]|1[012])[ \\/\\.\\-]/");
-        Pattern pattern = Pattern.compile("^(0?[1-9])[\\.](0?[1-9])[\\/\\.\\-]([202][0-9])$");
-        Pattern pat = Pattern.compile("^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$");
-        dateInput.textProperty().addListener((observable12, oldValue12, newValue12) -> {
-            if (!pattern.matcher(newValue12).matches()) dateInput.setText(oldValue12);
+        dateInput.textProperty().addListener((observable, oldValue, newValue) -> {
+            String dateInputArray = dateInput.getText();
+            if (dateInputArray.length() == 1) {
+                newValue = dateInputArray;
+                if (!firstNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+            }
+            if (dateInputArray.length() == 2) {
+                if ("3".equals(String.valueOf(dateInputArray.charAt(0)))) {
+                    newValue = String.valueOf(dateInputArray.charAt(1));
+                    if (!secondNumberIfThree.matcher(newValue).matches()) dateInput.setText(oldValue);
+                } else {
+                    newValue = String.valueOf(dateInputArray.charAt(1));
+                    if (!secondNumberIfNoThree.matcher(newValue).matches()) dateInput.setText(oldValue);
+                }
+            }
+            if (dateInputArray.length() == 3 || dateInputArray.length() == 6) {
+                newValue = String.valueOf(dateInputArray.charAt(2));
+                if (dateInputArray.length() == 6) newValue = String.valueOf(dateInputArray.charAt(5));;
+                if (!thirdOrSixthSymbol.matcher(newValue).matches()) dateInput.setText(oldValue);
+            }
+            if (dateInputArray.length() == 4) {
+                newValue = String.valueOf(dateInputArray.charAt(3));
+                if (!fourthNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+            }
+            if (dateInputArray.length() == 5) {
+                if ("0".equals(String.valueOf(dateInputArray.charAt(3)))) {
+                    newValue = String.valueOf(dateInputArray.charAt(4));
+                    if (!fifthNumberIfFourthIsZero.matcher(newValue).matches()) dateInput.setText(oldValue);
+                } else {
+                    newValue = String.valueOf(dateInputArray.charAt(4));
+                    if (!fifthNumberIfFourthIsOne.matcher(newValue).matches()) dateInput.setText(oldValue);
+                }
+            }
+            if (dateInputArray.length() == 7) {
+                newValue = String.valueOf(dateInputArray.charAt(6));
+                if (!seventhNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+            }
+            if (dateInputArray.length() == 8) {
+                newValue = String.valueOf(dateInputArray.charAt(7));
+                if (!eightNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+            }
+            if (dateInputArray.length() == 9) {
+                newValue = String.valueOf(dateInputArray.charAt(8));
+                if (!ninthNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+            }
+            if (dateInputArray.length() == 10) {
+                newValue = String.valueOf(dateInputArray.charAt(9));
+                if (!tenthNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+            }
+            if (dateInputArray.length() > 10) dateInput.setText(oldValue);
         });
     }
 
@@ -59,8 +113,7 @@ public class FillingFieldsHelper {
     }
 
     public boolean isDate(TextField dateInput) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        return simpleDateFormat.equals(dateInput);
+        return Pattern.compile(PatternTemplate.DATE.getTemplate()).matcher(dateInput.getCharacters()).matches();
     }
 
     public static boolean isPhoneNumber(String phoneNumber) {
