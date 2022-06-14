@@ -5,7 +5,6 @@ import com.example.demo.dao.Pass;
 import com.example.demo.dao.Visitors;
 import com.example.demo.dao.repositories.IVisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
-import com.example.demo.exception.SeveralException;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.PatternTemplate;
 import javafx.beans.property.*;
@@ -118,12 +117,7 @@ public class InputPhoneNumberController {
 
     private ObservableList<String> getFullNameStudent(StringProperty phoneNumber, Image image) {
         String inputPhoneNumber = String.valueOf(phoneNumber.get());
-        Optional<Visitors> visitor = Optional.empty();
-        try {
-            visitor = visitorsRepository.findVisitorByPhoneNumber(inputPhoneNumber);
-        } catch (SeveralException e) {
-            openWindowWhichPass(String.valueOf(phoneNumber), image);
-        }
+        Optional<Visitors> visitor = visitorsRepository.findVisitorByPhoneNumber(inputPhoneNumber);
         ObservableList<String> fullNameFromDB = FXCollections.emptyObservableList();
         StringBuilder sb = new StringBuilder();
         if (visitor.isPresent()) {
@@ -173,7 +167,7 @@ public class InputPhoneNumberController {
         });
     }
 
-    private void fillStageIfPassObservableListNotEmpty () {
+    private void fillStageIfPassObservableListNotEmpty() {
         for (Pass p : passObservableList) {
             // Заполняем поле "Номер абонемента"
             passIdValueProperty.setValue(p.getNumPass());

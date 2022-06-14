@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.observableModels;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;

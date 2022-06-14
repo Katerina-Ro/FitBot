@@ -2,6 +2,8 @@ package com.example.demo.util;
 
 import com.example.demo.config.DBConfig;
 import com.example.demo.dao.Pass;
+import com.example.demo.dao.Visitors;
+import com.example.demo.dao.Visits;
 import com.example.demo.dao.repositories.impl.PassRepository;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitsRepository;
@@ -13,10 +15,18 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class FillingFieldsHelper {
     private final PassService passService;
+    private final VisitorsRepository visitorsRepository;
+    private final VisitsRepository visitsRepository;
+    private final PassRepository passRepository;
     private static final Pattern integerNum = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
     private static final Pattern letters = Pattern.compile("^[а-яА-Я]+$");
     private static final Pattern firstNumberInPhone = Pattern.compile("7");
@@ -35,18 +45,96 @@ public class FillingFieldsHelper {
 
     public FillingFieldsHelper() {
         NamedParameterJdbcTemplate jdbcTemplate = new DBConfig().namedParameterJdbcTemplate();
-        VisitorsRepository visitorsRepository = new VisitorsRepository(jdbcTemplate);
-        PassRepository passRepository = new PassRepository(jdbcTemplate);
-        VisitsService visitsService = new VisitsService(new VisitsRepository(jdbcTemplate));
+        this.visitorsRepository = new VisitorsRepository(jdbcTemplate);
+        this.passRepository = new PassRepository(jdbcTemplate);
+        this.visitsRepository = new VisitsRepository(jdbcTemplate);
+        VisitsService visitsService = new VisitsService(this.visitsRepository);
         VisitsRepository visitsRepository = new VisitsRepository(jdbcTemplate);
         this.passService = new PassService(passRepository, visitsService,
-                new VisitorsService(visitorsRepository, passRepository, visitsService),
+                new VisitorsService(this.visitorsRepository, this.passRepository, visitsService),
                 visitsRepository);
     }
 
     public ObservableList<Pass> getTablePass(StringProperty inputPhoneNumber){
         String phoneNumber = String.valueOf(inputPhoneNumber.get());
         return passService.getListPass(phoneNumber);
+    }
+
+    /**
+     * Получение информации об актуальном абонементе
+     * @return список абонементов. По логике кода заложено, что может быть несколько активных абонементов.
+     * Но, по идее (в реальности), должен быть только один
+     */
+    public Optional<List<Pass>> findVisitorByPhoneNumber(String phoneNumber) {
+        Optional<Visitors> visitor = visitorsRepository.findVisitorByPhoneNumber(phoneNumber);
+        Optional<List<Pass>> passListFromDB;
+        if (visitor.isPresent()) {
+            passListFromDB = passRepository.findPassByPhone(phoneNumber);
+            if (passListFromDB.isPresent()) {
+                List<Pass> listActualPass = new ArrayList<>();
+                for (Pass p: passListFromDB.get()) {
+                    if (haveDayInPassCalculate(p)) {
+                        listActualPass.add(p);
+                        return Optional.of(listActualPass);
+                    }
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Проверка, есть ли еще день в абонементе у конкретного студента
+     * @param pass - информация об абонементе
+     * @return true, если есть как минимум 1 занятие
+     */
+    public boolean haveDayInPassCalculate(Pass pass) {
+        Optional<String> countDayInPass = calculateClassesLeft(pass);
+        return countDayInPass.filter(s -> Integer.parseInt(s) > 0).isPresent();
+    }
+
+    /**
+     * Расчет оставшегося количества занятий у конкретного студента
+     * @param pass - информация об абонементе
+     */
+    public Optional<String> calculateClassesLeft(Pass pass) {
+        String classesLeft = null;
+        int cumulativeTotal = 0;
+        if (betweenDate(pass)) {
+            Optional<List<Visits>> listVisits = visitsRepository.findAllVisitsByPassId(pass.getNumPass());
+            if (listVisits.isPresent()) {
+                for (Visits v: listVisits.get()) {
+                    int countVisitInOneDay = v.getCountVisit();
+                    cumulativeTotal += countVisitInOneDay;
+                }
+            }
+            classesLeft = String.valueOf(pass.getVisitLimit() - cumulativeTotal);
+        }
+        return Optional.ofNullable(classesLeft);
+    }
+
+    /**
+     * Определение, находится ли текущая дата в промежутке между началом и окончанием абонемента
+     * @param pass - данные абонемента
+     * @return true, если находится
+     */
+    public boolean betweenDate(Pass pass) {
+        boolean betweenDate = false;
+        LocalDate currencyDay = LocalDate.now(ZoneId.of("GMT+03:00"));
+        LocalDate dateEnd = pass.getDateEnd();
+        LocalDate dateStart = pass.getDateStart();
+
+        // могут быть true и false
+        boolean isEqualDateStart = currencyDay.isEqual(dateStart);
+
+        // оба должны быть true
+        boolean isBeforeDateEnd = currencyDay.isBefore(dateEnd);
+        boolean isAfterDateStart = currencyDay.isAfter(dateStart);
+
+        if ((isEqualDateStart || isAfterDateStart) && (isBeforeDateEnd) ) {
+            betweenDate = true;
+        }
+        return betweenDate;
     }
 
     public static void correctInputPhoneLine(TextField newPhoneNumberValue) {
@@ -152,4 +240,6 @@ public class FillingFieldsHelper {
                 && phoneNumber.matches(PatternTemplate.INTEGER_LINE.getTemplate())
                 && Pattern.compile(PatternTemplate.FIRST_IN_PHONE.getTemplate()).matcher(String.valueOf(phoneNumber.charAt(0))).matches();
     }
+
+
 }

@@ -2,7 +2,6 @@ package com.example.demo.dao.repositories.impl;
 
 import com.example.demo.dao.Visitors;
 import com.example.demo.dao.repositories.IVisitorsRepository;
-import com.example.demo.exception.SeveralException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
@@ -50,13 +49,13 @@ public class VisitorsRepository implements IVisitorsRepository {
     private String deleteVisitor;
 
     @Override
-    public Optional<Visitors> findVisitorByPhoneNumber(String phoneNumber) throws SeveralException {
+    public Optional<Visitors> findVisitorByPhoneNumber(String phoneNumber) {
         List<Visitors> visitor = jdbcTemplate.query(findVisitorByPhoneNumber, Map.of("telephoneNum", phoneNumber),
                 new VisitorsRowMapper());
-        if (visitor.size() != 1 && !visitor.isEmpty()) {
+        /*if (visitor.size() != 1 && !visitor.isEmpty()) {
             throw new SeveralException(String.format("По phoneNumber = %s в базе содержится 2 chatId: %s ",
                     phoneNumber, visitor));
-        }
+        } */
         if (visitor.isEmpty()) {
             return Optional.empty();
         }

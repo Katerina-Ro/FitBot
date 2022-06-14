@@ -48,7 +48,7 @@ public class VisitorsService {
     /**
      * Проверка, есть ли номер телефона в базе
      */
-    public boolean existPhoneNumber(String phoneNumber) throws SeveralException {
+    public boolean existPhoneNumber(String phoneNumber) {
         Optional<Visitors> visitor = visitorsRepository.findVisitorByPhoneNumber(phoneNumber);
         return visitor.isPresent();
     }
@@ -116,7 +116,7 @@ public class VisitorsService {
      * Получить данные студента по номеру телефона
      * @param phoneNumber - номер телефона студента
      */
-    public Optional<Visitors> getVisitorByPhone(String phoneNumber) throws SeveralException {
+    public Optional<Visitors> getVisitorByPhone(String phoneNumber) {
         return visitorsRepository.findVisitorByPhoneNumber(phoneNumber.trim());
     }
 

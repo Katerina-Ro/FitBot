@@ -3,7 +3,6 @@ package com.example.demo.ui;
 import com.example.demo.config.DBConfig;
 import com.example.demo.dao.Visitors;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
-import com.example.demo.exception.SeveralException;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.SimpleStringProperty;
@@ -104,16 +103,12 @@ public class CreateStudentController {
         visitor.setName(nameForDB);
         visitor.setSurname(firstNameForDB);
         visitor.setPatronymic(patronymicForDB);
-        boolean isExist;
-        try {
-            isExist = visitorsRepository.findVisitorByPhoneNumber(phoneNumberForDB).isPresent();
-        } catch (SeveralException e) {
-            isExist = true;
-        }
+        boolean isExist = visitorsRepository.findVisitorByPhoneNumber(phoneNumberForDB).isPresent();
         boolean isSuccess = false;
         if (!isExist) {
             isSuccess = visitorsRepository.create(visitor);
         } else {
+            System.out.println("newPhoneNumberValue = " + newPhoneNumberValue);
             openWindowSeveral(image,newPhoneNumberValue);
         }
         if (isSuccess) {
