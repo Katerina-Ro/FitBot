@@ -2,6 +2,7 @@ package com.example.demo.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -19,7 +20,7 @@ public class SeveralController {
     }
 
     @FXML
-    void initialize(Stage stageSeveral, Image image, String phoneNumber) {
+    void initialize(Stage stageSeveral, Image image, TextField phoneNumber) {
         getInfoStudentButton.setOnAction(event -> actionsWithStudentController.openWindowGetInfoStudent(image, phoneNumber));
         backButton.setOnAction(event -> stageSeveral.close());
     }

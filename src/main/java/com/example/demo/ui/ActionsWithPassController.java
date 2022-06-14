@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -37,7 +38,7 @@ public class ActionsWithPassController {
         createPassButton.setOnAction(event -> openWindowCreatePass(image, null));
         changePassButton.setOnAction(event -> openWindowChangePass(image));
         deletePassButton.setOnAction(event -> openWindowDeletePass(image));
-        getInfoPassButton.setOnAction(event -> openWindowGetInfoPass(image));
+        getInfoPassButton.setOnAction(event -> openWindowGetInfoPass(image, null));
         freezePassButton.setOnAction(actionEvent -> openWindowFreezePass(image));
         unFreezePassButton.setOnAction(event -> openWindowUnFreezePass(image));
         backToMainMenuButton.setOnAction(event -> stageActionWithPass.close());
@@ -149,7 +150,7 @@ public class ActionsWithPassController {
     }
 
     @FXML
-    public void openWindowGetInfoPass(Image image) {
+    public void openWindowGetInfoPass(Image image, TextField phoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/inputPhoneNumber-view.fxml"));
         Parent root1;
         try {
@@ -161,7 +162,7 @@ public class ActionsWithPassController {
             stageGetInfoPass.setScene(new Scene(root1, 700, 535));
 
             InputPhoneNumberController inputPhoneNumberController = fxmlLoader.getController();
-            inputPhoneNumberController.initialize(stageGetInfoPass, image);
+            inputPhoneNumberController.initialize(stageGetInfoPass, image, phoneNumber);
 
             stageGetInfoPass.show();
         } catch (IOException e) {

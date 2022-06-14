@@ -114,7 +114,7 @@ public class CreateStudentController {
         if (!isExist) {
             isSuccess = visitorsRepository.create(visitor);
         } else {
-            openWindowSeveral(image,phoneNumberForDB);
+            openWindowSeveral(image,newPhoneNumberValue);
         }
         if (isSuccess) {
             String message = "Карточка студента успешно внесена в базу данных";
@@ -146,7 +146,7 @@ public class CreateStudentController {
     }
 
     @FXML
-    public void openWindowSeveral(Image image, String phoneNumber) {
+    public void openWindowSeveral(Image image, TextField phoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/several-view.fxml"));
         Parent root1;
         try {

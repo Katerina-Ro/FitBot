@@ -82,7 +82,6 @@ public class InputPhoneNumberController {
     private Label visitLimitValue;
     private final IntegerProperty visitLimitValueProperty = new SimpleIntegerProperty();
 
-
     @FXML
     private Button backButton;
 
@@ -96,7 +95,7 @@ public class InputPhoneNumberController {
     }
 
     @FXML
-    public void initialize(Stage stage, Image image) {
+    public void initialize(Stage stage, Image image, TextField phoneNumber) {
         // Введенный номер телефона
         correctInputPhoneLine();
         inputPhoneNumber.textProperty().bindBidirectional(phoneNumberProperty, new DefaultStringConverter());

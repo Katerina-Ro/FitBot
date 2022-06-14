@@ -60,7 +60,7 @@ public class ChangeStudentController {
     private Label visitLimitColumn;
 
     @FXML
-    void initialize(Stage stageChangeStudent, Image image) {
+    void initialize(Stage stageChangeStudent, Image image, TextField phoneNumber) {
 
         backButton.setOnAction(event -> stageChangeStudent.close());
     }
