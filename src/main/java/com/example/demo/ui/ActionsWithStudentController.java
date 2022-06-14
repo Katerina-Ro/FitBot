@@ -30,7 +30,7 @@ public class ActionsWithStudentController {
     void initialize(Stage stageActionsWithStudent, Image image) {
         changeStudentButton.setOnAction(event -> openWindowChangeStudent(image));
         createStudentButton.setOnAction(event -> openWindowCreateStudent(image));
-        getInfoStudentButton.setOnAction(event -> openWindowGetInfoStudent(image));
+        getInfoStudentButton.setOnAction(event -> openWindowGetInfoStudent(image, null));
         deleteStudentButton.setOnAction(event -> openWindowDeleteStudent(image));
         backToMainMenuButton.setOnAction(event -> stageActionsWithStudent.close());
     }
@@ -57,7 +57,7 @@ public class ActionsWithStudentController {
     }
 
     @FXML
-    public void openWindowGetInfoStudent(Image image) {
+    public void openWindowGetInfoStudent(Image image, String phoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/getInfoStudent-view.fxml"));
         Parent root1;
         try {

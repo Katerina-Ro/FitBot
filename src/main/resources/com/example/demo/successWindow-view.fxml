@@ -10,7 +10,7 @@
    <children>
       <AnchorPane layoutY="58.0" prefHeight="74.0" prefWidth="331.0" style="-fx-background-color: #fafafa;">
          <children>
-            <Button fx:id="backToMainMenuButton" layoutX="137.0" layoutY="19.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="169.0" text="Назад в главное меню">
+            <Button fx:id="backToMainMenuButton" layoutX="214.0" layoutY="19.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="93.0" text="Назад">
                <font>
                   <Font size="14.0" />
                </font>

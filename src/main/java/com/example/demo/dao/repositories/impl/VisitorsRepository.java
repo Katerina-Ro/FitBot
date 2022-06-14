@@ -38,9 +38,9 @@ public class VisitorsRepository implements IVisitorsRepository {
             "WHERE pass_schema.visitors.tel_num = :telephoneNum")
     private String findChatIdByPhoneNumber;
 
-    @Value("insert into pass_schema.visitors (surname, name, patronumic, tel_num, chat_id) " +
-            "values (:surName, :name, :patronymic, :phoneNumber, :chatId)")
-    private String create;
+    //@Value("")
+    private String create = "insert into pass_schema.visitors (surname, name, patronumic, tel_num, chat_id) " +
+            "values (:surName, :name, :patronymic, :phoneNumber, :chatId)";
 
     @Value("UPDATE pass_schema.visitors SET chat_id = :chatId " +
             "WHERE pass_schema.visitors.tel_num = :phoneNumber")
@@ -152,18 +152,10 @@ public class VisitorsRepository implements IVisitorsRepository {
         String surName = visitors.getSurname();
         String patronymic = visitors.getPatronymic();
         paramMap.put("phoneNumber", phoneNumber);
-        if (chatId != null) {
-            paramMap.put("chatId", chatId);
-        }
-        if (name != null) {
-            paramMap.put("name", name);
-        }
-        if (surName != null) {
-            paramMap.put("surName", surName);
-        }
-        if (patronymic != null) {
-            paramMap.put("patronymic", patronymic);
-        }
+        paramMap.put("chatId", chatId);
+        paramMap.put("name", name);
+        paramMap.put("surName", surName);
+        paramMap.put("patronymic", patronymic);
         return paramMap;
     }
 }

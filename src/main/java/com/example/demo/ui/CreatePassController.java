@@ -60,6 +60,6 @@ public class CreatePassController {
 
     @FXML
     void initialize(Stage stageCreatePass, Image image, String phoneNumber) {
-
+        //createPhoneNumber = phoneNumber;
     }
 }

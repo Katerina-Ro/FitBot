@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class FillingFieldsHelper {
     private final PassService passService;
     private static final Pattern integerNum = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
-    private static final Pattern letters = Pattern.compile("[а-яА-Я]");
+    private static final Pattern letters = Pattern.compile("^[а-яА-Я]+$");
     private static final Pattern firstNumberInPhone = Pattern.compile("7");
     private static final Pattern secondNumberInPhone = Pattern.compile("9");
     private static final Pattern firstNumber = Pattern.compile("0?|[123]");
@@ -131,8 +131,15 @@ public class FillingFieldsHelper {
 
     public static void correctInputStringLine(TextField anyString) {
         anyString.textProperty().addListener((observable50, oldValue50, newValue50) -> {
-            System.out.println("letters.matcher(newValue1).matches() = " + letters.matcher(newValue50).matches());
-            if (!letters.matcher(newValue50).matches()) {anyString.setText(oldValue50);}
+            String anyStringArray = anyString.getText();
+            if (anyStringArray.length() == 1) {
+                newValue50 = anyStringArray;
+                if (!letters.matcher(newValue50).matches()) anyString.setText(oldValue50);
+            }
+            if (anyStringArray.length() > 1) {
+                newValue50 = String.valueOf(anyStringArray.charAt(anyStringArray.length() - 1));
+                if (!letters.matcher(newValue50).matches()) anyString.setText(oldValue50);
+            }
         });
     }
 
@@ -141,8 +148,8 @@ public class FillingFieldsHelper {
     }
 
     public static boolean isPhoneNumber(String phoneNumber) {
-        return phoneNumber != null && !phoneNumber.isBlank() && phoneNumber.length() == 11
+        return !phoneNumber.isBlank() && phoneNumber.length() == 11
                 && phoneNumber.matches(PatternTemplate.INTEGER_LINE.getTemplate())
-                && phoneNumber.matches(PatternTemplate.FIRST_IN_PHONE.getTemplate());
+                && Pattern.compile(PatternTemplate.FIRST_IN_PHONE.getTemplate()).matcher(String.valueOf(phoneNumber.charAt(0))).matches();
     }
 }

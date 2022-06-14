@@ -3,26 +3,26 @@ package com.example.demo.ui;
 import com.example.demo.config.DBConfig;
 import com.example.demo.dao.Visitors;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
+import com.example.demo.exception.SeveralException;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
-import com.example.demo.util.PatternTemplate;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.util.converter.DefaultStringConverter;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.util.regex.Pattern;
+import java.io.IOException;
 
 public class CreateStudentController {
-    private ActionsWithPassController actionsWithPassController;
     private final VisitorsRepository visitorsRepository;
-    Pattern p = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
+
     @FXML
     private Button backButton;
 
@@ -31,12 +31,6 @@ public class CreateStudentController {
 
     @FXML
     private Button createStudentButton;
-
-    @FXML
-    private Label firstNameLabel;
-
-    @FXML
-    private Label nameLabel;
 
     @FXML
     private TextField newFirstNameValue;
@@ -54,16 +48,9 @@ public class CreateStudentController {
     private TextField newPhoneNumberValue;
     private final StringProperty newPhoneNumberValueProperty = new SimpleStringProperty("");
 
-    @FXML
-    private Label patronymicLabel;
-
-    @FXML
-    private Label phoneNumberLabel;
-
     public CreateStudentController() {
         NamedParameterJdbcTemplate jdbcTemplate = new DBConfig().namedParameterJdbcTemplate();
         this.visitorsRepository = new VisitorsRepository(jdbcTemplate);
-        this.actionsWithPassController = new ActionsWithPassController();
     }
 
     @FXML
@@ -72,18 +59,35 @@ public class CreateStudentController {
         FillingFieldsHelper.correctInputStringLine(newFirstNameValue);
         FillingFieldsHelper.correctInputStringLine(newNameValue);
         FillingFieldsHelper.correctInputStringLine(newPatronymicValue);
-        createStudentButton.setDisable(true);
-        //createPassButton.setOnAction(event -> openWindowCreatePass(image));
+        observableFields(image);
         backButton.setOnAction(event -> stageCreateStudent.close());
     }
 
     @FXML
-    public void createStudent() {
-        newPhoneNumberValue.textProperty().bindBidirectional(newPhoneNumberValueProperty, new DefaultStringConverter());
-        newPhoneNumberValueProperty.addListener((observable, oldValue, newValue) -> {
-            if (FillingFieldsHelper.isPhoneNumber(newPhoneNumberValue.getText()) && !newNameValue.getText().isBlank()) {
-                createStudentButton.setDisable(false);
-
+    public void observableFields(Image image) {
+        createStudentButton.setDisable(true);
+        createPassButton.setDisable(true);
+        newPhoneNumberValue.textProperty().addListener((observable, oldValue, newValue) -> {
+            String newPhoneNumberValueArray = newPhoneNumberValue.getText();
+            if (newPhoneNumberValueArray.length() == 11) {
+                if (FillingFieldsHelper.isPhoneNumber(newPhoneNumberValueArray)) {
+                    newNameValue.textProperty().addListener((observable1, oldValue1, newValue1) -> {
+                        String newNameValueArray = newNameValue.getText();
+                        if (newNameValueArray.length() > 0) {
+                            if (!newNameValueArray.isBlank()) {
+                                createStudentButton.setDisable(false);
+                                createStudentButton.setOnAction(event -> createStudentInDB(image));
+                            }
+                        } else {
+                            createStudentButton.setDisable(true);
+                        }
+                    });
+                   createPassButton.setDisable(false);
+                   createPassButton.setOnAction(event -> openWindowCreatePass(image, newPhoneNumberValueArray));
+                }
+            } else {
+                createStudentButton.setDisable(true);
+                createPassButton.setDisable(true);
             }
         });
     }
@@ -98,14 +102,20 @@ public class CreateStudentController {
         Visitors visitor = new Visitors();
         visitor.setTelephoneNum(phoneNumberForDB);
         visitor.setName(nameForDB);
-        if (firstNameForDB != null) {
-            visitor.setSurname(firstNameForDB);
+        visitor.setSurname(firstNameForDB);
+        visitor.setPatronymic(patronymicForDB);
+        boolean isExist;
+        try {
+            isExist = visitorsRepository.findVisitorByPhoneNumber(phoneNumberForDB).isPresent();
+        } catch (SeveralException e) {
+            isExist = true;
         }
-        if (patronymicForDB != null) {
-            visitor.setPatronymic(patronymicForDB);
+        boolean isSuccess = false;
+        if (!isExist) {
+            isSuccess = visitorsRepository.create(visitor);
+        } else {
+            openWindowSeveral(image,phoneNumberForDB);
         }
-        boolean isSuccess = visitorsRepository.create(visitor);
-
         if (isSuccess) {
             String message = "Карточка студента успешно внесена в базу данных";
             new GetCommonWindowHelper().openWindowSuccess(image, message);
@@ -116,14 +126,43 @@ public class CreateStudentController {
 
     @FXML
     public void openWindowCreatePass(Image image, String phoneNumber) {
-        actionsWithPassController.openWindowCreatePass(image, phoneNumber);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/createPass-view.fxml"));
+        Parent root1;
+        try {
+            root1 = fxmlLoader.load();
+            Stage stageCreatePassWindow = new Stage();
+            stageCreatePassWindow.setResizable(false);
+            stageCreatePassWindow.getIcons().add(image);
+            stageCreatePassWindow.setTitle("Внесение абонемента в базу данных");
+            stageCreatePassWindow.setScene(new Scene(root1, 700, 535));
+
+            CreatePassController createPassController = fxmlLoader.getController();
+            createPassController.initialize(stageCreatePassWindow, image, phoneNumber);
+
+            stageCreatePassWindow.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void correctInputPhoneLine() {
-        int maxCharacters = 11;
-        newPhoneNumberValue.textProperty().addListener((observable10, oldValue10, newValue10) -> {
-            if (newValue10.length() > maxCharacters) newPhoneNumberValue.deleteNextChar();
-            if (!p.matcher(newValue10).matches()) newPhoneNumberValue.setText(oldValue10);
-        });
+    @FXML
+    public void openWindowSeveral(Image image, String phoneNumber) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/several-view.fxml"));
+        Parent root1;
+        try {
+            root1 = fxmlLoader.load();
+            Stage stageSeveralWindow = new Stage();
+            stageSeveralWindow.setResizable(false);
+            stageSeveralWindow.getIcons().add(image);
+            stageSeveralWindow.setTitle("Карточка студента существует в базе данных");
+            stageSeveralWindow.setScene(new Scene(root1, 374, 133));
+
+            SeveralController severalController = fxmlLoader.getController();
+            severalController.initialize(stageSeveralWindow, image, phoneNumber);
+
+            stageSeveralWindow.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

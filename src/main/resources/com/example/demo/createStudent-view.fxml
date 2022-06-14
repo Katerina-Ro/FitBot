@@ -83,7 +83,7 @@
                         <Insets left="15.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="newPhoneNumberValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="100.0" promptText="79502228899" GridPane.columnIndex="1">
+                  <TextField fx:id="newPhoneNumberValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="102.0" promptText="79502228899" GridPane.columnIndex="1">
                      <font>
                         <Font size="14.0" />
                      </font>
