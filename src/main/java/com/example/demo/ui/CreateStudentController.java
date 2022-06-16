@@ -108,7 +108,6 @@ public class CreateStudentController {
         if (!isExist) {
             isSuccess = visitorsRepository.create(visitor);
         } else {
-            System.out.println("newPhoneNumberValue = " + newPhoneNumberValue);
             openWindowSeveral(image,newPhoneNumberValue);
         }
         if (isSuccess) {

@@ -45,7 +45,6 @@ public class PassService {
     public ObservableList<Pass> getListPass(String phoneNumber){
         if (phoneNumber != null) {
             Optional<List<Pass>> listPass = passRepository.findPassByPhone(phoneNumber);
-            boolean l = listPass.isEmpty();
             if (listPass.isPresent() && !listPass.get().isEmpty()) {
                 if (listPass.get().size() == 1) {
                     return  FXCollections.observableArrayList(listPass.get());

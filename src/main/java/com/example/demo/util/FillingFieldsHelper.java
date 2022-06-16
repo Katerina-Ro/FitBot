@@ -11,6 +11,7 @@ import com.example.demo.modelService.PassService;
 import com.example.demo.modelService.VisitorsService;
 import com.example.demo.modelService.VisitsService;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -34,6 +35,7 @@ public class FillingFieldsHelper {
     private static final Pattern firstNumber = Pattern.compile("0?|[123]");
     private static final Pattern secondNumberIfNoThree = Pattern.compile("[1-9]?");
     private static final Pattern secondNumberIfThree = Pattern.compile("[01]?");
+    private static final Pattern FIRST_TWO_SYMBOL_IN_PHONE_NUMBER = Pattern.compile("79");
     private static final Pattern thirdOrSixthSymbol = Pattern.compile("\\.");
     private static final Pattern fourthNumber = Pattern.compile("[01]");
     private static final Pattern fifthNumberIfFourthIsZero = Pattern.compile("[1-9]");
@@ -58,6 +60,15 @@ public class FillingFieldsHelper {
     public ObservableList<Pass> getTablePass(StringProperty inputPhoneNumber){
         String phoneNumber = String.valueOf(inputPhoneNumber.get());
         return passService.getListPass(phoneNumber);
+    }
+
+    public ObservableList<Visitors> getVisitorsObservableList(StringProperty inputPhoneNumber) {
+        String phoneNumber = String.valueOf(inputPhoneNumber.get());
+        if (phoneNumber != null) {
+            Optional<Visitors> visitor = visitorsRepository.findVisitorByPhoneNumber(phoneNumber);
+            return visitor.map(FXCollections::observableArrayList).orElseGet(FXCollections::emptyObservableList);
+        }
+        return FXCollections.emptyObservableList();
     }
 
     /**
@@ -241,5 +252,7 @@ public class FillingFieldsHelper {
                 && Pattern.compile(PatternTemplate.FIRST_IN_PHONE.getTemplate()).matcher(String.valueOf(phoneNumber.charAt(0))).matches();
     }
 
-
+    private static boolean is79FirstTwoSymbol(String substringPhone) {
+        return FIRST_TWO_SYMBOL_IN_PHONE_NUMBER.matcher(substringPhone).matches();
+    }
 }
