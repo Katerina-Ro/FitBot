@@ -37,13 +37,11 @@ public class VisitorsRepository implements IVisitorsRepository {
             "WHERE pass_schema.visitors.tel_num = :telephoneNum")
     private String findChatIdByPhoneNumber;
 
-    //@Value("")
     private String create = "insert into pass_schema.visitors (surname, name, patronumic, tel_num, chat_id) " +
             "values (:surName, :name, :patronymic, :phoneNumber, :chatId)";
 
-    @Value("UPDATE pass_schema.visitors SET chat_id = :chatId " +
-            "WHERE pass_schema.visitors.tel_num = :phoneNumber")
-    private String updateByPhoneNumber;
+    private String updateByPhoneNumber = "UPDATE pass_schema.visitors SET chat_id = :chatId " +
+            "WHERE pass_schema.visitors.tel_num = :phoneNumber";
 
     @Value("delete from pass_schema.visitors where tel_num = :phoneNumber")
     private String deleteVisitor;

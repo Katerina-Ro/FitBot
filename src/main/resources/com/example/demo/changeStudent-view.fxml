@@ -29,7 +29,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="phoneNumber" prefHeight="40.0" prefWidth="151.0" text="Номер телефона" GridPane.rowIndex="1">
+                  <Label fx:id="phoneNumberLabel" prefHeight="40.0" prefWidth="151.0" text="Номер телефона" GridPane.rowIndex="1">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -37,7 +37,7 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="dateStartColumn" prefHeight="40.0" prefWidth="151.0" text="Фамилия" GridPane.rowIndex="2">
+                  <Label fx:id="surNameLabel" prefHeight="40.0" prefWidth="151.0" text="Фамилия" GridPane.rowIndex="2">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -45,7 +45,7 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="dateEndColumn" prefHeight="40.0" prefWidth="151.0" text="Отчество" GridPane.rowIndex="4">
+                  <Label fx:id="patronymicLabel" prefHeight="40.0" prefWidth="151.0" text="Отчество" GridPane.rowIndex="4">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -53,7 +53,7 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="visitLimitColumn" prefHeight="40.0" prefWidth="151.0" text="Имя" GridPane.rowIndex="3">
+                  <Label fx:id="nameLabel" prefHeight="40.0" prefWidth="151.0" text="Имя" GridPane.rowIndex="3">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -61,15 +61,7 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="passIdValue" prefHeight="40.0" prefWidth="146.0" GridPane.columnIndex="1">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <GridPane.margin>
-                        <Insets left="15.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label fx:id="phoneNumberValueDB" prefHeight="40.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Label fx:id="phoneNumberValueDB" prefHeight="40.0" prefWidth="110.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -125,7 +117,7 @@
                         <Insets left="15.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Label fx:id="fullNameValue1" prefHeight="40.0" prefWidth="126.0" text="Новые данные" textAlignment="CENTER" GridPane.columnIndex="2">
+                  <Label fx:id="newDataLabel" prefHeight="40.0" prefWidth="126.0" text="Новые данные" textAlignment="CENTER" GridPane.columnIndex="2">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -133,7 +125,7 @@
                         <Insets left="22.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="newPhoneNumberValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="100.0" promptText="79502228899" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <TextField fx:id="newPhoneNumberValue" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="38.0" prefWidth="106.0" promptText="79502228899" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font size="14.0" />
                      </font>

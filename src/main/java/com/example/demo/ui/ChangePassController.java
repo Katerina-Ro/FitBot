@@ -64,8 +64,6 @@ public class ChangePassController {
         }
     }
 
-
-
     private Optional<LocalDate> getDateStartPassForInputDB(TextField date) {
         FillingFieldsHelper.correctInputDateLine(date);
         dateStartPassInputProperty.setValue(getLocalDateFromTextField(date));

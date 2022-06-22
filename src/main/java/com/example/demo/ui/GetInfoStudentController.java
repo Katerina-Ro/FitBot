@@ -82,7 +82,6 @@ public class GetInfoStudentController {
                 }
             } else {
                 fillGetInfoStudentIfEmpty();
-                //fillGetInfoPassForStudentIfEmpty();
             }
         });
     }
@@ -166,7 +165,31 @@ public class GetInfoStudentController {
         patronymicDB.textProperty().bindBidirectional(patronymicDBProperty, new DefaultStringConverter());
 
         // Заполняем поле Есть действующий абонмент?
-        existActualPassDBProperty.setValue(null);
+        /*existActualPassDBProperty.setValue(null);
+        existActualPassDBProperty.addListener((observable4, oldValue4, newValue4) -> {
+            existActualPassDBProperty.setValue(newValue4);
+        });
+        existActualPassDB.textProperty().bindBidirectional(existActualPassDBProperty, new DefaultStringConverter());
+
+        // Заполняем поле Абонемент заморожен?
+        passIsFreezeDBProperty.setValue(null);
+        passIsFreezeDBProperty.addListener((observable5, oldValue5, newValue5) -> {
+            passIsFreezeDBProperty.setValue(newValue5);
+        });
+        passIsFreezeDB.textProperty().bindBidirectional(passIsFreezeDBProperty, new DefaultStringConverter());
+
+        // Заполняем поле Дата начала заморозки
+        dateStartFreezeValueProperty.setValue(null);
+        dateStartFreezeValueProperty.addListener((observable6, oldValue6, newValue6) -> {
+            dateStartFreezeValueProperty.setValue(newValue6);
+        });
+        dateStartFreezeValue.textProperty().bindBidirectional(dateStartFreezeValueProperty, new LocalDateStringConverter());*/
+        fillGetInfoPassForStudentIfEmpty(nameDBProperty);
+    }
+
+    private void fillGetInfoPassForStudentIfEmpty(StringProperty nameDBProperty) {
+        // Заполняем поле Есть действующий абонмент?
+        existActualPassDBProperty.setValue(nameDBProperty.get() != null && !nameDBProperty.get().isBlank() ? "Нет" : null);
         existActualPassDBProperty.addListener((observable4, oldValue4, newValue4) -> {
             existActualPassDBProperty.setValue(newValue4);
         });
@@ -185,29 +208,5 @@ public class GetInfoStudentController {
             dateStartFreezeValueProperty.setValue(newValue6);
         });
         dateStartFreezeValue.textProperty().bindBidirectional(dateStartFreezeValueProperty, new LocalDateStringConverter());
-        fillGetInfoPassForStudentIfEmpty(nameDBProperty);
-    }
-
-    private void fillGetInfoPassForStudentIfEmpty(StringProperty nameDBProperty) {
-            // Заполняем поле Есть действующий абонмент?
-            existActualPassDBProperty.setValue(nameDBProperty.get() != null && !nameDBProperty.get().isBlank() ? "Нет" : null);
-            existActualPassDBProperty.addListener((observable4, oldValue4, newValue4) -> {
-                existActualPassDBProperty.setValue(newValue4);
-            });
-            existActualPassDB.textProperty().bindBidirectional(existActualPassDBProperty, new DefaultStringConverter());
-
-            // Заполняем поле Абонемент заморожен?
-            passIsFreezeDBProperty.setValue(null);
-            passIsFreezeDBProperty.addListener((observable5, oldValue5, newValue5) -> {
-                passIsFreezeDBProperty.setValue(newValue5);
-            });
-            passIsFreezeDB.textProperty().bindBidirectional(passIsFreezeDBProperty, new DefaultStringConverter());
-
-            // Заполняем поле Дата начала заморозки
-            dateStartFreezeValueProperty.setValue(null);
-            dateStartFreezeValueProperty.addListener((observable6, oldValue6, newValue6) -> {
-                dateStartFreezeValueProperty.setValue(newValue6);
-            });
-            dateStartFreezeValue.textProperty().bindBidirectional(dateStartFreezeValueProperty, new LocalDateStringConverter());
     }
 }
