@@ -12,6 +12,7 @@ public class Visitors {
     private String surname;
     private String name;
     private String patronymic;
+    private String newPhoneNumber;
 
     @Override
     public String toString() {

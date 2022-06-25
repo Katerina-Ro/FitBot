@@ -1,12 +1,11 @@
 package com.example.demo.dao.repositories.impl;
 
 import com.example.demo.dao.Visits;
+import com.example.demo.dao.repositories.IVisitsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import com.example.demo.dao.repositories.IVisitsRepository;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -26,17 +25,14 @@ public class VisitsRepository implements IVisitsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Value("SELECT * From pass_schema.visits WHERE date_visit = :dateVisit")
-    private String findAllPassIdByCurrencyDay;
+    private String findAllPassIdByCurrencyDay = "SELECT * From pass_schema.visits WHERE date_visit = :dateVisit";
 
-    @Value("SELECT * From pass_schema.visits WHERE pass_id = :passId")
-    private String findAllVisitsByPassId;
+    private String findAllVisitsByPassId = "SELECT * From pass_schema.visits WHERE pass_id = :passId";
 
-    @Value("update pass_schema.visits " +
+    private String updateVisit = "UPDATE pass_schema.visits " +
             "set pass_schema.visits.date_visit = :dateVisit, " +
             "pass_schema.visits.count_visit = :countVisits " +
-            "where pass_schema.visits.pass_id = :passId")
-    private String updateVisit;
+            "where pass_schema.visits.pass_id = :passId";
 
     @Override
     public Optional<List<Visits>> findAllPassBySpecifiedDay(Date specifiedDay) {

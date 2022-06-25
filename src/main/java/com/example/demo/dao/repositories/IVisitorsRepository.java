@@ -20,7 +20,7 @@ public interface IVisitorsRepository {
 
     boolean create(Visitors visitor);
 
-    boolean updateByPhoneNumber(Visitors updateVisitors);
+    boolean updateByPhoneNumber(Visitors updateVisitors) throws Exception;
 
     boolean deleteVisitor(String phoneNumber);
 

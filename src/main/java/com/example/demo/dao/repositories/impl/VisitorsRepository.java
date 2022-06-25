@@ -3,7 +3,6 @@ package com.example.demo.dao.repositories.impl;
 import com.example.demo.dao.Visitors;
 import com.example.demo.dao.repositories.IVisitorsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -24,36 +23,30 @@ public class VisitorsRepository implements IVisitorsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private static final String findVisitorByPhoneNumber = "SELECT * FROM pass_schema.visitors " +
+    private static final String FIND_VISITOR_BY_PHONE_NUMBER = "SELECT * FROM pass_schema.visitors " +
             "WHERE pass_schema.visitors.tel_num = :telephoneNum";
 
-    private String findTelephoneNumByChatId = "SELECT pass_schema.visitors.tel_num FROM pass_schema.visitors " +
+    private static final String FIND_PHONE_NUMBER_BY_CHAT_ID = "SELECT pass_schema.visitors.tel_num FROM pass_schema.visitors " +
             "WHERE pass_schema.visitors.chat_id = :chatId";
 
-    @Value("SELECT * FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id = :chatId")
-    private String findVisitorByChatId;
+    private static final String FIND_VISITOR_BY_CHAT_ID = "SELECT * FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id = :chatId";
 
-    @Value("SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors " +
-            "WHERE pass_schema.visitors.tel_num = :telephoneNum")
-    private String findChatIdByPhoneNumber;
+    private static final String FIND_CHAT_ID_BY_PHONE_NUMBER = "SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors " +
+            "WHERE pass_schema.visitors.tel_num = :telephoneNum";
 
-    private String create = "insert into pass_schema.visitors (surname, name, patronumic, tel_num, chat_id) " +
+    private static final String CREATE_VISITOR = "INSERT into pass_schema.visitors (surname, name, patronumic, tel_num, chat_id) " +
             "values (:surName, :name, :patronymic, :phoneNumber, :chatId)";
 
-    private String updateByPhoneNumber = "UPDATE pass_schema.visitors SET chat_id = :chatId " +
-            "WHERE pass_schema.visitors.tel_num = :phoneNumber";
+    private static final String UPDATE_BY_PHONE_NUMBER = "UPDATE pass_schema.visitors SET surname = coalesce(:surName, surname), " +
+            "name = coalesce(:name, name), patronumic = coalesce(:patronymic, patronumic), " +
+            "tel_num = coalesce(:newPhoneNumber, tel_num) WHERE pass_schema.visitors.tel_num = :phoneNumber";
 
-    @Value("delete from pass_schema.visitors where tel_num = :phoneNumber")
-    private String deleteVisitor;
+    private static final String DELETE_VISITOR = "delete from pass_schema.visitors where tel_num = :phoneNumber";
 
     @Override
     public Optional<Visitors> findVisitorByPhoneNumber(String phoneNumber) {
-        List<Visitors> visitor = jdbcTemplate.query(findVisitorByPhoneNumber, Map.of("telephoneNum", phoneNumber),
+        List<Visitors> visitor = jdbcTemplate.query(FIND_VISITOR_BY_PHONE_NUMBER, Map.of("telephoneNum", phoneNumber),
                 new VisitorsRowMapper());
-        /*if (visitor.size() != 1 && !visitor.isEmpty()) {
-            throw new SeveralException(String.format("По phoneNumber = %s в базе содержится 2 chatId: %s ",
-                    phoneNumber, visitor));
-        } */
         if (visitor.isEmpty()) {
             return Optional.empty();
         }
@@ -62,7 +55,7 @@ public class VisitorsRepository implements IVisitorsRepository {
 
     @Override
     public Optional<Visitors> findVisitorByChatId(Long chatId) {
-        List<Visitors> visitor = jdbcTemplate.query(findVisitorByChatId, Map.of("chatId", chatId),
+        List<Visitors> visitor = jdbcTemplate.query(FIND_VISITOR_BY_CHAT_ID, Map.of("chatId", chatId),
                 new VisitorsRowMapper());
         if (visitor.size() != 1) {
             throw new IllegalStateException(String.format("По chatId = %s в базе содержится 2 посетителя: %s ",
@@ -73,7 +66,7 @@ public class VisitorsRepository implements IVisitorsRepository {
 
     @Override
     public Optional<String> findTelephoneNumByChatId(Long chatId) {
-        List<String> phoneNumber = jdbcTemplate.query(findTelephoneNumByChatId, Map.of("chatId", chatId),
+        List<String> phoneNumber = jdbcTemplate.query(FIND_PHONE_NUMBER_BY_CHAT_ID, Map.of("chatId", chatId),
                 new PhoneNumberMapper());
         if (phoneNumber.size() != 1) {
             throw new IllegalStateException(String.format("По chatId = %s в базе содержится 2 номера телефона: %s ",
@@ -84,7 +77,7 @@ public class VisitorsRepository implements IVisitorsRepository {
 
     @Override
     public Optional<Long> findChatIdByPhoneNumber(String phoneNumber) {
-        List<Long> chatId = jdbcTemplate.query(findChatIdByPhoneNumber, Map.of("telephoneNum", phoneNumber),
+        List<Long> chatId = jdbcTemplate.query(FIND_CHAT_ID_BY_PHONE_NUMBER, Map.of("telephoneNum", phoneNumber),
                 new ChatIdRowMapper());
         if (chatId.size() != 1) {
             throw new IllegalStateException(String.format("По phoneNumber = %s в базе содержится 2 chatId: %s ",
@@ -96,20 +89,20 @@ public class VisitorsRepository implements IVisitorsRepository {
     @Override
     public boolean create(Visitors visitor) {
         Map<String, Object> paramMap = getMapParams(visitor);
-        int updated = jdbcTemplate.update(create, paramMap);
+        int updated = jdbcTemplate.update(CREATE_VISITOR, paramMap);
         return updated > 0;
     }
 
     @Override
-    public boolean updateByPhoneNumber(Visitors updateVisitors) {
+    public boolean updateByPhoneNumber(Visitors updateVisitors) throws Exception {
         Map<String, Object> paramMap = getMapParams(updateVisitors);
-        int updatedVisitor = jdbcTemplate.update(updateByPhoneNumber, paramMap);
+        int updatedVisitor = jdbcTemplate.update(UPDATE_BY_PHONE_NUMBER, paramMap);
         return updatedVisitor > 0;
     }
 
     @Override
     public boolean deleteVisitor(String phoneNumber) {
-        int deletedVisitor = jdbcTemplate.update(deleteVisitor, Map.of("phoneNumber", phoneNumber));
+        int deletedVisitor = jdbcTemplate.update(DELETE_VISITOR, Map.of("phoneNumber", phoneNumber));
         return deletedVisitor > 0;
     }
 
@@ -144,11 +137,13 @@ public class VisitorsRepository implements IVisitorsRepository {
     private Map<String, Object> getMapParams(Visitors visitors) {
         Map<String, Object> paramMap = new HashMap<>();
         Long chatId = visitors.getChatId();
+        String newPhoneNumber = visitors.getNewPhoneNumber();
         String phoneNumber = visitors.getTelephoneNum();
         String name = visitors.getName();
         String surName = visitors.getSurname();
         String patronymic = visitors.getPatronymic();
         paramMap.put("phoneNumber", phoneNumber);
+        paramMap.put("newPhoneNumber", newPhoneNumber);
         paramMap.put("chatId", chatId);
         paramMap.put("name", name);
         paramMap.put("surName", surName);

@@ -58,7 +58,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="getInfoPassButton" mnemonicParsing="false" prefHeight="49.0" prefWidth="254.0" text="Просмотреть информацию об абонементе" textAlignment="CENTER" wrapText="true">
+                  <Button fx:id="getInfoPassButton" mnemonicParsing="false" prefHeight="54.0" prefWidth="254.0" text="Просмотреть информацию об абонементе" textAlignment="CENTER" wrapText="true">
                      <VBox.margin>
                         <Insets left="55.0" top="10.0" />
                      </VBox.margin>

@@ -16,7 +16,7 @@ public class UnSuccessWindowController {
     @FXML
     public void initialize(Stage stageUnSuccessWindow, EventHandler<ActionEvent> var1) {
         backToMainMenuButton.setOnAction(event -> stageUnSuccessWindow.close());
-        //repeatButton.setOnAction(event -> var1);
+        repeatButton.setOnAction(var1);
     }
 
     @FXML

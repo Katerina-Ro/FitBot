@@ -46,7 +46,7 @@ public class GetCommonWindowHelper {
             stageUnSuccessWindow.setResizable(false);
             stageUnSuccessWindow.getIcons().add(image);
             stageUnSuccessWindow.setTitle("Операция не выполнена");
-            stageUnSuccessWindow.setScene(new Scene(root1, 282, 58));
+            stageUnSuccessWindow.setScene(new Scene(root1, 374, 133));
 
             UnSuccessWindowController unSuccessWindowController = fxmlLoader.getController();
             unSuccessWindowController.initialize(stageUnSuccessWindow, var1);
