@@ -22,6 +22,8 @@ public interface IPassRepository {
     boolean update(Pass updatedPass);
 
     boolean deletePass(Integer passId);
+
+    boolean deletePass(String phoneNumber);
 }
 
 

@@ -1,5 +1,6 @@
 package com.example.demo.util;
 
+import com.example.demo.ui.ConfirmationController;
 import com.example.demo.ui.SuccessWindowController;
 import com.example.demo.ui.UnSuccessWindowController;
 import javafx.event.ActionEvent;
@@ -52,6 +53,27 @@ public class GetCommonWindowHelper {
             unSuccessWindowController.initialize(stageUnSuccessWindow, var1);
 
             stageUnSuccessWindow.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void openWindowConfirmation(Image image, EventHandler<ActionEvent> var1) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/confirmation-view.fxml"));
+        Parent root1;
+        try {
+            root1 = fxmlLoader.load();
+            Stage stageWindowConfirmation = new Stage();
+            stageWindowConfirmation.setResizable(false);
+            stageWindowConfirmation.getIcons().add(image);
+            stageWindowConfirmation.setTitle("Подтверждение удаления");
+            stageWindowConfirmation.setScene(new Scene(root1, 331, 133));
+
+            ConfirmationController confirmationController = fxmlLoader.getController();
+            confirmationController.initialize(stageWindowConfirmation, var1);
+
+            stageWindowConfirmation.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

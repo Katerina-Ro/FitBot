@@ -20,29 +20,32 @@ public class PassRepository implements IPassRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    private String findPhoneNumberByPassId = "SELECT pass_schema.pass_table.phoneNumber FROM pass_schema.pass_table " +
+    private static final String FIND_PHONE_NUMBER_BY_PASS_ID = "SELECT pass_schema.pass_table.phoneNumber FROM pass_schema.pass_table " +
             "WHERE pass_schema.pass_table.pass_id = :numPass";
 
-    private String findPassByPhone = "SELECT * FROM pass_schema.pass_table WHERE pass_schema.pass_table.tel_num = :phoneNumber";
+    private static final String FIND_PASS_BY_PHONE = "SELECT * FROM pass_schema.pass_table WHERE pass_schema.pass_table.tel_num = :phoneNumber";
 
-    private String findPassByPassId = "SELECT pass_id, date_start, date_end, visit_limit, tel_num, freeze_limit, date_freeze" +
-            "from pass_schema.pass_table " +
-            "where pass_schema.pass_table.pass_id = :passId" +
-            "and current_date between pass_schema.pass_table.date_start and pass_schema.pass_table.date_start";
+    private static final String FIND_PASS_BY_PASS_ID = "SELECT pass_id, date_start, date_end, visit_limit, tel_num, freeze_limit, date_freeze" +
+            "FROM pass_schema.pass_table " +
+            "WHERE pass_schema.pass_table.pass_id = :passId" +
+            "AND current_date between pass_schema.pass_table.date_start and pass_schema.pass_table.date_start";
 
-    private String createPass = "INSERT into pass_schema.pass_table " +
+    private static final String CREATE_PASS = "INSERT into pass_schema.pass_table " +
             "(pass_id, tel_num, date_start, date_end, visit_limit, freeze_limit, date_freeze)" +
             "values (:numPass, :phoneNumber, :dateStart, :dateEnd, :visitLimit, :freezeLimit, :dateStartFreeze)";
 
-    private String updatePass = "UPDATE pass_schema.pass_table" +
-            "set tel_num = phoneNumber" +
+    private static final String UPDATE_PASS = "UPDATE pass_schema.pass_table" +
+            "SET tel_num = phoneNumber" +
             ",date_start = dateStart " +
             ",date_end = dateEnd " +
             ",visit_limit = visitLimit " +
-            "where pass_id = :numPass";
+            "WHERE pass_id = :numPass";
 
-    private String deletePass = "DELETE from pass_schema.pass_table" +
-            "where pass_schema.pass_table.pass_id = :numPass";
+    private static final String DELETE_PASS_BY_PASS_ID = "DELETE from pass_schema.pass_table" +
+            "WHERE pass_schema.pass_table.pass_id = :numPass";
+
+    private static final String DELETE_PASS_BY_PHONE_NUMBER = "DELETE from pass_schema.pass_table" +
+            "WHERE pass_schema.pass_table.tel_num = :phoneNumbers";
 
     @Autowired
     public PassRepository(NamedParameterJdbcTemplate jdbcTemplate) {
@@ -51,7 +54,7 @@ public class PassRepository implements IPassRepository {
 
     @Override
     public Optional<String> findPhoneNumberByPassId(Integer passId) {
-        List<String> phoneNumber = jdbcTemplate.query(findPhoneNumberByPassId, Map.of("numPass", passId),
+        List<String> phoneNumber = jdbcTemplate.query(FIND_PHONE_NUMBER_BY_PASS_ID, Map.of("numPass", passId),
                 new PhoneNumberRowMapper());
         if (phoneNumber.size() != 1) {
             throw new IllegalStateException(String.format("По passId = %s в базе содержится 2 номера телефона: %s ",
@@ -63,7 +66,7 @@ public class PassRepository implements IPassRepository {
     @Override
     public Optional<List<Pass>> findPassByPhone(String inputPhoneNumber) {
         if (!inputPhoneNumber.isBlank()) {
-            List<Pass> passList = jdbcTemplate.query(findPassByPhone, Map.of("phoneNumber", inputPhoneNumber),
+            List<Pass> passList = jdbcTemplate.query(FIND_PASS_BY_PHONE, Map.of("phoneNumber", inputPhoneNumber),
                     new PassRowMapper());
             return Optional.of(passList);
         } else {
@@ -73,7 +76,7 @@ public class PassRepository implements IPassRepository {
 
     @Override
     public Optional<Pass> findPassByPassId(Integer passId) {
-        List<Pass> pass = jdbcTemplate.query(findPassByPassId, Map.of("passId",passId),
+        List<Pass> pass = jdbcTemplate.query(FIND_PASS_BY_PASS_ID, Map.of("passId",passId),
                 new PassRowMapper());
         if (pass.size() != 1) {
             throw new IllegalStateException(String.format("По passId = %s в базе содержится 2 абонемента: %s ",
@@ -85,25 +88,30 @@ public class PassRepository implements IPassRepository {
     @Override
     public boolean createPass(Pass pass) {
         Map<String, Object> paramMap = getParamMap(pass);
-        int createdPass = jdbcTemplate.update(createPass, paramMap);
+        int createdPass = jdbcTemplate.update(CREATE_PASS, paramMap);
         return createdPass > 0;
     }
 
     @Override
     public boolean update(Pass updatedPass) {
         Map<String, Object> paramMap = getParamMap(updatedPass);
-        int updatePass = jdbcTemplate.update(this.updatePass, paramMap);
+        int updatePass = jdbcTemplate.update(UPDATE_PASS, paramMap);
         return updatePass > 0;
     }
 
     @Override
     public boolean deletePass(Integer passId) {
-        int deletedPass = jdbcTemplate.update(deletePass, Map.of("passId", passId));
+        int deletedPass = jdbcTemplate.update(DELETE_PASS_BY_PASS_ID, Map.of("passId", passId));
+        return deletedPass > 0;
+    }
+
+    @Override
+    public boolean deletePass(String phoneNumber) {
+        int deletedPass = jdbcTemplate.update(DELETE_PASS_BY_PHONE_NUMBER, Map.of("phoneNumber", phoneNumber));
         return deletedPass > 0;
     }
 
     public static class PhoneNumberRowMapper implements RowMapper<String>{
-
         @Override
         public String mapRow(ResultSet rs, int rowNum) throws SQLException {
             return rs.getString("tel_num");

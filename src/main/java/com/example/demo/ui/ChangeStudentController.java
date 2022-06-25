@@ -1,7 +1,6 @@
 package com.example.demo.ui;
 
 import com.example.demo.dao.Visitors;
-import com.example.demo.observableModels.ObservableVisitor;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,8 +19,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ChangeStudentController {
     private final FillingFieldsHelper fillingFieldsHelper;
     private ObservableList<Visitors> visitorsObservableList;
-    private ObservableList<ObservableVisitor> observableVisitor;
-    private ObservableList<String> observableNewPhoneNumber;
     private AtomicReference<String> phoneNumberForDB = new AtomicReference<>();
     private AtomicReference<String> firstNameForDB = new AtomicReference<>();
     private AtomicReference<String> nameForDB = new AtomicReference<>();
@@ -57,7 +54,6 @@ public class ChangeStudentController {
 
     @FXML
     private TextField newPhoneNumberValue;
-    private final StringProperty newPhoneNumberValueProperty = new SimpleStringProperty("");
 
     @FXML
     private Label patronymicValueDB;
@@ -77,7 +73,7 @@ public class ChangeStudentController {
         backButton.setOnAction(event -> stageChangeStudent.close());
     }
 
-    private void observeInputPhoneNumber(Image image) {
+    public void observeInputPhoneNumber(Image image) {
         FillingFieldsHelper.correctInputPhoneLine(newPhoneNumberValue);
         FillingFieldsHelper.correctInputStringLine(newFirstNameValue);
         FillingFieldsHelper.correctInputStringLine(newNameValue);

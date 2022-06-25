@@ -46,7 +46,7 @@ public class ActionsWithStudentController {
             stageDeleteStudent.setResizable(false);
             stageDeleteStudent.getIcons().add(image);
             stageDeleteStudent.setTitle("Удаление карточки студента из базы данных");
-            stageDeleteStudent.setScene(new Scene(root1, 700, 500));
+            stageDeleteStudent.setScene(new Scene(root1, 613, 458));
 
             DeleteStudentController deleteStudentController = fxmlLoader.getController();
             deleteStudentController.initialize(stageDeleteStudent, image);

@@ -25,25 +25,28 @@ public class VisitsRepository implements IVisitsRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private String findAllPassIdByCurrencyDay = "SELECT * From pass_schema.visits WHERE date_visit = :dateVisit";
+    private static final String FIND_ALL_PASS_ID_BY_CURRENCY_DAY = "SELECT * From pass_schema.visits WHERE date_visit = :dateVisit";
 
-    private String findAllVisitsByPassId = "SELECT * From pass_schema.visits WHERE pass_id = :passId";
+    private static final String FIND_ALL_VISITS_BY_PASS_ID = "SELECT * From pass_schema.visits WHERE pass_id = :passId";
 
-    private String updateVisit = "UPDATE pass_schema.visits " +
-            "set pass_schema.visits.date_visit = :dateVisit, " +
+    private static final String UPDATE_VISIT = "UPDATE pass_schema.visits " +
+            "SET pass_schema.visits.date_visit = :dateVisit, " +
             "pass_schema.visits.count_visit = :countVisits " +
-            "where pass_schema.visits.pass_id = :passId";
+            "WHERE pass_schema.visits.pass_id = :passId";
+
+    private static final String DELETE_VISITS = "DELETE from pass_schema.visits " +
+            "WHERE pass_schema.visits.pass_id = :passId";
 
     @Override
     public Optional<List<Visits>> findAllPassBySpecifiedDay(Date specifiedDay) {
-        List<Visits> visitsList = jdbcTemplate.query(findAllPassIdByCurrencyDay, Map.of("dateVisit", specifiedDay),
+        List<Visits> visitsList = jdbcTemplate.query(FIND_ALL_PASS_ID_BY_CURRENCY_DAY, Map.of("dateVisit", specifiedDay),
                 new VisitsResultSetExtractor());
         return Optional.of(visitsList);
     }
 
     @Override
     public Optional<List<Visits>> findAllVisitsByPassId(Integer passId) {
-        List<Visits> visits = jdbcTemplate.query(findAllVisitsByPassId, Map.of("passId", passId),
+        List<Visits> visits = jdbcTemplate.query(FIND_ALL_VISITS_BY_PASS_ID, Map.of("passId", passId),
                 new VisitsResultSetExtractor());
         return Optional.of(visits);
     }
@@ -56,13 +59,14 @@ public class VisitsRepository implements IVisitsRepository {
     @Override
     public boolean updateVisit(Visits visit) {
         Map<String, Object> paramsMap = getParamMap(visit);
-        int updatedVisit = jdbcTemplate.update(updateVisit, paramsMap);
+        int updatedVisit = jdbcTemplate.update(UPDATE_VISIT, paramsMap);
         return updatedVisit > 0;
     }
 
     @Override
     public boolean deleteVisit(Integer passId) {
-        return false;
+        int deletedVisits = jdbcTemplate.update(DELETE_VISITS, Map.of("passId", passId));
+        return deletedVisits > 0;
     }
 
     public static class VisitsResultSetExtractor implements RowMapper<Visits> {

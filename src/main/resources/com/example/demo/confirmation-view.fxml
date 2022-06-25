@@ -20,7 +20,7 @@
                </font></Button>
          </children>
       </AnchorPane>
-      <Label fx:id="textAreYouSureLable" prefHeight="58.0" prefWidth="331.0" text="Вы уверены, что хотите удалить?" textFill="#d7d0d0" wrapText="true">
+      <Label fx:id="textAreYouSureLabel" prefHeight="58.0" prefWidth="331.0" text="Вы уверены, что хотите удалить из базы данных?" textFill="#d7d0d0" wrapText="true">
          <font>
             <Font name="Britannic Bold" size="18.0" />
          </font>

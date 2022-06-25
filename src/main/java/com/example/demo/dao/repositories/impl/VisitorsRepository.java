@@ -41,7 +41,7 @@ public class VisitorsRepository implements IVisitorsRepository {
             "name = coalesce(:name, name), patronumic = coalesce(:patronymic, patronumic), " +
             "tel_num = coalesce(:newPhoneNumber, tel_num) WHERE pass_schema.visitors.tel_num = :phoneNumber";
 
-    private static final String DELETE_VISITOR = "delete from pass_schema.visitors where tel_num = :phoneNumber";
+    private static final String DELETE_VISITOR = "DELETE from pass_schema.visitors WHERE tel_num = :phoneNumber";
 
     @Override
     public Optional<Visitors> findVisitorByPhoneNumber(String phoneNumber) {
@@ -107,7 +107,6 @@ public class VisitorsRepository implements IVisitorsRepository {
     }
 
     public static class VisitorsRowMapper implements RowMapper<Visitors> {
-
         @Override
         public Visitors mapRow(ResultSet rs, int rowNum) throws SQLException {
             Visitors visitors = new Visitors();
@@ -127,7 +126,6 @@ public class VisitorsRepository implements IVisitorsRepository {
     }
 
     public static class ChatIdRowMapper implements RowMapper<Long>{
-
         @Override
         public Long mapRow(ResultSet rs, int rowNum) throws SQLException {
             return rs.getLong("chat_id");

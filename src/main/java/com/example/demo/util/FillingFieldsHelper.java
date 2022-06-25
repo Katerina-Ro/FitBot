@@ -112,21 +112,6 @@ public class FillingFieldsHelper {
         return Optional.ofNullable(classesLeft);
     }
 
-    public ObservableList<Pass> getListPass(String phoneNumber){
-        if (phoneNumber != null) {
-            Optional<List<Pass>> listPass = passRepository.findPassByPhone(phoneNumber);
-            if (listPass.isPresent() && !listPass.get().isEmpty()) {
-                if (listPass.get().size() == 1) {
-                    return  FXCollections.observableArrayList(listPass.get());
-                } else {
-                    // здесь вписать новое окно с выбором, какой именно абонемент (из двух) нужен?
-                    return FXCollections.emptyObservableList();
-                }
-            }
-        }
-        return FXCollections.emptyObservableList();
-    }
-
     /**
      * Прибавляем занятие в абонементе (доступно только пдмину)
      * @param pass - информация об абонементе
@@ -175,26 +160,6 @@ public class FillingFieldsHelper {
         }
         return Optional.of(listPassNumberActivePass);
     }
-
-    /**
-     * Вычет занятия из абонемента, если студент нажал "Да"
-
-    public boolean deductVisitIfYes(Pass pass) {
-        if (haveDayInPassCalculate(pass)) {
-            LocalDate currencyDay = LocalDate.now(ZoneId.of("GMT+03:00"));
-            Visits visits = new Visits();
-            visits.setPass(pass.getNumPass());
-            visits.setCountVisit(pass.getVisitLimit() - 1);
-            visits.setDateVisit(currencyDay);
-            boolean isSuccess = createVisit(visits);
-            updatePass(pass);
-            /*log.info(String.format("Вычтено занятие из абонемента %s, т.к. отметил боту 'Да' за %s день. " +
-                            "Создание записи в таблице Посещений прошло успешно? %s", pass.getNumPass(),
-                    currencyDay, isSuccess));
-            return true;
-        }
-        return false;
-    }  */
 
     /**
      * Проверка, есть ли еще день в абонементе у конкретного студента
@@ -255,35 +220,36 @@ public class FillingFieldsHelper {
 
     /**
      * Получение информации об актуальном абонементе
-     * @param chatId - идентификатор студента в Телеграмм боте
      * @return список абонементов. По логике кода заложено, что может быть несколько активных абонементов.
      * Но, по идее (в реальности), должен быть только один
      */
-    public Optional<List<Pass>> getActualPassByChatId(Long chatId) {
-        Optional<Visitors> visitor = getVisitorByChatId(chatId);
-        Optional<List<Pass>> passListFromDB;
-        if (visitor.isPresent()) {
-            String phoneNumber = visitor.get().getTelephoneNum();
-            passListFromDB = passRepository.findPassByPhone(phoneNumber);
-            if (passListFromDB.isPresent()) {
-                List<Pass> listActualPass = new ArrayList<>();
-                for (Pass p: passListFromDB.get()) {
-                    if (haveDayInPassCalculate(p)) {
-                        listActualPass.add(p);
-                        return Optional.of(listActualPass);
-                    }
+    public Optional<List<Pass>> getActualPassByPhoneNumber(String phoneNumber) {
+        Optional<List<Pass>> passListFromDB = passRepository.findPassByPhone(phoneNumber);
+        if (passListFromDB.isPresent()) {
+            List<Pass> listActualPass = new ArrayList<>();
+            for (Pass p: passListFromDB.get()) {
+                if (haveDayInPassCalculate(p)) {
+                    listActualPass.add(p);
+                    return Optional.of(listActualPass);
                 }
             }
         }
         return Optional.empty();
     }
 
-    /**
-     * Получить информацию о студенте по chatId
-     * @param chatId - идентификатор студента в Телеграмме
-     */
-    public Optional<Visitors> getVisitorByChatId(Long chatId) {
-        return visitorsRepository.findVisitorByChatId(chatId);
+    public ObservableList<Pass> getListPass(String phoneNumber){
+        if (phoneNumber != null) {
+            Optional<List<Pass>> listPass = getActualPassByPhoneNumber(phoneNumber);
+            if (listPass.isPresent() && !listPass.get().isEmpty()) {
+                if (listPass.get().size() == 1) {
+                    return  FXCollections.observableArrayList(listPass.get());
+                } else {
+                    // здесь вписать новое окно с выбором, какой именно абонемент (из двух) нужен?
+                    return FXCollections.emptyObservableList();
+                }
+            }
+        }
+        return FXCollections.emptyObservableList();
     }
 
     public static void correctInputPhoneLine(TextField newPhoneNumberValue) {
@@ -380,7 +346,12 @@ public class FillingFieldsHelper {
         });
     }
 
-
+    public boolean deleteVisitorFromDB(String phoneNumber) {
+        boolean isSuccessDeleteVisits = deleteVisits(phoneNumber);
+        boolean isSuccessDeletePass = passRepository.deletePass(phoneNumber);
+        boolean isSuccessDeleteStudent = visitorsRepository.deleteVisitor(phoneNumber);
+        return isSuccessDeletePass && isSuccessDeleteStudent && isSuccessDeleteVisits;
+    }
 
     public boolean isDate(TextField dateInput) {
         return Pattern.compile(PatternTemplate.DATE.getTemplate()).matcher(dateInput.getCharacters()).matches();
@@ -394,6 +365,32 @@ public class FillingFieldsHelper {
 
     public static boolean isLetter(String line) {
         return line.matches("[а-яА-Я]+");
+    }
+
+    private Optional<List<Integer>> getListPassIdForDeleteVisits(String phoneNumber) {
+        Optional<List<Pass>> passListFromDB = passRepository.findPassByPhone(phoneNumber);
+        if (passListFromDB.isPresent()) {
+            List<Integer> listPassId = new ArrayList<>();
+            for(Pass p: passListFromDB.get()) {
+                Integer passId = p.getNumPass();
+                listPassId.add(passId);
+            }
+            return Optional.of(listPassId);
+        }
+        return Optional.empty();
+    }
+
+    private boolean deleteAllVisitsFromDB(List<Integer> listPassId) {
+        boolean isSuccessDeleteAllVisits = false;
+        for(Integer i: listPassId) {
+            isSuccessDeleteAllVisits = visitsRepository.deleteVisit(i);
+        }
+        return isSuccessDeleteAllVisits;
+    }
+
+    private boolean deleteVisits(String phoneNumber) {
+        Optional<List<Integer>> list = getListPassIdForDeleteVisits(phoneNumber);
+        return list.filter(this::deleteAllVisitsFromDB).isPresent();
     }
 
     private static boolean is79FirstTwoSymbol(String substringPhone) {

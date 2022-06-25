@@ -114,7 +114,7 @@ public class CreateStudentController {
             String message = "Карточка студента успешно внесена в базу данных";
             new GetCommonWindowHelper().openWindowSuccess(image, message);
         } else {
-            //new GetCommonWindowHelper().openWindowUnSuccess(image);
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> createStudentInDB(image));
         }
     }
 
