@@ -45,7 +45,7 @@ public class PassRepository implements IPassRepository {
             "WHERE pass_schema.pass_table.pass_id = :numPass";
 
     private static final String DELETE_PASS_BY_PHONE_NUMBER = "DELETE from pass_schema.pass_table" +
-            "WHERE pass_schema.pass_table.tel_num = :phoneNumbers";
+            "WHERE pass_schema.pass_table.tel_num = :phoneNumber";
 
     @Autowired
     public PassRepository(NamedParameterJdbcTemplate jdbcTemplate) {

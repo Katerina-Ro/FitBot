@@ -381,9 +381,12 @@ public class FillingFieldsHelper {
     }
 
     private boolean deleteAllVisitsFromDB(List<Integer> listPassId) {
-        boolean isSuccessDeleteAllVisits = false;
+        boolean isSuccessDeleteAllVisits = true;
         for(Integer i: listPassId) {
-            isSuccessDeleteAllVisits = visitsRepository.deleteVisit(i);
+            boolean isSuccess = visitsRepository.deleteVisit(i);
+            if (!isSuccess) {
+                isSuccessDeleteAllVisits = false;
+            }
         }
         return isSuccessDeleteAllVisits;
     }

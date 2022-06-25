@@ -116,7 +116,7 @@ public class DeleteStudentController {
         }
         deleteStudentButton.setDisable(false);
         deleteStudentButton.setOnAction(event -> new GetCommonWindowHelper().openWindowConfirmation(image,
-                event2 -> deleteStudentFromDB()));
+                event2 -> deleteStudentFromDB(image)));
     }
 
     private void fillGetInfoPassForStudent() {
@@ -193,17 +193,18 @@ public class DeleteStudentController {
         dateStartFreezeValue.textProperty().bindBidirectional(dateStartFreezeValueProperty, new LocalDateStringConverter());
     }
 
-    public void deleteStudentFromDB() {
-        Visitors visitor = new Visitors();
+    public void deleteStudentFromDB(Image image) {
+        String phoneNumber;
         if (phoneNumberForSearch != null && FillingFieldsHelper.isPhoneNumber(String.valueOf(phoneNumberForSearch))) {
-            visitor.setTelephoneNum(String.valueOf(phoneNumberForSearch));
-        }
-        boolean isSuccess = fillingFieldsHelper.updateVisitors(visitor);
-        if (isSuccess) {
-            String message = "Карточка студента успешно обновлена в базе данных";
-            new GetCommonWindowHelper().openWindowSuccess(image, message);
-        } else {
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateStudentInDB(image));
+            phoneNumber = String.valueOf(phoneNumberForSearch);
+            System.out.println(phoneNumber);
+            boolean isSuccess = fillingFieldsHelper.deleteVisitorFromDB(phoneNumber);
+            if (!isSuccess) {
+                String message = "Карточка студента успешно обновлена в базе данных";
+                new GetCommonWindowHelper().openWindowSuccess(image, message);
+            } else {
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> deleteStudentFromDB(image));
+            }
         }
     }
 }
