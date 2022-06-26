@@ -16,10 +16,13 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -364,9 +367,16 @@ public class FillingFieldsHelper {
     }
 
     public static boolean isDate(TextField dateInput) {
-        boolean v = Pattern.compile(PatternTemplate.DATE.getTemplate()).matcher(dateInput.getCharacters()).matches();
-        System.out.println("isDate = " + v);
-        return v;
+        return Pattern.compile(PatternTemplate.DATE.getTemplate()).matcher(dateInput.getCharacters()).matches();
+    }
+
+    public LocalDate convertFormatLocalDate(String date) throws ParseException {
+        SimpleDateFormat oldDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        java.util.Date newDate = oldDateFormat.parse(date);
+        String result = newDateFormat.format(newDate);
+        return LocalDate.parse(result);
     }
 
     public static boolean isPhoneNumber(String phoneNumber) {
