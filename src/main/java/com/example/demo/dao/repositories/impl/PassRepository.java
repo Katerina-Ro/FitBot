@@ -87,6 +87,7 @@ public class PassRepository implements IPassRepository {
 
     @Override
     public boolean createPass(Pass pass) {
+        // TODO: нужно для Insert прописывать, если не null
         Map<String, Object> paramMap = getParamMap(pass);
         int createdPass = jdbcTemplate.update(CREATE_PASS, paramMap);
         return createdPass > 0;

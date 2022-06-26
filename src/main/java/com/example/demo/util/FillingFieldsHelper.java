@@ -27,22 +27,22 @@ public class FillingFieldsHelper {
     private final VisitorsRepository visitorsRepository;
     private final VisitsRepository visitsRepository;
     private final PassRepository passRepository;
-    private static final Pattern integerNum = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
-    private static final Pattern letters = Pattern.compile("^[а-яА-Я]+$");
-    private static final Pattern firstNumberInPhone = Pattern.compile("7");
-    private static final Pattern secondNumberInPhone = Pattern.compile("9");
-    private static final Pattern firstNumber = Pattern.compile("0?|[123]");
-    private static final Pattern secondNumberIfNoThree = Pattern.compile("[1-9]?");
-    private static final Pattern secondNumberIfThree = Pattern.compile("[01]?");
+    private static final Pattern INTEGER_NUM = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
+    private static final Pattern LETTERS = Pattern.compile("^[а-яА-Я]+$");
+    private static final Pattern FIRST_NUMBER_IN_PHONE = Pattern.compile("7");
+    private static final Pattern SECOND_NUMBER_IN_PHONE = Pattern.compile("9");
+    private static final Pattern FIRST_NUMBER = Pattern.compile("0?|[123]");
+    private static final Pattern SECOND_NUMBER_IF_NO_THREE = Pattern.compile("[1-9]?");
+    private static final Pattern SECOND_NUMBER_IF_THREE = Pattern.compile("[01]?");
     private static final Pattern FIRST_TWO_SYMBOL_IN_PHONE_NUMBER = Pattern.compile("79");
-    private static final Pattern thirdOrSixthSymbol = Pattern.compile("\\.");
-    private static final Pattern fourthNumber = Pattern.compile("[01]");
-    private static final Pattern fifthNumberIfFourthIsZero = Pattern.compile("[1-9]");
-    private static final Pattern fifthNumberIfFourthIsOne = Pattern.compile("[0-2]");
-    private static final Pattern seventhNumber = Pattern.compile("2");
-    private static final Pattern eightNumber = Pattern.compile("0");
-    private static final Pattern ninthNumber = Pattern.compile("[2-9]");
-    private static final Pattern tenthNumber = Pattern.compile("[0-9]");
+    private static final Pattern THIRD_OR_SIXTH_SYMBOL = Pattern.compile("\\.");
+    private static final Pattern FOURTH_NUMBER = Pattern.compile("[01]");
+    private static final Pattern FIFTH_NUMBER_IF_FOURTH_IS_ZERO = Pattern.compile("[1-9]");
+    private static final Pattern FIFTH_NUMBER_IF_FOURTH_IS_ONE = Pattern.compile("[0-2]");
+    private static final Pattern SEVENTH_NUMBER = Pattern.compile("2");
+    private static final Pattern EIGHT_NUMBER = Pattern.compile("0");
+    private static final Pattern NINTH_NUMBER = Pattern.compile("[2-9]");
+    private static final Pattern TENTH_NUMBER = Pattern.compile("[0-9]");
 
     public FillingFieldsHelper() {
         NamedParameterJdbcTemplate jdbcTemplate = new DBConfig().namedParameterJdbcTemplate();
@@ -259,17 +259,21 @@ public class FillingFieldsHelper {
             if (newValue10.length() > maxCharacters) newPhoneNumberValue.deleteNextChar();
             if (newPhoneNumberValueArray.length() == 1) {
                 newValue10 = newPhoneNumberValueArray;
-                if (!firstNumberInPhone.matcher(newValue10).matches()) newPhoneNumberValue.setText(oldValue10);
+                if (!FIRST_NUMBER_IN_PHONE.matcher(newValue10).matches()) newPhoneNumberValue.setText(oldValue10);
             }
             if (newPhoneNumberValueArray.length() == 2) {
                 newValue10 = String.valueOf(newPhoneNumberValueArray.charAt(1));
-                if (!secondNumberInPhone.matcher(newValue10).matches()) newPhoneNumberValue.setText(oldValue10);
+                if (!SECOND_NUMBER_IN_PHONE.matcher(newValue10).matches()) newPhoneNumberValue.setText(oldValue10);
             }
             if (newPhoneNumberValueArray.length() > 2 && newPhoneNumberValueArray.length() <= 10) {
                 newValue10 = String.valueOf(newPhoneNumberValueArray.charAt(newPhoneNumberValueArray.length() - 1));
-                if (!integerNum.matcher(newValue10).matches()) newPhoneNumberValue.setText(oldValue10);
+                if (!isNumbers(newValue10)) newPhoneNumberValue.setText(oldValue10);
             }
         });
+    }
+
+    public static boolean isNumbers(String inputNumbers) {
+        return Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate()).matcher(inputNumbers).matches();
     }
 
     public static void correctInputDateLine(TextField dateInput) {
@@ -277,50 +281,50 @@ public class FillingFieldsHelper {
             String dateInputArray = dateInput.getText();
             if (dateInputArray.length() == 1) {
                 newValue = dateInputArray;
-                if (!firstNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+                if (!FIRST_NUMBER.matcher(newValue).matches()) dateInput.setText(oldValue);
             }
             if (dateInputArray.length() == 2) {
                 if ("3".equals(String.valueOf(dateInputArray.charAt(0)))) {
                     newValue = String.valueOf(dateInputArray.charAt(1));
-                    if (!secondNumberIfThree.matcher(newValue).matches()) dateInput.setText(oldValue);
+                    if (!SECOND_NUMBER_IF_THREE.matcher(newValue).matches()) dateInput.setText(oldValue);
                 } else {
                     newValue = String.valueOf(dateInputArray.charAt(1));
-                    if (!secondNumberIfNoThree.matcher(newValue).matches()) dateInput.setText(oldValue);
+                    if (!SECOND_NUMBER_IF_NO_THREE.matcher(newValue).matches()) dateInput.setText(oldValue);
                 }
             }
             if (dateInputArray.length() == 3 || dateInputArray.length() == 6) {
                 newValue = String.valueOf(dateInputArray.charAt(2));
                 if (dateInputArray.length() == 6) newValue = String.valueOf(dateInputArray.charAt(5));;
-                if (!thirdOrSixthSymbol.matcher(newValue).matches()) dateInput.setText(oldValue);
+                if (!THIRD_OR_SIXTH_SYMBOL.matcher(newValue).matches()) dateInput.setText(oldValue);
             }
             if (dateInputArray.length() == 4) {
                 newValue = String.valueOf(dateInputArray.charAt(3));
-                if (!fourthNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+                if (!FOURTH_NUMBER.matcher(newValue).matches()) dateInput.setText(oldValue);
             }
             if (dateInputArray.length() == 5) {
                 if ("0".equals(String.valueOf(dateInputArray.charAt(3)))) {
                     newValue = String.valueOf(dateInputArray.charAt(4));
-                    if (!fifthNumberIfFourthIsZero.matcher(newValue).matches()) dateInput.setText(oldValue);
+                    if (!FIFTH_NUMBER_IF_FOURTH_IS_ZERO.matcher(newValue).matches()) dateInput.setText(oldValue);
                 } else {
                     newValue = String.valueOf(dateInputArray.charAt(4));
-                    if (!fifthNumberIfFourthIsOne.matcher(newValue).matches()) dateInput.setText(oldValue);
+                    if (!FIFTH_NUMBER_IF_FOURTH_IS_ONE.matcher(newValue).matches()) dateInput.setText(oldValue);
                 }
             }
             if (dateInputArray.length() == 7) {
                 newValue = String.valueOf(dateInputArray.charAt(6));
-                if (!seventhNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+                if (!SEVENTH_NUMBER.matcher(newValue).matches()) dateInput.setText(oldValue);
             }
             if (dateInputArray.length() == 8) {
                 newValue = String.valueOf(dateInputArray.charAt(7));
-                if (!eightNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+                if (!EIGHT_NUMBER.matcher(newValue).matches()) dateInput.setText(oldValue);
             }
             if (dateInputArray.length() == 9) {
                 newValue = String.valueOf(dateInputArray.charAt(8));
-                if (!ninthNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+                if (!NINTH_NUMBER.matcher(newValue).matches()) dateInput.setText(oldValue);
             }
             if (dateInputArray.length() == 10) {
                 newValue = String.valueOf(dateInputArray.charAt(9));
-                if (!tenthNumber.matcher(newValue).matches()) dateInput.setText(oldValue);
+                if (!TENTH_NUMBER.matcher(newValue).matches()) dateInput.setText(oldValue);
             }
             if (dateInputArray.length() > 10) dateInput.setText(oldValue);
         });
@@ -328,7 +332,7 @@ public class FillingFieldsHelper {
 
     public static void correctInputIntegerLine(TextField number) {
         number.textProperty().addListener((observable11, oldValue11, newValue11) -> {
-            if (!integerNum.matcher(newValue11).matches()) number.setText(oldValue11);
+            if (!INTEGER_NUM.matcher(newValue11).matches()) number.setText(oldValue11);
         });
     }
 
@@ -337,11 +341,11 @@ public class FillingFieldsHelper {
             String anyStringArray = anyString.getText();
             if (anyStringArray.length() == 1) {
                 newValue50 = anyStringArray;
-                if (!letters.matcher(newValue50).matches()) anyString.setText(oldValue50);
+                if (!LETTERS.matcher(newValue50).matches()) anyString.setText(oldValue50);
             }
             if (anyStringArray.length() > 1) {
                 newValue50 = String.valueOf(anyStringArray.charAt(anyStringArray.length() - 1));
-                if (!letters.matcher(newValue50).matches()) anyString.setText(oldValue50);
+                if (!LETTERS.matcher(newValue50).matches()) anyString.setText(oldValue50);
             }
         });
     }
@@ -356,14 +360,13 @@ public class FillingFieldsHelper {
                 isSuccessDeleteStudent = visitorsRepository.deleteVisitor(phoneNumber);
             }
         }
-        System.out.println(isSuccessDeleteVisits);
-        System.out.println(isSuccessDeletePass);
-        System.out.println(isSuccessDeleteStudent);
-        return isSuccessDeletePass && isSuccessDeleteStudent && isSuccessDeleteVisits;
+        return isSuccessDeleteVisits && isSuccessDeletePass && isSuccessDeleteStudent;
     }
 
-    public boolean isDate(TextField dateInput) {
-        return Pattern.compile(PatternTemplate.DATE.getTemplate()).matcher(dateInput.getCharacters()).matches();
+    public static boolean isDate(TextField dateInput) {
+        boolean v = Pattern.compile(PatternTemplate.DATE.getTemplate()).matcher(dateInput.getCharacters()).matches();
+        System.out.println("isDate = " + v);
+        return v;
     }
 
     public static boolean isPhoneNumber(String phoneNumber) {
@@ -375,6 +378,8 @@ public class FillingFieldsHelper {
     public static boolean isLetter(String line) {
         return line.matches("[а-яА-Я]+");
     }
+
+
 
     private Optional<List<Integer>> getListPassIdForDeleteVisits(String phoneNumber) {
         Optional<List<Pass>> passListFromDB = passRepository.findPassByPhone(phoneNumber);
@@ -390,26 +395,18 @@ public class FillingFieldsHelper {
     }
 
     private boolean deleteAllVisitsFromDB(List<Integer> listPassId) {
-        boolean isSuccessDeleteAllVisits = true;
         for(Integer i: listPassId) {
             boolean isSuccess = visitsRepository.deleteVisit(i);
             if (!isSuccess) {
-                isSuccessDeleteAllVisits = false;
+                return false;
             }
         }
-        return isSuccessDeleteAllVisits;
+        return true;
     }
 
     private boolean deleteVisits(String phoneNumber) {
         Optional<List<Integer>> list = getListPassIdForDeleteVisits(phoneNumber);
-        if (list.isPresent()) {
-
-            boolean f = deleteAllVisitsFromDB(list.get());
-            System.out.println(f);
-            return f;
-        }
-        return false;
-                // list.filter(this::deleteAllVisitsFromDB).isPresent();
+        return list.filter(this::deleteAllVisitsFromDB).isPresent();
     }
 
     private static boolean is79FirstTwoSymbol(String substringPhone) {

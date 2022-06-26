@@ -2,6 +2,7 @@ package com.example.demo.ui;
 
 import com.example.demo.config.DBConfig;
 import com.example.demo.dao.Visitors;
+import com.example.demo.dao.repositories.IVisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
@@ -20,7 +21,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import java.io.IOException;
 
 public class CreateStudentController {
-    private final VisitorsRepository visitorsRepository;
+    private final IVisitorsRepository visitorsRepository;
 
     @FXML
     private Button backButton;

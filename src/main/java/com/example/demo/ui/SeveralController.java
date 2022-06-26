@@ -11,7 +11,6 @@ public class SeveralController {
 
     @FXML
     private Button backButton;
-
     @FXML
     private Button getInfoStudentButton;
 

@@ -96,7 +96,7 @@ public class ActionsWithPassController {
             stageCreatePass.setResizable(false);
             stageCreatePass.getIcons().add(image);
             stageCreatePass.setTitle("Внесение абонемента в базу данных");
-            stageCreatePass.setScene(new Scene(root1, 700, 535));
+            stageCreatePass.setScene(new Scene(root1, 700, 495));
 
             CreatePassController createPassController = fxmlLoader.getController();
             createPassController.initialize(stageCreatePass, image, phoneNumber);

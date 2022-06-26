@@ -301,6 +301,7 @@ public class ChangeStudentController {
         if (patronymicForDB != null && FillingFieldsHelper.isLetter(String.valueOf(patronymicForDB))) {
             visitor.setPatronymic(String.valueOf(patronymicForDB));
         }
+        // TODO: добавить изменение номера телефона в абонемент
         boolean isSuccess = fillingFieldsHelper.updateVisitors(visitor);
         if (isSuccess) {
             String message = "Карточка студента успешно обновлена в базе данных";
