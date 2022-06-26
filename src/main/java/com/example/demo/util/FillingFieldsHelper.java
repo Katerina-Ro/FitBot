@@ -348,8 +348,17 @@ public class FillingFieldsHelper {
 
     public boolean deleteVisitorFromDB(String phoneNumber) {
         boolean isSuccessDeleteVisits = deleteVisits(phoneNumber);
-        boolean isSuccessDeletePass = passRepository.deletePass(phoneNumber);
-        boolean isSuccessDeleteStudent = visitorsRepository.deleteVisitor(phoneNumber);
+        boolean isSuccessDeletePass = false;
+        boolean isSuccessDeleteStudent = false;
+        if (isSuccessDeleteVisits) {
+            isSuccessDeletePass = passRepository.deletePass(phoneNumber);
+            if (isSuccessDeletePass) {
+                isSuccessDeleteStudent = visitorsRepository.deleteVisitor(phoneNumber);
+            }
+        }
+        System.out.println(isSuccessDeleteVisits);
+        System.out.println(isSuccessDeletePass);
+        System.out.println(isSuccessDeleteStudent);
         return isSuccessDeletePass && isSuccessDeleteStudent && isSuccessDeleteVisits;
     }
 
@@ -393,7 +402,14 @@ public class FillingFieldsHelper {
 
     private boolean deleteVisits(String phoneNumber) {
         Optional<List<Integer>> list = getListPassIdForDeleteVisits(phoneNumber);
-        return list.filter(this::deleteAllVisitsFromDB).isPresent();
+        if (list.isPresent()) {
+
+            boolean f = deleteAllVisitsFromDB(list.get());
+            System.out.println(f);
+            return f;
+        }
+        return false;
+                // list.filter(this::deleteAllVisitsFromDB).isPresent();
     }
 
     private static boolean is79FirstTwoSymbol(String substringPhone) {

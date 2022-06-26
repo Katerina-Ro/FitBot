@@ -104,17 +104,16 @@ public class CreateStudentController {
         visitor.setSurname(firstNameForDB);
         visitor.setPatronymic(patronymicForDB);
         boolean isExist = visitorsRepository.findVisitorByPhoneNumber(phoneNumberForDB).isPresent();
-        boolean isSuccess = false;
         if (!isExist) {
-            isSuccess = visitorsRepository.create(visitor);
+            boolean isSuccess = visitorsRepository.create(visitor);
+            if (isSuccess) {
+                String message = "Карточка студента успешно внесена в базу данных";
+                new GetCommonWindowHelper().openWindowSuccess(image, message);
+            } else {
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> createStudentInDB(image));
+            }
         } else {
             openWindowSeveral(image,newPhoneNumberValue);
-        }
-        if (isSuccess) {
-            String message = "Карточка студента успешно внесена в базу данных";
-            new GetCommonWindowHelper().openWindowSuccess(image, message);
-        } else {
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> createStudentInDB(image));
         }
     }
 

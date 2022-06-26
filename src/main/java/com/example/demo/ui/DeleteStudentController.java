@@ -197,10 +197,9 @@ public class DeleteStudentController {
         String phoneNumber;
         if (phoneNumberForSearch != null && FillingFieldsHelper.isPhoneNumber(String.valueOf(phoneNumberForSearch))) {
             phoneNumber = String.valueOf(phoneNumberForSearch);
-            System.out.println(phoneNumber);
             boolean isSuccess = fillingFieldsHelper.deleteVisitorFromDB(phoneNumber);
-            if (!isSuccess) {
-                String message = "Карточка студента успешно обновлена в базе данных";
+            if (isSuccess) {
+                String message = "Карточка студента успешно удалена в базе данных";
                 new GetCommonWindowHelper().openWindowSuccess(image, message);
             } else {
                 new GetCommonWindowHelper().openWindowUnSuccess(image, event -> deleteStudentFromDB(image));
