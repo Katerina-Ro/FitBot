@@ -301,48 +301,12 @@ public class ChangeStudentController {
         if (patronymicForDB != null && FillingFieldsHelper.isLetter(String.valueOf(patronymicForDB))) {
             visitor.setPatronymic(String.valueOf(patronymicForDB));
         }
-        boolean isSuccessUpdate;
-        boolean isSuccessUpdateStudentAndPass;
-        if (phoneNumberForSearch != null && phoneNumberForDB != null && phoneNumberForDB.get() != null) {
-            isSuccessUpdateStudentAndPass = updateDataStudentAndPass(visitor, image);
-            if (isSuccessUpdateStudentAndPass) {
-                String message = "Карточка студента и телефон в абонементе успешно обновлены в базе данных";
-                new GetCommonWindowHelper().openWindowSuccess(image, message);
-            } else {
-                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateStudentInDB(image));
-            }
+        boolean isSuccessUpdate = fillingFieldsHelper.updateVisitors(visitor);
+        if (isSuccessUpdate) {
+            String message = "Карточка студента успешно обновлена в базе данных";
+            new GetCommonWindowHelper().openWindowSuccess(image, message);
         } else {
-            isSuccessUpdate = fillingFieldsHelper.updateVisitors(visitor);
-            if (isSuccessUpdate) {
-                String message = "Карточка студента успешно обновлена в базе данных";
-                new GetCommonWindowHelper().openWindowSuccess(image, message);
-            } else {
-                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateStudentInDB(image));
-            }
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateStudentInDB(image));
         }
-    }
-
-    private boolean updateDataStudentAndPass(Visitors visitor, Image image) {
-        boolean isSuccessUpdatePhoneInPass = fillingFieldsHelper.updatePhoneNumberInPass(phoneNumberForSearch.get(),
-                phoneNumberForDB.get());
-        boolean isSuccessUpdate;
-        if (isSuccessUpdatePhoneInPass) {
-            isSuccessUpdate = fillingFieldsHelper.updateVisitors(visitor);
-            if (isSuccessUpdate) {
-                return true;
-            } else {
-                String oldValuePhone = phoneNumberForDB.get();
-                String newValuePhone = phoneNumberForSearch.get();
-                isSuccessUpdatePhoneInPass = fillingFieldsHelper.updatePhoneNumberInPass(oldValuePhone, newValuePhone);
-                if (isSuccessUpdatePhoneInPass) {
-                    return false;
-                } else {
-                    new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateStudentInDB(image));
-                }
-            }
-        } else {
-            return false;
-        }
-        return false;
     }
 }

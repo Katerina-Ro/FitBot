@@ -6,8 +6,6 @@ import com.example.demo.dao.repositories.IVisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,25 +26,16 @@ public class CreateStudentController {
 
     @FXML
     private Button createPassButton;
-
     @FXML
     private Button createStudentButton;
-
     @FXML
     private TextField newFirstNameValue;
-    private final StringProperty newFirstNameValueProperty = new SimpleStringProperty("");
-
     @FXML
     private TextField newNameValue;
-    private final StringProperty newNameValueProperty = new SimpleStringProperty("");
-
     @FXML
     private TextField newPatronymicValue;
-    private final StringProperty newPatronymicValueProperty = new SimpleStringProperty("");
-
     @FXML
     private TextField newPhoneNumberValue;
-    private final StringProperty newPhoneNumberValueProperty = new SimpleStringProperty("");
 
     public CreateStudentController() {
         NamedParameterJdbcTemplate jdbcTemplate = new DBConfig().namedParameterJdbcTemplate();
@@ -71,7 +60,6 @@ public class CreateStudentController {
             String newPhoneNumberValueArray = newPhoneNumberValue.getText();
             if (newPhoneNumberValueArray.length() == 11) {
                 if (FillingFieldsHelper.isPhoneNumber(newPhoneNumberValueArray)) {
-                    System.out.println("создание карточки студента");
                     newNameValue.textProperty().addListener((observable1, oldValue1, newValue1) -> {
                         String newNameValueArray = newNameValue.getText();
                         if (newNameValueArray.length() > 0) {
@@ -132,7 +120,7 @@ public class CreateStudentController {
             stageCreatePassWindow.setScene(new Scene(root1, 700, 535));
 
             CreatePassController createPassController = fxmlLoader.getController();
-            createPassController.initialize(stageCreatePassWindow, image, phoneNumber);
+            createPassController.initialize(stageCreatePassWindow, image);
 
             stageCreatePassWindow.show();
         } catch (IOException e) {

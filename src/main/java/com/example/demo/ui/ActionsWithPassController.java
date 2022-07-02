@@ -35,7 +35,7 @@ public class ActionsWithPassController {
 
     @FXML
     void initialize(Stage stageActionWithPass, Image image) {
-        createPassButton.setOnAction(event -> openWindowCreatePass(image, null));
+        createPassButton.setOnAction(event -> openWindowCreatePass(image));
         changePassButton.setOnAction(event -> openWindowChangePass(image));
         deletePassButton.setOnAction(event -> openWindowDeletePass(image));
         getInfoPassButton.setOnAction(event -> openWindowGetInfoPass(image, null));
@@ -87,7 +87,7 @@ public class ActionsWithPassController {
     }
 
     @FXML
-    public void openWindowCreatePass(Image image, String phoneNumber) {
+    public void openWindowCreatePass(Image image) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/createPass-view.fxml"));
         Parent root1;
         try {
@@ -99,7 +99,7 @@ public class ActionsWithPassController {
             stageCreatePass.setScene(new Scene(root1, 700, 495));
 
             CreatePassController createPassController = fxmlLoader.getController();
-            createPassController.initialize(stageCreatePass, image, phoneNumber);
+            createPassController.initialize(stageCreatePass, image);
 
             stageCreatePass.show();
         } catch (IOException e) {
@@ -138,7 +138,7 @@ public class ActionsWithPassController {
             stageDeletePass.setResizable(false);
             stageDeletePass.getIcons().add(image);
             stageDeletePass.setTitle("Удаление абонемента из базы данных");
-            stageDeletePass.setScene(new Scene(root1, 700, 500));
+            stageDeletePass.setScene(new Scene(root1, 700, 527));
 
             DeletePassController deletePassController = fxmlLoader.getController();
             deletePassController.initialize(stageDeletePass, image);

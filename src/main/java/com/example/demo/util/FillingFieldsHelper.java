@@ -101,6 +101,10 @@ public class FillingFieldsHelper {
         return Optional.empty();
     }
 
+    public boolean deletePassFromDB(Integer passId) {
+        return passRepository.deletePass(passId);
+    }
+
     /**
      * Расчет оставшегося количества занятий у конкретного студента
      * @param pass - информация об абонементе
@@ -389,9 +393,7 @@ public class FillingFieldsHelper {
         SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         java.util.Date newDate = oldDateFormat.parse(date);
-        System.out.println("newDate = " + newDate);
         String result = newDateFormat.format(newDate);
-        System.out.println("result = " + result);
         return LocalDate.parse(result);
     }
 
@@ -405,9 +407,32 @@ public class FillingFieldsHelper {
         return line.matches("[а-яА-Я]+");
     }
 
+    public static boolean isFillingAllFields(TextField phoneNumber, TextField dateStart, TextField limitVisits,
+                                             TextField dateEnd, TextField limitFreeze, TextField dateStartFreeze) {
+        boolean isPhoneNumber = phoneNumber.getText() != null && isPhoneNumber(phoneNumber.getText());
+        boolean isDateStart = dateStart.getText() != null && isDate(dateStart);
+        boolean isDateEnd = dateEnd.getText() != null && isDate(dateEnd);
+        boolean isLimitVisits = limitVisits.getText() != null && isNumbers(limitVisits.getText());
 
+        if (limitFreeze != null && limitFreeze.getText() != null) {
+            boolean isLimitFreeze = isNumbers(limitFreeze.getText());
+            boolean isDateStartFreeze = isDate(dateStartFreeze);
 
-    private Optional<List<Integer>> getListPassIdForDeleteVisits(String phoneNumber) {
+            return isPhoneNumber && isDateEnd && isDateStart && isLimitVisits && isLimitFreeze && isDateStartFreeze;
+        }
+
+        return isPhoneNumber && isDateEnd && isDateStart && isLimitVisits;
+    }
+
+    public Optional<List<Pass>> getPassList(String phoneNumber) {
+        return passRepository.findPassByPhone(phoneNumber);
+    }
+
+    public boolean createPassInDB(Pass pass) {
+        return passRepository.createPass(pass);
+    }
+
+    public Optional<List<Integer>> getListPassIdForDeleteVisits(String phoneNumber) {
         Optional<List<Pass>> passListFromDB = passRepository.findPassByPhone(phoneNumber);
         if (passListFromDB.isPresent()) {
             List<Integer> listPassId = new ArrayList<>();

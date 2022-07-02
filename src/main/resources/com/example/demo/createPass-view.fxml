@@ -29,7 +29,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label fx:id="phoneNumber" prefHeight="70.0" prefWidth="330.0" text="Номер телефона">
+                  <Label fx:id="phoneNumber" prefHeight="70.0" prefWidth="330.0" text="Номер телефона*">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -37,7 +37,7 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="dateStartColumn" text="Дата начала абонемента" GridPane.rowIndex="1">
+                  <Label fx:id="dateStartColumn" text="Дата начала абонемента*" GridPane.rowIndex="1">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -45,7 +45,7 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="dateEndColumn" prefHeight="40.0" prefWidth="354.0" text="До какого числа абонемент" GridPane.rowIndex="3">
+                  <Label fx:id="dateEndColumn" prefHeight="40.0" prefWidth="354.0" text="До какого числа абонемент*" GridPane.rowIndex="3">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -53,7 +53,7 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label fx:id="visitLimitColumn" prefHeight="40.0" prefWidth="354.0" text="На какое количество занятий" GridPane.rowIndex="2">
+                  <Label fx:id="visitLimitColumn" prefHeight="40.0" prefWidth="354.0" text="На какое количество занятий*" GridPane.rowIndex="2">
                      <font>
                         <Font size="18.0" />
                      </font>

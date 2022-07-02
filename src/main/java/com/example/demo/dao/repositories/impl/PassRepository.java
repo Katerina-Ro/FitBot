@@ -32,8 +32,8 @@ public class PassRepository implements IPassRepository {
             "AND current_date between pass_schema.pass_table.date_start and pass_schema.pass_table.date_start";
 
     private static final String CREATE_PASS = "INSERT into pass_schema.pass_table " +
-            "(pass_id, tel_num, date_start, date_end, visit_limit, freeze_limit, date_freeze)" +
-            "values (:numPass, :phoneNumber, :dateStart, :dateEnd, :visitLimit, :freezeLimit, :dateStartFreeze)";
+            "(tel_num, date_start, date_end, visit_limit, freeze_limit, date_freeze)" +
+            "values (:phoneNumber, :dateStart, :dateEnd, :visitLimit, :freezeLimit, :dateStartFreeze)";
 
     private static final String UPDATE_PASS = "UPDATE pass_schema.pass_table" +
             "SET tel_num = phoneNumber" +

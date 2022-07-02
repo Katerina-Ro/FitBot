@@ -93,7 +93,7 @@
                </children>
             </GridPane>
             <Button fx:id="backButton" layoutX="14.0" layoutY="295.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Назад" />
-            <Button fx:id="createVisitInDB" layoutX="496.0" layoutY="295.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="136.0" text="Создать помещение" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="createVisitInDB" layoutX="496.0" layoutY="295.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="136.0" text="Создать посещение" textAlignment="CENTER" wrapText="true" />
          </children>
       </AnchorPane>
       <Label layoutX="106.0" layoutY="14.0" prefHeight="60.0" prefWidth="472.0" text="Внесите данные посещения" textAlignment="CENTER" textFill="#d7d0d0">

@@ -25,7 +25,7 @@ public class GetCommonWindowHelper {
             Stage stageSuccessWindow = new Stage();
             stageSuccessWindow.setResizable(false);
             stageSuccessWindow.getIcons().add(image);
-            stageSuccessWindow.setTitle("Операция прошла успешно");
+            stageSuccessWindow.setTitle("Результат операции");
             stageSuccessWindow.setScene(new Scene(root1, 331, 133));
 
             SuccessWindowController successWindowController = fxmlLoader.getController();
