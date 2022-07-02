@@ -21,8 +21,4 @@ public interface IVisitsRepository {
     boolean updateVisit(Visits visit);
 
     boolean deleteVisit(Integer passId);
-
-    /*
-    @Query(value = "SELECT * From pass_schema.visits WHERE dateVisit = :dateVisit", nativeQuery = true)
-    Optional<List<Integer>> findAllPassIdByCurrencyDay(@Param("dateVisit") Date currencyDay); */
 }

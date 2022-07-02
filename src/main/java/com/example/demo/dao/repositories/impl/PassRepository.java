@@ -2,6 +2,7 @@ package com.example.demo.dao.repositories.impl;
 
 import com.example.demo.dao.Pass;
 import com.example.demo.dao.repositories.IPassRepository;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -40,6 +41,9 @@ public class PassRepository implements IPassRepository {
             ",date_end = dateEnd " +
             ",visit_limit = visitLimit " +
             "WHERE pass_id = :numPass";
+
+    private static final String UPDATE_PHONE_NUMBER_IN_PASS = "UPDATE pass_schema.pass_table " +
+            "SET tel_num = :newValuePhoneNumber WHERE tel_num = :oldValuePhoneNumber";
 
     private static final String DELETE_PASS_BY_PASS_ID = "DELETE from pass_schema.pass_table " +
             "WHERE pass_schema.pass_table.pass_id = :numPass";
@@ -98,6 +102,13 @@ public class PassRepository implements IPassRepository {
         Map<String, Object> paramMap = getParamMap(updatedPass);
         int updatePass = jdbcTemplate.update(UPDATE_PASS, paramMap);
         return updatePass > 0;
+    }
+
+    @Override
+    public boolean updatePhoneNumberInPass(@NonNull String oldValuePhoneNumber, @NonNull String newValuePhoneNumber) {
+        int updatePhoneNumberInPass = jdbcTemplate.update(UPDATE_PHONE_NUMBER_IN_PASS,
+                Map.of("oldValuePhoneNumber", oldValuePhoneNumber, "newValuePhoneNumber", newValuePhoneNumber));
+        return updatePhoneNumberInPass > 0;
     }
 
     @Override

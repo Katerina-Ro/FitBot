@@ -29,7 +29,7 @@
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="deletePassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Удалить абонемент">
+                  <Button fx:id="deletePassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Удалить абонемент">
                      <VBox.margin>
                         <Insets left="35.0" top="10.0" />
                      </VBox.margin>

@@ -7,8 +7,9 @@ import com.example.demo.dao.repositories.impl.PassRepository;
 import com.example.demo.observableModels.ObservablePassCreateFields;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
@@ -64,6 +65,7 @@ public class CreatePassController {
     private TextField createDateStartPass;
     @FXML
     private TextField createPhoneNumber;
+    private final StringProperty createPhoneNumberProperty = new SimpleStringProperty("");
 
     public CreatePassController() {
         NamedParameterJdbcTemplate jdbcTemplate = new DBConfig().namedParameterJdbcTemplate();
@@ -81,131 +83,83 @@ public class CreatePassController {
         FillingFieldsHelper.correctInputDateLine(createDateStartFreeze);
 
         createPassButton.setDisable(true);
-        observableFields(image);
-        backButton.setOnAction(event -> stageCreatePass.close());
-    }
-
-    @FXML
-    public void observableFields(Image image) {
         observableCreatePhoneNumber(image);
-        observableCreateDateStartPass(image);
-        observableCreateCountVisits(image);
-        observableCreateDateEndPass(image);
-        observableCreateCountFreeze();
-        observableCreateDateStartFreeze(image);
-
-
-    }
-
-    private void observableCondition(Image image) {
-        createPhoneNumber.textProperty().bindBidirectional();
-        activation.addListener((observable2, oldValue2, newValue2) -> {
-            if (observableList.size() == 4 && !observableList.containsValue(false)) {
-                System.out.println("зашли вовнутрь");
-                createPassButton.setDisable(false);
-                createPassButton.setOnAction(event -> createPassInDB(image));
-            } else {
-                createPassButton.setDisable(true);
-            }
-        });
+        backButton.setOnAction(event -> stageCreatePass.close());
     }
 
     public void observableCreatePhoneNumber(Image image) {
         createPhoneNumber.textProperty().addListener((observable2, oldValue2, newValue2) -> {
             if (createPhoneNumber.getText().length() == 11) {
+                System.out.println("createPhoneNumber.getText().length() == 11");
                 if (FillingFieldsHelper.isPhoneNumber(createPhoneNumber.getText())) {
-                    phoneNumberForDB.set(newValue2);
-                    observableList.put("isPhoneNumber", true);
+                    System.out.println("FillingFieldsHelper.isPhoneNumber(createPhoneNumber.getText()");
+                    createDateStartPass.textProperty().addListener((observable22, oldValue22, newValue22) -> {
+                        if (FillingFieldsHelper.isDate(createDateStartPass)) {
+                            System.out.println("FillingFieldsHelper.isDate(createDateStartPass)");
+                            createCountVisits.textProperty().addListener((observable23, oldValue23, newValue23) -> {
+                                if (FillingFieldsHelper.isNumbers(createCountVisits.getText())) {
+                                    System.out.println("FillingFieldsHelper.isNumbers(createCountVisits.getText())");
+                                    createDateEndPass.textProperty().addListener((observable24, oldValue24, newValue24) -> {
+                                        if (FillingFieldsHelper.isDate(createDateEndPass)) {
+                                            System.out.println("FillingFieldsHelper.isDate(createDateEndPass)");
+                                            createPassButton.setDisable(false);
+                                            phoneNumberForDB.set(newValue2);
+                                            try {
+                                                dateStartForDB.set(fillingFieldsHelper.convertFormatLocalDate(newValue22));
+                                            } catch (ParseException e) {
+                                                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> observableCreatePhoneNumber(image));
+                                            }
+                                            limitVisitsForDB.set(Integer.parseInt(newValue23));
+                                            try {
+                                                dateEndForDB.set(fillingFieldsHelper.convertFormatLocalDate(newValue24));
+                                            } catch (ParseException e) {
+                                                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> observableCreatePhoneNumber(image));
+                                            }
+                                            createCountFreeze.textProperty().addListener((observable28, oldValue28, newValue28) -> {
+                                                if (createCountFreeze != null && createCountFreeze.getText() != null
+                                                        && FillingFieldsHelper.isNumbers(createCountVisits.getText()))  {
+                                                    createDateStartFreeze.textProperty().addListener((observable26, oldValue26, newValue26) -> {
+                                                        if (createDateStartFreeze != null && createDateStartPass.getText() != null
+                                                                && FillingFieldsHelper.isDate(createDateStartFreeze)) {
+                                                                    countFreezeForDB.set(Integer.parseInt(newValue28));
+                                                            try {
+                                                                dateStartFreezeForDB.set(fillingFieldsHelper.convertFormatLocalDate(newValue26));
+                                                            } catch (ParseException e) {
+                                                                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> observableCreatePhoneNumber(image));
+                                                            }
+                                                        } else {
+                                                            countFreezeForDB.set(0);
+                                                            dateStartFreezeForDB.set(null);
+                                                        }
+                                                    });
+                                                } else {
+                                                    countFreezeForDB.set(0);
+                                                    dateStartFreezeForDB.set(null);
+                                                }
+                                            });
+                                            createPassButton.setOnAction(event -> createPassInDB(image));
+                                        } else {
+                                            System.out.println("1");
+                                            createPassButton.setDisable(true);
+                                        }
+                                    });
+                                } else {
+                                    System.out.println("2");
+                                    createPassButton.setDisable(true);
+                                }
+                            });
+                        } else {
+                            System.out.println("3");
+                            createPassButton.setDisable(true);
+                        }
+                    });
                 } else {
-                    phoneNumberForDB.set(null);
-                    observableList.put("isPhoneNumber", false);
+                    System.out.println("4");
+                    createPassButton.setDisable(true);
                 }
             } else {
-                phoneNumberForDB.set(null);
-                observableList.put("isPhoneNumber", false);
-            }
-        });
-    }
-
-    private void observableCreateDateStartPass(Image image) {
-        createDateStartPass.textProperty().addListener((observable3, oldValue3, newValue3) -> {
-            if (FillingFieldsHelper.isDate(createDateStartPass)) {
-                try {
-                    dateStartForDB.set(fillingFieldsHelper.convertFormatLocalDate(newValue3));
-                    observableList.put("isDateStart", true);
-                } catch (ParseException e) {
-                    dateStartForDB.set(null);
-                    observableList.put("isDateStart", false);
-                    new GetCommonWindowHelper().openWindowUnSuccess(image, event -> observableCreateDateStartPass(image));
-                }
-            } else if (createDateStartPass == null || createDateStartPass.getText().isBlank()) {
-                dateStartForDB.set(null);
-                observableList.put("isDateStart", false);
-            } else {
-                dateStartForDB.set(null);
-                observableList.put("isDateStart", false);
-            }
-        });
-    }
-
-    private void observableCreateCountVisits(Image image) {
-        createCountVisits.textProperty().addListener((observable4, oldValue4, newValue4) -> {
-            if (FillingFieldsHelper.isNumbers(createCountVisits.getText())) {
-                limitVisitsForDB.set(Integer.parseInt(newValue4));
-                observableList.put("isCountVisits", true);
-            } else if (createCountFreeze == null || createCountFreeze.getText().isBlank()) {
-                limitVisitsForDB.set(0);
-                observableList.put("isCountVisits", false);
-            } else {
-                limitVisitsForDB.set(0);
-                observableList.put("isCountVisits", false);
-            }
-        });
-    }
-
-    private void observableCreateDateEndPass(Image image) {
-        createDateEndPass.textProperty().addListener((observable5, oldValue5, newValue5) -> {
-            if (FillingFieldsHelper.isDate(createDateEndPass)) {
-                try {
-                    dateEndForDB.set(fillingFieldsHelper.convertFormatLocalDate(newValue5));
-                    observableList.put("isDateEnd", true);
-                } catch (ParseException e) {
-                    dateEndForDB.set(null);
-                    observableList.put("isDateEnd", false);
-                    new GetCommonWindowHelper().openWindowUnSuccess(image, event -> observableCreateDateStartPass(image));
-                }
-            } else if (createDateEndPass == null || createDateEndPass.getText().isBlank()) {
-                dateEndForDB.set(null);
-                observableList.put("isDateEnd", false);
-            } else {
-                dateEndForDB.set(null);
-                observableList.put("isDateEnd", false);
-            }
-        });
-    }
-
-    private void observableCreateCountFreeze() {
-        createCountFreeze.textProperty().addListener((observable6, oldValue6, newValue6) -> {
-            if (FillingFieldsHelper.isNumbers(createCountFreeze.getText())) {
-                countFreezeForDB.set(Integer.parseInt(createCountFreeze.getText()));
-            } else {
-                countFreezeForDB.set(0);
-            }
-        });
-    }
-
-    private void observableCreateDateStartFreeze(Image image) {
-        createDateStartFreeze.textProperty().addListener((observable7, oldValue7, newValue7) -> {
-            if (FillingFieldsHelper.isDate(createDateStartFreeze)) {
-                try {
-                    dateStartFreezeForDB.set(fillingFieldsHelper.convertFormatLocalDate(newValue7));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    dateStartFreezeForDB.set(null);
-                    new GetCommonWindowHelper().openWindowUnSuccess(image, event -> observableCreateDateStartPass(image));
-                }
-            } else {
-                dateStartFreezeForDB.set(null);
+                System.out.println("5");
+                createPassButton.setDisable(true);
             }
         });
     }

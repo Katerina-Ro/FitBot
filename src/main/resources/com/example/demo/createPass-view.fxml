@@ -119,7 +119,7 @@
                   </TextField>
                   <TextField fx:id="createPhoneNumber" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="11" prefHeight="38.0" prefWidth="140.0" promptText="79502228899" style="-fx-background-color: #fafa;" GridPane.columnIndex="1">
                      <font>
-                        <Font name="System Bold" size="18.0"/>
+                        <Font name="System Bold" size="18.0" />
                      </font>
                      <GridPane.margin>
                         <Insets left="15.0" />

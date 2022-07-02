@@ -71,6 +71,7 @@ public class CreateStudentController {
             String newPhoneNumberValueArray = newPhoneNumberValue.getText();
             if (newPhoneNumberValueArray.length() == 11) {
                 if (FillingFieldsHelper.isPhoneNumber(newPhoneNumberValueArray)) {
+                    System.out.println("создание карточки студента");
                     newNameValue.textProperty().addListener((observable1, oldValue1, newValue1) -> {
                         String newNameValueArray = newNameValue.getText();
                         if (newNameValueArray.length() > 0) {

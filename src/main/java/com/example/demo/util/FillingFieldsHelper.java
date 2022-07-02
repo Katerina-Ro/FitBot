@@ -4,6 +4,9 @@ import com.example.demo.config.DBConfig;
 import com.example.demo.dao.Pass;
 import com.example.demo.dao.Visitors;
 import com.example.demo.dao.Visits;
+import com.example.demo.dao.repositories.IPassRepository;
+import com.example.demo.dao.repositories.IVisitorsRepository;
+import com.example.demo.dao.repositories.IVisitsRepository;
 import com.example.demo.dao.repositories.impl.PassRepository;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitsRepository;
@@ -12,6 +15,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextField;
+import lombok.NonNull;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.math.BigDecimal;
@@ -27,9 +31,9 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class FillingFieldsHelper {
-    private final VisitorsRepository visitorsRepository;
-    private final VisitsRepository visitsRepository;
-    private final PassRepository passRepository;
+    private final IVisitorsRepository visitorsRepository;
+    private final IVisitsRepository visitsRepository;
+    private final IPassRepository passRepository;
     private static final Pattern INTEGER_NUM = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
     private static final Pattern LETTERS = Pattern.compile("^[а-яА-Я]+$");
     private static final Pattern FIRST_NUMBER_IN_PHONE = Pattern.compile("7");
@@ -62,7 +66,9 @@ public class FillingFieldsHelper {
     public ObservableList<Visitors> getVisitorsObservableList(StringProperty inputPhoneNumber) {
         String phoneNumber = String.valueOf(inputPhoneNumber.get());
         if (phoneNumber != null) {
+            System.out.println("в методе getVisitorsObservableList, если phoneNumber != null");
             Optional<Visitors> visitor = visitorsRepository.findVisitorByPhoneNumber(phoneNumber);
+            System.out.println("visitor = " + visitor);
             return visitor.map(FXCollections::observableArrayList).orElseGet(FXCollections::emptyObservableList);
         }
         return FXCollections.emptyObservableList();
@@ -333,6 +339,14 @@ public class FillingFieldsHelper {
         });
     }
 
+    public boolean updatePhoneNumberInPass(@NonNull String oldValuePhoneNumber, @NonNull String newValuePhoneNumber) {
+        if (passRepository.findPassByPhone(oldValuePhoneNumber).isPresent()) {
+            return passRepository.updatePhoneNumberInPass(oldValuePhoneNumber, newValuePhoneNumber);
+        } else {
+            return true;
+        }
+    }
+
     public static void correctInputIntegerLine(TextField number) {
         number.textProperty().addListener((observable11, oldValue11, newValue11) -> {
             if (!INTEGER_NUM.matcher(newValue11).matches()) number.setText(oldValue11);
@@ -375,7 +389,9 @@ public class FillingFieldsHelper {
         SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
         java.util.Date newDate = oldDateFormat.parse(date);
+        System.out.println("newDate = " + newDate);
         String result = newDateFormat.format(newDate);
+        System.out.println("result = " + result);
         return LocalDate.parse(result);
     }
 
