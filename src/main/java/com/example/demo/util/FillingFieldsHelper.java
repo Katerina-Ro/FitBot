@@ -73,12 +73,14 @@ public class FillingFieldsHelper {
     public ObservableList<Visitors> getVisitorsObservableList(StringProperty inputPhoneNumber) {
         String phoneNumber = String.valueOf(inputPhoneNumber.get());
         if (phoneNumber != null) {
-            System.out.println("в методе getVisitorsObservableList, если phoneNumber != null");
             Optional<Visitors> visitor = visitorsRepository.findVisitorByPhoneNumber(phoneNumber);
-            System.out.println("visitor = " + visitor);
             return visitor.map(FXCollections::observableArrayList).orElseGet(FXCollections::emptyObservableList);
         }
         return FXCollections.emptyObservableList();
+    }
+
+    public boolean freezePass(Pass freezeData) {
+        return passRepository.updateIfFreeze(freezeData);
     }
 
     public boolean createVisitors(Visitors visitor) {

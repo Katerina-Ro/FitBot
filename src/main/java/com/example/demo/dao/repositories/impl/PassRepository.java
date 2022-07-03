@@ -41,6 +41,13 @@ public class PassRepository implements IPassRepository {
             ",visit_limit = visitLimit " +
             "WHERE pass_id = :numPass";
 
+    private static final String UPDATE_IF_FREEZE = "UPDATE pass_schema.pass_table" +
+            "SET tel_num = phoneNumber" +
+            ",date_start = dateStart " +
+            ",date_end = dateEnd " +
+            ",visit_limit = visitLimit " +
+            "WHERE pass_id = :numPass";
+
     private static final String UPDATE_PHONE_NUMBER_IN_PASS = "UPDATE pass_schema.pass_table " +
             "SET tel_num = :newValuePhoneNumber WHERE tel_num = :oldValuePhoneNumber";
 
@@ -99,6 +106,13 @@ public class PassRepository implements IPassRepository {
     @Override
     public boolean update(Pass updatedPass) {
         Map<String, Object> paramMap = getParamMap(updatedPass);
+        int updatePass = jdbcTemplate.update(UPDATE_PASS, paramMap);
+        return updatePass > 0;
+    }
+
+    @Override
+    public boolean updateIfFreeze(Pass dataFreeze) {
+        Map<String, Object> paramMap = getParamMap(dataFreeze);
         int updatePass = jdbcTemplate.update(UPDATE_PASS, paramMap);
         return updatePass > 0;
     }
