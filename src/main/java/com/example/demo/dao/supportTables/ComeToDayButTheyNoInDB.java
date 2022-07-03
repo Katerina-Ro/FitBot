@@ -1,4 +1,4 @@
-package com.example.demo.supportTables;
+package com.example.demo.dao.supportTables;
 
 public class ComeToDayButTheyNoInDB {
     private Long chatId;

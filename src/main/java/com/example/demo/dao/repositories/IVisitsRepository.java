@@ -1,6 +1,7 @@
 package com.example.demo.dao.repositories;
 
 import com.example.demo.dao.Visits;
+import com.example.demo.exception.ExceptionDB;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -16,7 +17,7 @@ public interface IVisitsRepository {
 
     Optional<List<Visits>> findAllVisitsByPassId(Integer passId);
 
-    boolean createVisit(Visits visits);
+    boolean createVisit(Visits visits) throws ExceptionDB;
 
     boolean updateVisit(Visits visit);
 

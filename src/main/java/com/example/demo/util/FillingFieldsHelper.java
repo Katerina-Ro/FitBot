@@ -10,6 +10,9 @@ import com.example.demo.dao.repositories.IVisitsRepository;
 import com.example.demo.dao.repositories.impl.PassRepository;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitsRepository;
+import com.example.demo.dao.repositories.support.IComeToDay;
+import com.example.demo.dao.repositories.support.IDontComeToDay;
+import com.example.demo.exception.ExceptionDB;
 import com.example.demo.exception.SeveralException;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -34,6 +37,8 @@ public class FillingFieldsHelper {
     private final IVisitorsRepository visitorsRepository;
     private final IVisitsRepository visitsRepository;
     private final IPassRepository passRepository;
+    private final IComeToDay comeToDay;
+    private final IDontComeToDay dontComeToDay;
     private static final Pattern INTEGER_NUM = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
     private static final Pattern LETTERS = Pattern.compile("^[а-яА-Я]+$");
     private static final Pattern FIRST_NUMBER_IN_PHONE = Pattern.compile("7");
@@ -56,6 +61,8 @@ public class FillingFieldsHelper {
         this.visitorsRepository = new VisitorsRepository(jdbcTemplate);
         this.passRepository = new PassRepository(jdbcTemplate);
         this.visitsRepository = new VisitsRepository(jdbcTemplate);
+        this.comeToDay = new com.example.demo.dao.repositories.impl.support.ComeToDay(jdbcTemplate);
+        this.dontComeToDay = new com.example.demo.dao.repositories.impl.support.DontComeToDay(jdbcTemplate);
     }
 
     public ObservableList<Pass> getTablePass(StringProperty inputPhoneNumber){
@@ -100,6 +107,23 @@ public class FillingFieldsHelper {
         }
         return Optional.empty();
     }
+
+    private Optional<List<com.example.demo.dao.supportTables.ComeToDay>> getAllComeToday() {
+        return comeToDay.getAllComeToDay();
+    }
+
+    public ObservableList<com.example.demo.dao.supportTables.ComeToDay> getObservableListAllComeToday() {
+        Optional<List<com.example.demo.dao.supportTables.ComeToDay>> listAll = getAllComeToday();
+        return listAll.map(FXCollections::observableArrayList).orElseGet(FXCollections::emptyObservableList);
+    }
+
+    public ObservableList<com.example.demo.dao.supportTables.DontComeToDay> getObservableListDontComeToday() {
+        Optional<List<com.example.demo.dao.supportTables.DontComeToDay>> listAll = getDontComeToday();
+        return listAll.map(FXCollections::observableArrayList).orElseGet(FXCollections::emptyObservableList);
+    }
+
+    private Optional<List<com.example.demo.dao.supportTables.DontComeToDay>> getDontComeToday() {
+        return dontComeToDay.getDontComeToDay();    }
 
     public boolean deletePassFromDB(Integer passId) {
         return passRepository.deletePass(passId);
@@ -667,7 +691,7 @@ public class FillingFieldsHelper {
         return false;
     }
 
-    public boolean createVisit(Visits visit) {
+    public boolean createVisit(Visits visit) throws ExceptionDB {
         return visitsRepository.createVisit(visit);
     }
 

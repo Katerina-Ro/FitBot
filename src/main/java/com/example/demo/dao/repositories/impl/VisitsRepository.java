@@ -2,6 +2,7 @@ package com.example.demo.dao.repositories.impl;
 
 import com.example.demo.dao.Visits;
 import com.example.demo.dao.repositories.IVisitsRepository;
+import com.example.demo.exception.ExceptionDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -29,6 +30,8 @@ public class VisitsRepository implements IVisitsRepository {
 
     private static final String FIND_ALL_VISITS_BY_PASS_ID = "SELECT * From pass_schema.visits WHERE pass_id = :passId";
 
+    private static final String INSERT_VISIT = "";
+
     private static final String UPDATE_VISIT = "UPDATE pass_schema.visits " +
             "SET pass_schema.visits.date_visit = :dateVisit, " +
             "pass_schema.visits.count_visit = :countVisits " +
@@ -52,8 +55,10 @@ public class VisitsRepository implements IVisitsRepository {
     }
 
     @Override
-    public boolean createVisit(Visits visits) {
-        return false;
+    public boolean createVisit(Visits visits) throws ExceptionDB {
+        Map<String, Object> paramMap = getParamMap(visits);
+        int createdPass = jdbcTemplate.update(INSERT_VISIT, paramMap);
+        return createdPass > 0;
     }
 
     @Override

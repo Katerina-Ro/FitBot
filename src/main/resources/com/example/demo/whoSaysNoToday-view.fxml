@@ -12,12 +12,13 @@
    <children>
       <AnchorPane layoutY="124.0" prefHeight="354.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
          <children>
-            <TableView fx:id="tableWhichPass" layoutY="-35.0" prefHeight="334.0" prefWidth="700.0" style="-fx-background-color: #f2f0f0;">
+            <TableView fx:id="tableView" layoutY="-35.0" prefHeight="334.0" prefWidth="700.0" style="-fx-background-color: #f2f0f0;">
                <columns>
                   <TableColumn fx:id="phoneNumberColumn" editable="false" prefWidth="133.59995114803314" text="Номер телефона" />
-                  <TableColumn fx:id="firstNameColumn" editable="false" prefWidth="190.0" text="Фамилия" />
-                  <TableColumn fx:id="nameColumn" editable="false" prefWidth="190.0" text="Имя" />
-                  <TableColumn fx:id="patronymicColumn" prefWidth="190.0" text="Отчество" />
+                  <TableColumn fx:id="firstNameColumn" editable="false" prefWidth="169.60003662109375" text="Фамилия" />
+                  <TableColumn fx:id="nameColumn" editable="false" prefWidth="139.20001220703125" text="Имя" />
+                  <TableColumn fx:id="patronymicColumn" prefWidth="159.19992065429688" text="Отчество" />
+                  <TableColumn fx:id="todayColumn" prefWidth="96.79998779296875" text="Сегодня" />
                </columns>
             </TableView>
             <Button fx:id="backButton" layoutX="30.0" layoutY="316.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="78.0" text="Назад" />

@@ -13,22 +13,18 @@ import java.io.IOException;
 public class StartController {
     @FXML
     private Button actionWithPassButton;
-
     @FXML
     private Button actionWithStudentButton;
-
+    @FXML
+    private Button actionWithVisitsStudentButton;
     @FXML
     private Button closeApplicationButton;
-
     @FXML
     private Button settingsBotButton;
-
     @FXML
     private Button whoComeToDayButton;
-
     @FXML
     private Button whoDontComeToDayButton;
-
     @FXML
     private Button whoNothingSayButton;
 
@@ -39,7 +35,7 @@ public class StartController {
         whoNothingSayButton.setOnAction(event -> openWindowWhoNothingSay(image));
         actionWithPassButton.setOnAction(event -> openWindowActionWithPass(image));
         actionWithStudentButton.setOnAction(event -> openWindowActionWithStudent(image));
-        // getInfoAboutPassButton.setOnAction(event -> openWindowGetInfoAboutStudent());
+        actionWithVisitsStudentButton.setOnAction(event -> openWindowActionWithVisits(image));
         closeApplicationButton.setOnAction(event -> primaryStage.close());
         settingsBotButton.setOnAction(actionEvent -> openWindowSettingsBot(image));
     }
@@ -60,6 +56,26 @@ public class StartController {
             actionsWithStudentController.initialize(stageActionWithStudent, image);
 
             stageActionWithStudent.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openWindowActionWithVisits(Image image) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/actionsWithVisits-view.fxml"));
+        Parent root1;
+        try {
+            root1 = fxmlLoader.load();
+            Stage stageActionWithVisits = new Stage();
+            stageActionWithVisits.setResizable(false);
+            stageActionWithVisits.getIcons().add(image);
+            stageActionWithVisits.setTitle("Посещения студента");
+            stageActionWithVisits.setScene(new Scene(root1, 672, 375));
+
+            ActionWithVisitsController actionWithVisitsController = fxmlLoader.getController();
+            actionWithVisitsController.initialize(stageActionWithVisits, image);
+
+            stageActionWithVisits.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

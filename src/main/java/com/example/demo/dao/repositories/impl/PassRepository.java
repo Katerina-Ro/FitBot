@@ -18,7 +18,6 @@ import java.util.Optional;
 
 @Repository
 public class PassRepository implements IPassRepository {
-
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     private static final String FIND_PHONE_NUMBER_BY_PASS_ID = "SELECT pass_schema.pass_table.phoneNumber FROM pass_schema.pass_table " +

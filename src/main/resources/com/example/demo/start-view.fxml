@@ -18,12 +18,12 @@
                         <Insets left="35.0" top="35.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="whoDontComeToDayButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="251.0" text="Кто сегодня не придет на занятие">
+                  <Button fx:id="whoDontComeToDayButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Кто сегодня не придет на занятие">
                      <VBox.margin>
                         <Insets left="35.0" top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="whoNothingSayButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Кто ничего не ответил">
+                  <Button fx:id="whoNothingSayButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Кто ничего не ответил">
                      <VBox.margin>
                         <Insets left="35.0" top="10.0" />
                      </VBox.margin>
@@ -34,12 +34,17 @@
             <Button fx:id="closeApplicationButton" layoutX="31.0" layoutY="261.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Выйти из приложения" />
             <VBox layoutX="327.0" prefHeight="240.0" prefWidth="343.0" style="-fx-background-color: #f2f0f0;">
                <children>
-                  <Button fx:id="actionWithPassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Действия с абонементом">
+                  <Button fx:id="actionWithPassButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Действия с абонементом">
                      <VBox.margin>
                         <Insets left="55.0" top="35.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="actionWithStudentButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Действия с карточкой студента">
+                  <Button fx:id="actionWithStudentButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Действия с карточкой студента">
+                     <VBox.margin>
+                        <Insets left="55.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="actionWithVisitsStudentButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Действия спосещениями студента">
                      <VBox.margin>
                         <Insets left="55.0" top="10.0" />
                      </VBox.margin>
