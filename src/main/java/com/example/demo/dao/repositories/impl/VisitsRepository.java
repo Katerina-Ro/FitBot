@@ -33,9 +33,9 @@ public class VisitsRepository implements IVisitsRepository {
     private static final String INSERT_VISIT = "";
 
     private static final String UPDATE_VISIT = "UPDATE pass_schema.visits " +
-            "SET pass_schema.visits.date_visit = :dateVisit, " +
-            "pass_schema.visits.count_visit = :countVisits " +
-            "WHERE pass_schema.visits.pass_id = :passId";
+            "SET pass_schema.visits.date_visit = coalesce(:dateVisit, date_visit) " +
+            "pass_schema.visits.count_visit = coalesce(:countVisits, count_visit) " +
+            "WHERE pass_schema.visits.pass_id = coalesce(:passId, pass_id)";
 
     private static final String DELETE_VISITS = "DELETE from pass_schema.visits " +
             "WHERE pass_schema.visits.pass_id = :passId";

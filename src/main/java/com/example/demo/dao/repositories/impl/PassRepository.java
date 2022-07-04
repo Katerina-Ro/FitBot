@@ -35,18 +35,18 @@ public class PassRepository implements IPassRepository {
             "values (:phoneNumber, :dateStart, :dateEnd, :visitLimit, :freezeLimit, :dateStartFreeze)";
 
     private static final String UPDATE_PASS = "UPDATE pass_schema.pass_table" +
-            "SET tel_num = phoneNumber" +
-            ",date_start = dateStart " +
-            ",date_end = dateEnd " +
-            ",visit_limit = visitLimit " +
-            "WHERE pass_id = :numPass";
+            "SET tel_num = coalesce(:phoneNumber, tel_num)" +
+            ",date_start = coalesce(:dateStart, date_start) " +
+            ",date_end = coalesce(:dateEnd, date_end) " +
+            ",visit_limit = coalesce(:visitLimit, visit_limit) " +
+            "WHERE pass_id = coalesce(:numPass, pass_id)";
 
     private static final String UPDATE_IF_FREEZE = "UPDATE pass_schema.pass_table" +
-            "SET tel_num = phoneNumber" +
-            ",date_start = dateStart " +
-            ",date_end = dateEnd " +
-            ",visit_limit = visitLimit " +
-            "WHERE pass_id = :numPass";
+            "SET tel_num = coalesce(:phoneNumber, tel_num)" +
+            ",date_start = coalesce(:dateStart, date_start) " +
+            ",date_end = coalesce(:dateEnd, date_end) " +
+            ",visit_limit = coalesce(:visitLimit, visit_limit) " +
+            "WHERE pass_id = coalesce(:numPass, pass_id)";
 
     private static final String UPDATE_PHONE_NUMBER_IN_PASS = "UPDATE pass_schema.pass_table " +
             "SET tel_num = :newValuePhoneNumber WHERE tel_num = :oldValuePhoneNumber";
