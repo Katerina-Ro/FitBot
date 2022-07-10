@@ -50,7 +50,6 @@ public class VisitorsRepository implements IVisitorsRepository {
         if (visitor.isEmpty()) {
             return Optional.empty();
         }
-        System.out.println("зашли в findVisitorByPhoneNumber" + visitor.get(0));
         return Optional.ofNullable(visitor.get(0));
     }
 

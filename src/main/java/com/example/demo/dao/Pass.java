@@ -15,6 +15,7 @@ public class Pass {
     private Integer visitLimit;
     private Integer freezeLimit;
     private LocalDate dateStartFreeze;
+    private Integer visitsLeft;
 
     @Override
     public String toString() {

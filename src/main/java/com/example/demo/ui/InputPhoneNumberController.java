@@ -70,6 +70,10 @@ public class InputPhoneNumberController {
     private final ObjectProperty<LocalDate> dateStartFreezeValueProperty = new SimpleObjectProperty<>();
 
     @FXML
+    private Label leftVisitsValue;
+    private final IntegerProperty leftVisitsValueProperty = new SimpleIntegerProperty();
+
+    @FXML
     private Label countFreeze;
     @FXML
     private Label countFreezeValue;
@@ -219,6 +223,13 @@ public class InputPhoneNumberController {
                 dateStartFreezeValueProperty.setValue(newValue7);
             });
             dateStartFreezeValue.textProperty().bindBidirectional(dateStartFreezeValueProperty, new LocalDateStringConverter());
+
+            // Заполняем количество оставшихся посещений по текущему абонементу
+            leftVisitsValueProperty.setValue(p.getVisitsLeft());
+            leftVisitsValueProperty.addListener((observable77, oldValue77, newValue77) -> {
+                leftVisitsValueProperty.setValue(newValue77);
+            });
+            leftVisitsValue.textProperty().bindBidirectional(leftVisitsValueProperty, new NumberStringConverter());
         }
     }
 
@@ -271,5 +282,12 @@ public class InputPhoneNumberController {
             dateStartFreezeValueProperty.setValue(newValue7);
         });
         dateStartFreezeValue.textProperty().bindBidirectional(dateStartFreezeValueProperty, new LocalDateStringConverter());
+
+        // Заполняем количество оставшихся посещений по текущему абонементу
+        leftVisitsValueProperty.setValue(null);
+        leftVisitsValueProperty.addListener((observable77, oldValue77, newValue77) -> {
+            leftVisitsValueProperty.setValue(newValue77);
+        });
+        leftVisitsValue.textProperty().bindBidirectional(leftVisitsValueProperty, new NumberStringConverter());
     }
 }

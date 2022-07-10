@@ -27,10 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class FillingFieldsHelper {
@@ -149,6 +146,18 @@ public class FillingFieldsHelper {
             classesLeft = String.valueOf(pass.getVisitLimit() - cumulativeTotal);
         }
         return Optional.ofNullable(classesLeft);
+    }
+
+    public Integer calculateVisitsLeftByActualPass(Pass pass) {
+        int cumulativeTotal = 0;
+        Optional<List<Visits>> listVisits = visitsRepository.findAllVisitsByPassId(pass.getNumPass());
+        if (listVisits.isPresent()) {
+            for (Visits v: listVisits.get()) {
+                int countVisitInOneDay = v.getCountVisit();
+                cumulativeTotal += countVisitInOneDay;
+            }
+        }
+        return pass.getVisitLimit() - cumulativeTotal;
     }
 
     /**
@@ -281,6 +290,12 @@ public class FillingFieldsHelper {
             Optional<List<Pass>> listPass = getActualPassByPhoneNumber(phoneNumber);
             if (listPass.isPresent() && !listPass.get().isEmpty()) {
                 if (listPass.get().size() == 1) {
+                    Pass passFromList = listPass.get().get(0);
+                    Integer visitsLeft = calculateVisitsLeftByActualPass(passFromList);
+                    passFromList.setVisitsLeft(visitsLeft);
+                    listPass.get().remove(listPass.get().get(0));
+                    listPass.get().add(passFromList);
+
                     return  FXCollections.observableArrayList(listPass.get());
                 } else {
                     // здесь вписать новое окно с выбором, какой именно абонемент (из двух) нужен?

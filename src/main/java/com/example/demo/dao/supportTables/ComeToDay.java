@@ -16,7 +16,8 @@ public class ComeToDay {
     private String patronymic;
     private LocalDate currencyDate = LocalDate.now(ZoneId.of("GMT+03:00"));
 
-    public ComeToDay() {}
+    public ComeToDay() {
+    }
 
     @Override
     public String toString() {

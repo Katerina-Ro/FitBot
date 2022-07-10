@@ -6,6 +6,7 @@ import com.example.demo.dao.supportTables.ComeToDay;
 import com.example.demo.exception.ExceptionDB;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
+import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,7 +36,7 @@ public class WhoComeTodayController {
     @FXML
     private TableColumn<ComeToDay, String> patronymicColumn;
     @FXML
-    private TableColumn<ComeToDay, String> phoneNumberColumn;
+    private TableColumn<ComeToDay, StringProperty> phoneNumberColumn;
     @FXML
     private TableColumn<ComeToDay, LocalDate> todayColumn;
     @FXML
