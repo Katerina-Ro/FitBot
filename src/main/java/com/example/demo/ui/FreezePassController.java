@@ -92,6 +92,7 @@ public class FreezePassController {
         for (Pass p : passObservableList) {
             // Заполняем поле "Номер абонемента"
             passIdValueProperty.setValue(p.getNumPass());
+            passIdForDB.set(p.getNumPass());
             passIdValueProperty.addListener((observable1, oldValue1, newValue1) -> {
                 passIdValueProperty.setValue(newValue1);
                 passIdForDB.set((Integer) newValue1);

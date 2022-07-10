@@ -24,6 +24,8 @@ public interface IPassRepository {
 
     boolean updateIfFreeze(Pass dataFreeze);
 
+    boolean updateIfUnFreeze(Integer passId);
+
     boolean updatePhoneNumberInPass(@NonNull String oldValuePhoneNumber, @NonNull String newValuePhoneNumber);
 
     boolean deletePass(Integer passId);

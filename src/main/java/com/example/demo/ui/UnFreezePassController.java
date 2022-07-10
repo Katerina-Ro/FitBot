@@ -23,7 +23,7 @@ public class UnFreezePassController {
     private final FillingFieldsHelper fillingFieldsHelper;
     private ObservableList<Pass> passObservableList;
     private AtomicReference<String> phoneNumberForSearch = new AtomicReference<>();
-    private AtomicReference<String> dateEndFreezeForDB = new AtomicReference<>();
+    //private AtomicReference<String> dateEndFreezeForDB = new AtomicReference<>();
     private AtomicInteger passIdForDB = new AtomicInteger();
 
     @FXML
@@ -59,7 +59,7 @@ public class UnFreezePassController {
 
     private void observeInputPhoneNumber(Image image) {
         FillingFieldsHelper.correctInputPhoneLine(inputPhoneNumber);
-        FillingFieldsHelper.correctInputDateLine(dateEndFreezeValue);
+        //FillingFieldsHelper.correctInputDateLine(dateEndFreezeValue);
         unFreezeButton.setDisable(true);
 
         inputPhoneNumber.textProperty().bindBidirectional(phoneNumberProperty, new DefaultStringConverter());
@@ -85,9 +85,12 @@ public class UnFreezePassController {
     private void fillGetInfoPass(Image image) {
         for (Pass p : passObservableList) {
             // Заполняем поле "Номер абонемента"
+            System.out.println("p.getNumPass() = " + p.getNumPass());
             passIdValueProperty.setValue(p.getNumPass());
+            passIdForDB.set(p.getNumPass());
             passIdValueProperty.addListener((observable1, oldValue1, newValue1) -> {
                 passIdValueProperty.setValue(newValue1);
+                System.out.println("passIdForDB.set((Integer) newValue1) = " + (Integer) newValue1);
                 passIdForDB.set((Integer) newValue1);
             });
             passIdValue.textProperty().bindBidirectional(passIdValueProperty, new NumberStringConverter());
@@ -112,36 +115,19 @@ public class UnFreezePassController {
 
     private void observableNewValues(Image image) {
         FillingFieldsHelper.correctInputPhoneLine(inputPhoneNumber);
-        FillingFieldsHelper.correctInputDateLine(dateEndFreezeValue);
-
-        observableNewDataFreeze(image);
-    }
-
-    private void observableNewDataFreeze(Image image) {
-        dateEndFreezeValue.textProperty().addListener((observable35, oldValue35, newValue35) -> {
-            if (FillingFieldsHelper.isDate(dateEndFreezeValue)) {
-                dateEndFreezeForDB.set(newValue35);
-                unFreezeButton.setDisable(false);
-                unFreezeButton.setOnAction(event -> unFreezePassInDB(image));
-            } else {
-                dateEndFreezeForDB.set(null);
-                unFreezeButton.setDisable(true);
-            }
-        });
+        unFreezeButton.setDisable(false);
+        unFreezeButton.setOnAction(event -> unFreezePassInDB(image));
     }
 
     private void unFreezePassInDB(Image image) {
-        Pass pass = new Pass();
-        if (passIdForDB != null && FillingFieldsHelper.isNumbers(String.valueOf(passIdForDB))) {
-            pass.setNumPass(passIdForDB.get());
+        System.out.println("passIdForDB = " + passIdForDB);
+        boolean isSuccessCreateFreeze = false;
+        if (passIdForDB != null && FillingFieldsHelper.isNumbers(String.valueOf(passIdForDB))
+                && passIdForDB.get() != 0) {
+            isSuccessCreateFreeze = fillingFieldsHelper.unFreezePass(passIdForDB.get());
         }
-        if (dateEndFreezeForDB != null && dateEndFreezeForDB.get() != null) {
-            pass.setDateStartFreeze(null);
-        }
-        boolean isSuccessCreateFreeze = fillingFieldsHelper.freezePass(pass);
-
         if (isSuccessCreateFreeze) {
-            String message = "Абонемент заморожен";
+            String message = "Абонемент разаморожен";
             new GetCommonWindowHelper().openWindowSuccess(image, message);
         } else {
             String messageError = "Произошла ошибка при попытке заморозки. Обратитесь к разработчику";

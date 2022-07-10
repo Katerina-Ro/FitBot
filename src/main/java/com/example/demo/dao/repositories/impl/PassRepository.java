@@ -34,19 +34,22 @@ public class PassRepository implements IPassRepository {
             "(tel_num, date_start, date_end, visit_limit, freeze_limit, date_freeze)" +
             "values (:phoneNumber, :dateStart, :dateEnd, :visitLimit, :freezeLimit, :dateStartFreeze)";
 
-    private static final String UPDATE_PASS = "UPDATE pass_schema.pass_table" +
+    private static final String UPDATE_PASS = "UPDATE pass_schema.pass_table " +
             "SET tel_num = coalesce(:phoneNumber, tel_num)" +
             ",date_start = coalesce(:dateStart, date_start) " +
             ",date_end = coalesce(:dateEnd, date_end) " +
             ",visit_limit = coalesce(:visitLimit, visit_limit) " +
             "WHERE pass_id = coalesce(:numPass, pass_id)";
 
-    private static final String UPDATE_IF_FREEZE = "UPDATE pass_schema.pass_table" +
+    private static final String UPDATE_IF_FREEZE = "UPDATE pass_schema.pass_table " +
             "SET tel_num = coalesce(:phoneNumber, tel_num)" +
             ",date_start = coalesce(:dateStart, date_start) " +
             ",date_end = coalesce(:dateEnd, date_end) " +
             ",visit_limit = coalesce(:visitLimit, visit_limit) " +
             "WHERE pass_id = coalesce(:numPass, pass_id)";
+
+    private static final String UPDATE_IF_UNFREEZE = "UPDATE pass_schema.pass_table " +
+            "SET date_freeze = :dateFreeze WHERE pass_id = :numPass";
 
     private static final String UPDATE_PHONE_NUMBER_IN_PASS = "UPDATE pass_schema.pass_table " +
             "SET tel_num = :newValuePhoneNumber WHERE tel_num = :oldValuePhoneNumber";
@@ -114,6 +117,13 @@ public class PassRepository implements IPassRepository {
     public boolean updateIfFreeze(Pass dataFreeze) {
         Map<String, Object> paramMap = getParamMap(dataFreeze);
         int updatePass = jdbcTemplate.update(UPDATE_PASS, paramMap);
+        return updatePass > 0;
+    }
+
+    @Override
+    public boolean updateIfUnFreeze(Integer passId) {
+        Map<String, Object> paramMap = getParamMapForUnFreeze(passId);
+        int updatePass = jdbcTemplate.update(UPDATE_IF_UNFREEZE, paramMap);
         return updatePass > 0;
     }
 
@@ -197,6 +207,13 @@ public class PassRepository implements IPassRepository {
         if (dateStartFreeze != null) {
             paramMap.put("dateStartFreeze",dateStartFreeze);
         }
+        return paramMap;
+    }
+
+    private Map<String, Object> getParamMapForUnFreeze(Integer passId) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("numPass", passId);
+        paramMap.put("dateFreeze", null);
         return paramMap;
     }
 }

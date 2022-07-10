@@ -84,6 +84,10 @@ public class FillingFieldsHelper {
         return visitorsRepository.create(visitor);
     }
 
+    public boolean unFreezePass(Integer passId) {
+        return passRepository.updateIfUnFreeze(passId);
+    }
+
     /**
      * Получение информации об актуальном абонементе
      * @return список абонементов. По логике кода заложено, что может быть несколько активных абонементов.

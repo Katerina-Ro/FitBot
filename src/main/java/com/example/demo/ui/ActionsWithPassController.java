@@ -54,7 +54,7 @@ public class ActionsWithPassController {
             stageUnFreezePass.setResizable(false);
             stageUnFreezePass.getIcons().add(image);
             stageUnFreezePass.setTitle("Разморозка абонемента");
-            stageUnFreezePass.setScene(new Scene(root1, 700, 288));
+            stageUnFreezePass.setScene(new Scene(root1, 578, 292));
 
             UnFreezePassController unFreezePassController = fxmlLoader.getController();
             unFreezePassController.initialize(stageUnFreezePass, image);
