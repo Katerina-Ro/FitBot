@@ -63,7 +63,7 @@ public class ActionWithVisitsController {
             stageCreateVisit.setResizable(false);
             stageCreateVisit.getIcons().add(image);
             stageCreateVisit.setTitle("Внесение посещения студента в базу данных");
-            stageCreateVisit.setScene(new Scene(root1, 648, 413));
+            stageCreateVisit.setScene(new Scene(root1, 474, 300));
 
             CreateVisitController createVisitController = fxmlLoader.getController();
             createVisitController.initialize(stageCreateVisit, image);

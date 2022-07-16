@@ -52,8 +52,7 @@ public class CreateStudentController {
         backButton.setOnAction(event -> stageCreateStudent.close());
     }
 
-    @FXML
-    public void observableFields(Image image) {
+    private void observableFields(Image image) {
         createStudentButton.setDisable(true);
         createPassButton.setDisable(true);
         newPhoneNumberValue.textProperty().addListener((observable, oldValue, newValue) -> {
