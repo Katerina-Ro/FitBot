@@ -1,7 +1,10 @@
 package com.example.demo.ui;
 
 import com.example.demo.dao.Pass;
+import com.example.demo.dao.Visitors;
+import com.example.demo.dao.Visits;
 import com.example.demo.util.FillingFieldsHelper;
+import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
@@ -12,6 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
+
+import java.text.ParseException;
+import java.time.LocalDate;
 
 public class CreateVisitController {
     private final FillingFieldsHelper fillingFieldsHelper;
@@ -128,7 +134,31 @@ public class CreateVisitController {
     }
 
     private void createVisitInDB(Image image) {
+        LocalDate dateVisitForDB = null;
+        try {
+            dateVisitForDB = fillingFieldsHelper.convertFormatLocalDate(createDateVisit.getText());
+        } catch (ParseException e) {
+            String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> observableFields(image), message);
+        }
+        Integer countVisitForDB = Integer.valueOf(createCountVisitsInThisDay.getText());
 
+        Visits visits = new Visits();
+        visits.setCountVisit(countVisitForDB);
+        visits.setDateVisit(dateVisitForDB);
+        boolean isExist = visitorsRepository.findVisitorByPhoneNumber(phoneNumberForDB).isPresent();
+        if (!isExist) {
+            boolean isSuccess = visitorsRepository.create(visitor);
+            if (isSuccess) {
+                String message = "Посещение успешно внесено в базу данных";
+                new GetCommonWindowHelper().openWindowSuccess(image, message);
+            } else {
+                String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> createVisitInDB(image), message);
+            }
+        } else {
+            // openWindowSeveral(image,newPhoneNumberValue);
+        }
     }
 
     private void fillPassIdIfEmpty() {
