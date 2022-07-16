@@ -38,7 +38,7 @@ public class GetCommonWindowHelper {
     }
 
     @FXML
-    public void openWindowUnSuccess(Image image, EventHandler<ActionEvent> var1) {
+    public void openWindowUnSuccess(Image image, EventHandler<ActionEvent> var1, String messageLabel) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/unSuccessWindow-view.fxml"));
         Parent root1;
         try {
@@ -50,7 +50,7 @@ public class GetCommonWindowHelper {
             stageUnSuccessWindow.setScene(new Scene(root1, 374, 133));
 
             UnSuccessWindowController unSuccessWindowController = fxmlLoader.getController();
-            unSuccessWindowController.initialize(stageUnSuccessWindow, var1);
+            unSuccessWindowController.initialize(stageUnSuccessWindow, var1, messageLabel);
 
             stageUnSuccessWindow.show();
         } catch (IOException e) {

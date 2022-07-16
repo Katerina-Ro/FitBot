@@ -140,7 +140,8 @@ public class DeletePassController {
                 String message = "Абонемент успешно удален из базы данных";
                 new GetCommonWindowHelper().openWindowSuccess(image, message);
             } else {
-                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> deletePassFromDB(image));
+                String message = "Произошла ошибка во время удаления из базы данных. Обратитесь к разработчику";
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> deletePassFromDB(image), message);
             }
         }
     }

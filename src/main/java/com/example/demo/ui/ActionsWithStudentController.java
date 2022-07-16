@@ -14,16 +14,12 @@ import java.io.IOException;
 public class ActionsWithStudentController {
     @FXML
     private Button backToMainMenuButton;
-
     @FXML
     private Button changeStudentButton;
-
     @FXML
     private Button createStudentButton;
-
     @FXML
     private Button deleteStudentButton;
-
     @FXML
     private Button getInfoStudentButton;
 

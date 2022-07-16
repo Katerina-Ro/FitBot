@@ -131,7 +131,7 @@ public class UnFreezePassController {
             new GetCommonWindowHelper().openWindowSuccess(image, message);
         } else {
             String messageError = "Произошла ошибка при попытке заморозки. Обратитесь к разработчику";
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> unFreezePassInDB(image));
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> unFreezePassInDB(image), messageError);
         }
     }
 

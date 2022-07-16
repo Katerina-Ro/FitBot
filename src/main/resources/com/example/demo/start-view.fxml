@@ -23,11 +23,6 @@
                         <Insets left="35.0" top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="whoNothingSayButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Кто ничего не ответил">
-                     <VBox.margin>
-                        <Insets left="35.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
                </children>
             </VBox>
             <Button fx:id="settingsBotButton" layoutX="477.0" layoutY="261.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Настройки бота" />
@@ -44,7 +39,7 @@
                         <Insets left="55.0" top="10.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="actionWithVisitsStudentButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Действия спосещениями студента">
+                  <Button fx:id="actionWithVisitsStudentButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Действия с посещениями студента">
                      <VBox.margin>
                         <Insets left="55.0" top="10.0" />
                      </VBox.margin>

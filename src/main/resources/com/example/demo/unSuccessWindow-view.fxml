@@ -22,7 +22,7 @@
             </Button>
          </children>
       </AnchorPane>
-      <Label layoutX="46.0" prefHeight="58.0" prefWidth="282.0" text="Внимание! Произошла ошибка" textFill="#d7d0d0" wrapText="true">
+      <Label fx:id="textUnSuccessValueLabel" layoutX="46.0" prefHeight="58.0" prefWidth="282.0" text="Внимание! Произошла ошибка" textFill="#d7d0d0" wrapText="true">
          <font>
             <Font name="Britannic Bold" size="18.0" />
          </font>

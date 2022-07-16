@@ -5,14 +5,15 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="486.0" prefWidth="700.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.GetVisitsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="469.0" prefWidth="700.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.GetVisitsController">
    <children>
-      <AnchorPane layoutY="124.0" prefHeight="362.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
+      <AnchorPane layoutY="124.0" prefHeight="344.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
          <children>
-            <TableView fx:id="tableWhichPass" layoutY="-35.0" prefHeight="339.0" prefWidth="700.0" style="-fx-background-color: #f2f0f0;">
+            <TableView fx:id="tableWhichPass" layoutY="-43.0" prefHeight="326.0" prefWidth="700.0" style="-fx-background-color: #f2f0f0;">
                <columns>
                   <TableColumn fx:id="passNumberColumn" editable="false" prefWidth="133.59995114803314" text="Номер абонемента" />
                   <TableColumn fx:id="dateVisitColumn" editable="false" prefWidth="138.4000244140625" text="Дата визита" />
@@ -20,21 +21,10 @@
                   <TableColumn fx:id="checkMarkButton" prefWidth="192.80001831054688" />
                </columns>
             </TableView>
-            <Button fx:id="backButton" layoutX="25.0" layoutY="320.0" mnemonicParsing="false" text="Назад" />
-            <Button fx:id="changeVisitButton" layoutX="522.0" layoutY="319.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" text="Внести изменения" />
+            <Button fx:id="backButton" layoutX="25.0" layoutY="306.0" mnemonicParsing="false" text="Назад" />
+            <Button fx:id="changeVisitButton" layoutX="527.0" layoutY="305.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="149.0" text="Внести изменения" />
          </children>
       </AnchorPane>
-      <Label layoutX="8.0" layoutY="19.0" prefHeight="56.0" prefWidth="498.0" text="Номер телефона владельца абонемента" textAlignment="CENTER" textFill="#c7bfbf" wrapText="true">
-         <font>
-            <Font name="Mistral" size="36.0" />
-         </font>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets left="5.0" right="10.0" />
-         </padding>
-      </Label>
       <Label fx:id="phoneNumberVisitorsLableDB" layoutX="512.0" layoutY="19.0" prefHeight="56.0" prefWidth="178.0" textFill="#d7d0d0">
          <font>
             <Font name="Mistral" size="36.0" />
@@ -43,5 +33,21 @@
             <Insets left="10.0" />
          </padding>
       </Label>
+      <Label layoutX="14.0" layoutY="6.0" prefHeight="66.0" prefWidth="515.0" style="-fx-background-color: #fafa;" text="Введите номер телефона в поле справа в 11-значном формате, начиная с 7" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Lucida Sans Unicode" size="18.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets right="10.0" />
+         </padding>
+      </Label>
+      <TextField fx:id="inputPhoneNumber" layoutX="545.0" layoutY="30.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefColumnCount="11" prefHeight="34.0" prefWidth="132.0" promptText="79502228899" style="-fx-background-color: #fafa;">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </TextField>
    </children>
 </AnchorPane>

@@ -54,7 +54,7 @@
             </VBox>
          </children>
       </AnchorPane>
-      <Label layoutX="61.0" layoutY="14.0" prefHeight="60.0" prefWidth="549.0" text="Действия с карточкой студента" textAlignment="CENTER" textFill="#d7d0d0">
+      <Label layoutX="55.0" prefHeight="60.0" prefWidth="582.0" text="Действия с карточкой студента" textAlignment="CENTER" textFill="#d7d0d0">
          <font>
             <Font name="Mistral" size="48.0" />
          </font>

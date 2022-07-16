@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.time.LocalDate;
@@ -37,9 +36,9 @@ public class WhoSaysNoTodayController {
     }
 
     @FXML
-    void initialize(Stage stageWhoSaysNoToday, Image image) {
+    void initialize(Stage stageWhoSaysNoToday) {
         initData();
-        backButton.setOnAction(evenr -> stageWhoSaysNoToday.close());
+        backButton.setOnAction(event -> stageWhoSaysNoToday.close());
     }
 
     private void initData() {

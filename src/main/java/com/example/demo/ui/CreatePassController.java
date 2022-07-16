@@ -72,19 +72,26 @@ public class CreatePassController {
         try {
             pass.setDateStart(fillingFieldsHelper.convertFormatLocalDate(createDateStartPass.getText()));
         } catch (ParseException e) {
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> validateFields(image));
+            String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> validateFields(image), message);
         }
         pass.setVisitLimit(Integer.valueOf(createCountVisits.getText()));
         try {
             pass.setDateEnd(fillingFieldsHelper.convertFormatLocalDate(createDateEndPass.getText()));
         } catch (ParseException e) {
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> validateFields(image));
+            String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> validateFields(image), message);
         }
-        pass.setFreezeLimit(Integer.valueOf(createCountFreeze.getText()));
-        try {
-            pass.setDateStartFreeze(fillingFieldsHelper.convertFormatLocalDate(createDateStartFreeze.getText()));
-        } catch (ParseException e) {
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> validateFields(image));
+        if (createCountFreeze != null && createCountFreeze.getText() != null && !createCountFreeze.getText().isBlank()) {
+            pass.setFreezeLimit(Integer.valueOf(createCountFreeze.getText()));
+        }
+        if (createDateStartFreeze != null && createDateStartFreeze.getText() != null && !createDateStartFreeze.getText().isBlank()) {
+            try {
+                pass.setDateStartFreeze(fillingFieldsHelper.convertFormatLocalDate(createDateStartFreeze.getText()));
+            } catch (ParseException e) {
+                String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> validateFields(image), message);
+            }
         }
 
         Optional<List<Pass>> passList = fillingFieldsHelper.getPassList(pass.getPhoneNumber());
@@ -112,7 +119,8 @@ public class CreatePassController {
                 String message = "Абонемент успешно внесен в базу данных";
                 new GetCommonWindowHelper().openWindowSuccess(image, message);
             } else {
-                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> createPassInDB(image));
+                String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> createPassInDB(image), message);
             }
         } else {
             openWindowExistPass(image, createPhoneNumber);

@@ -85,12 +85,12 @@ public class WhoComeTodayController {
                     try {
                         createVisit = fillingFieldsHelper.createVisit(visit);
                     } catch (ExceptionDB e) {
-                        String messageError = e.getMessage();
-                        new GetCommonWindowHelper().openWindowUnSuccess(image, event -> writeOffVisits(image));
+                        String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                        new GetCommonWindowHelper().openWindowUnSuccess(image, event -> writeOffVisits(image), messageError);
                     }
                     if (!createVisit) {
-                        String messageError = "Занятие не записалось в базу данных";
-                        new GetCommonWindowHelper().openWindowUnSuccess(image, event -> writeOffVisits(image));
+                        String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                        new GetCommonWindowHelper().openWindowUnSuccess(image, event -> writeOffVisits(image), messageError);
                     } else {
                         String message = "Занятие успешно записано в базу данных";
                         new GetCommonWindowHelper().openWindowSuccess(image, message);

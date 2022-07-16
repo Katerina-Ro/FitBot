@@ -41,7 +41,7 @@ public class FillingFieldsHelper {
     private static final Pattern FIRST_NUMBER_IN_PHONE = Pattern.compile("7");
     private static final Pattern SECOND_NUMBER_IN_PHONE = Pattern.compile("9");
     private static final Pattern FIRST_NUMBER = Pattern.compile("0?|[123]");
-    private static final Pattern SECOND_NUMBER_IF_NO_THREE = Pattern.compile("[1-9]?");
+    private static final Pattern SECOND_NUMBER_IF_NO_THREE = Pattern.compile("[0-9]?");
     private static final Pattern SECOND_NUMBER_IF_THREE = Pattern.compile("[01]?");
     private static final Pattern FIRST_TWO_SYMBOL_IN_PHONE_NUMBER = Pattern.compile("79");
     private static final Pattern THIRD_OR_SIXTH_SYMBOL = Pattern.compile("\\.");

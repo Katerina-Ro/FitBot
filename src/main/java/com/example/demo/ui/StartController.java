@@ -32,7 +32,7 @@ public class StartController {
     public void initialize(Stage primaryStage, Image image) {
         whoComeToDayButton.setOnAction(event -> openWindowWhoComeToDay(image));
         whoDontComeToDayButton.setOnAction(event -> openWindowWhoDontComeToDay(image));
-        whoNothingSayButton.setOnAction(event -> openWindowWhoNothingSay(image));
+        //whoNothingSayButton.setOnAction(event -> openWindowWhoNothingSay(image));
         actionWithPassButton.setOnAction(event -> openWindowActionWithPass(image));
         actionWithStudentButton.setOnAction(event -> openWindowActionWithStudent(image));
         actionWithVisitsStudentButton.setOnAction(event -> openWindowActionWithVisits(image));
@@ -136,7 +136,7 @@ public class StartController {
             stageWhoDontComeToDay.setScene(new Scene(root1, 700, 480));
 
             WhoSaysNoTodayController whoSaysNoTodayController = fxmlLoader.getController();
-            whoSaysNoTodayController.initialize(stageWhoDontComeToDay, image);
+            whoSaysNoTodayController.initialize(stageWhoDontComeToDay);
 
             stageWhoDontComeToDay.show();
         } catch (IOException e) {

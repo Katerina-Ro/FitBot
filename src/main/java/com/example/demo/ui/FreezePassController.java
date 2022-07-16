@@ -180,7 +180,7 @@ public class FreezePassController {
                 pass.setDateStartFreeze(fillingFieldsHelper.convertFormatLocalDate(newDateStartFreezeForDB.get()));
             } catch (ParseException e) {
                 String messageError = "Ошибка парсинга даты при попытке заморозки. Обратитесь к разработчику";
-                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> freezePassInDB(image));
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> freezePassInDB(image), messageError);
             }
         }
         if (newCountFreezeForDB != null && FillingFieldsHelper.isNumbers(String.valueOf(newCountFreezeForDB))) {
@@ -193,7 +193,7 @@ public class FreezePassController {
             new GetCommonWindowHelper().openWindowSuccess(image, message);
         } else {
             String messageError = "Произошла ошибка при попытке заморозки. Обратитесь к разработчику";
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> freezePassInDB(image));
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> freezePassInDB(image), messageError);
         }
     }
 

@@ -68,7 +68,7 @@ public class ChangePassController {
         FillingFieldsHelper.correctInputDateLine(date);
         dateStartPassInputProperty.setValue(getLocalDateFromTextField(date));
         dateStartPassInputProperty.addListener((observable13, oldValue13, newValue13) -> {
-            if (fillingFieldsHelper.isDate(date)) {
+            if (FillingFieldsHelper.isDate(date)) {
                 dateStartPassInputProperty.setValue(newValue13);
             }
         });

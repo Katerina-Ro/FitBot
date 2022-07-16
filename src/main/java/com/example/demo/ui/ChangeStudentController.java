@@ -17,6 +17,7 @@ import javafx.util.converter.DefaultStringConverter;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ChangeStudentController {
+    private System.Logger logger;
     private final FillingFieldsHelper fillingFieldsHelper;
     private ObservableList<Visitors> visitorsObservableList;
     private AtomicReference<String> phoneNumberForDB = new AtomicReference<>();
@@ -306,7 +307,11 @@ public class ChangeStudentController {
             String message = "Карточка студента успешно обновлена в базе данных";
             new GetCommonWindowHelper().openWindowSuccess(image, message);
         } else {
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateStudentInDB(image));
+            String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+            String messageForDeveloper = String.format("\nПроизошла ошибка в ChangeStudentController во время записи " +
+                    "в updateVisitors номер телефона %s", phoneNumberForSearch);
+            logger.log(System.Logger.Level.ERROR, messageForDeveloper);
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateStudentInDB(image), message);
         }
     }
 }

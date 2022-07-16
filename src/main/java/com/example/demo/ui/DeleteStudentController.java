@@ -202,7 +202,8 @@ public class DeleteStudentController {
                 String message = "Карточка студента успешно удалена в базе данных";
                 new GetCommonWindowHelper().openWindowSuccess(image, message);
             } else {
-                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> deleteStudentFromDB(image));
+                String message = "Произошла ошибка во время удаления из базы данных. Обратитесь к разработчику";
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> deleteStudentFromDB(image), message);
             }
         }
     }
