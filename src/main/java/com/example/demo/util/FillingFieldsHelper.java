@@ -76,6 +76,25 @@ public class FillingFieldsHelper {
         return FXCollections.emptyObservableList();
     }
 
+    public ObservableList<Visits> getAllVisits(StringProperty inputPhoneNumber) {
+        String phoneNumber = String.valueOf(inputPhoneNumber.get());
+        Optional<List<Pass>> passList = getActualPassByPhoneNumber(phoneNumber);
+        List<Pass> list = passList.map(FXCollections::observableArrayList).orElseGet(FXCollections::emptyObservableList);
+        if (!list.isEmpty()) {
+            if (list.size() == 1) {
+                for (Pass p : list) {
+                    Optional<List<Visits>> visitsList = getVisitFromDB(p.getNumPass());
+                    if (visitsList.isPresent()) {
+                        return FXCollections.observableArrayList(visitsList.get());
+                    }
+                }
+            } else {
+                // TODO: вставить условие, если в списоке абонементов больше, чем 1 абонемент. Нужно окно выбора пасса
+            }
+        }
+        return FXCollections.emptyObservableList();
+    }
+
     public boolean freezePass(Pass freezeData) {
         return passRepository.updateIfFreeze(freezeData);
     }
@@ -278,6 +297,8 @@ public class FillingFieldsHelper {
     public Optional<List<Pass>> getActualPassByPhoneNumber(String phoneNumber) {
         Optional<List<Pass>> passListFromDB = passRepository.findPassByPhone(phoneNumber);
         if (passListFromDB.isPresent()) {
+            // TODO: вставить условие- проверку, если актуальных пассов больше, чем 1, то нужно встаивть еще тодно
+            //  окно выбора номер пасса
             List<Pass> listActualPass = new ArrayList<>();
             for (Pass p: passListFromDB.get()) {
                 if (haveDayInPassCalculate(p)) {
@@ -480,6 +501,8 @@ public class FillingFieldsHelper {
     public Optional<List<Integer>> getListPassIdForDeleteVisits(String phoneNumber) {
         Optional<List<Pass>> passListFromDB = passRepository.findPassByPhone(phoneNumber);
         if (passListFromDB.isPresent()) {
+            // TODO: вставить условие, если пасс == 1 +, если пассов больше, чем 1, то вчтавить для этого новоое
+            //  окно выбора пасса по ид
             List<Integer> listPassId = new ArrayList<>();
             for(Pass p: passListFromDB.get()) {
                 Integer passId = p.getNumPass();

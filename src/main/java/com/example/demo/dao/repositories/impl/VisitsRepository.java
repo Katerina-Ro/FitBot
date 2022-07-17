@@ -30,7 +30,8 @@ public class VisitsRepository implements IVisitsRepository {
 
     private static final String FIND_ALL_VISITS_BY_PASS_ID = "SELECT * From pass_schema.visits WHERE pass_id = :passId";
 
-    private static final String INSERT_VISIT = "";
+    private static final String INSERT_VISIT = "insert into pass_schema.visits (pass_id, date_visit, count_visit)" +
+            "values (:passId, :dateVisit, :countVisits)";
 
     private static final String UPDATE_VISIT = "UPDATE pass_schema.visits " +
             "SET pass_schema.visits.date_visit = coalesce(:dateVisit, date_visit) " +

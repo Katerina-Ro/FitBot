@@ -1,5 +1,6 @@
 package com.example.demo.ui;
 
+import com.example.demo.util.GetCommonWindowHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -49,7 +50,8 @@ public class ActionsWithStudentController {
 
             stageDeleteStudent.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowDeleteStudent(image), message);
         }
     }
 
@@ -70,7 +72,8 @@ public class ActionsWithStudentController {
 
             stageGetInfoStudent.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowGetInfoStudent(image, phoneNumber), message);
         }
     }
 
@@ -91,7 +94,8 @@ public class ActionsWithStudentController {
 
             stageCreateStudent.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowCreateStudent(image), message);
         }
     }
 
@@ -112,7 +116,8 @@ public class ActionsWithStudentController {
 
             stageChangeStudent.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowChangeStudent(image, phoneNumber), message);
         }
     }
 }

@@ -49,7 +49,8 @@ public class ActionWithVisitsController {
 
             stageChangeVisit.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowChangeVisit(image), message);
         }
     }
 
@@ -70,7 +71,8 @@ public class ActionWithVisitsController {
 
             stageCreateVisit.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowCreateVisit(image), message);
         }
     }
 
@@ -91,7 +93,8 @@ public class ActionWithVisitsController {
 
             stageDeleteVisit.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowDeleteVisit(image), message);
         }
     }
 
@@ -105,15 +108,15 @@ public class ActionWithVisitsController {
             stageDeleteVisit.setResizable(false);
             stageDeleteVisit.getIcons().add(image);
             stageDeleteVisit.setTitle("Информация о посещениях студента по абонементу");
-            stageDeleteVisit.setScene(new Scene(root1, 700, 486));
+            stageDeleteVisit.setScene(new Scene(root1, 700, 469));
 
             GetVisitsController getVisitsController = fxmlLoader.getController();
             getVisitsController.initialize(stageDeleteVisit, image);
 
             stageDeleteVisit.show();
         } catch (IOException e) {
-            String message = "Не удалось загрузить окно. Обратитесь к разработчику";
-            new GetCommonWindowHelper().openWindowSuccess(image, message);;
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowGetInfoAllVisits(image), message);
         }
     }
 }

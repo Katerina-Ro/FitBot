@@ -1,5 +1,6 @@
 package com.example.demo.ui;
 
+import com.example.demo.util.GetCommonWindowHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -61,7 +62,8 @@ public class ActionsWithPassController {
 
             stageUnFreezePass.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowUnFreezePass(image), message);
         }
     }
 
@@ -82,7 +84,8 @@ public class ActionsWithPassController {
 
             stageFreezePass.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowFreezePass(image), message);
         }
     }
 
@@ -103,7 +106,8 @@ public class ActionsWithPassController {
 
             stageCreatePass.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowCreatePass(image), message);
         }
     }
 
@@ -124,7 +128,8 @@ public class ActionsWithPassController {
 
             stageChangePass.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowChangePass(image), message);
         }
     }
 
@@ -145,7 +150,8 @@ public class ActionsWithPassController {
 
             stageDeletePass.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowDeletePass(image), message);
         }
     }
 
@@ -166,7 +172,8 @@ public class ActionsWithPassController {
 
             stageGetInfoPass.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowGetInfoPass(image, phoneNumber), message);
         }
     }
 }

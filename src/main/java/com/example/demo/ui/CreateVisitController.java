@@ -1,8 +1,8 @@
 package com.example.demo.ui;
 
 import com.example.demo.dao.Pass;
-import com.example.demo.dao.Visitors;
 import com.example.demo.dao.Visits;
+import com.example.demo.exception.ExceptionDB;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.IntegerProperty;
@@ -18,6 +18,8 @@ import javafx.util.converter.NumberStringConverter;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 public class CreateVisitController {
     private final FillingFieldsHelper fillingFieldsHelper;
@@ -144,15 +146,34 @@ public class CreateVisitController {
         Integer countVisitForDB = Integer.valueOf(createCountVisitsInThisDay.getText());
 
         Visits visits = new Visits();
+        visits.setPass(passNumberLableDBProperty.get());
         visits.setCountVisit(countVisitForDB);
         visits.setDateVisit(dateVisitForDB);
-        boolean isExist = visitorsRepository.findVisitorByPhoneNumber(phoneNumberForDB).isPresent();
+        Optional<List<Visits>> listVisits = fillingFieldsHelper.getVisitFromDB(passNumberLableDBProperty.get());
+        boolean isExist = false;
+        if (listVisits.isPresent()) {
+            for (Visits v : listVisits.get()) {
+                LocalDate dateFromDB = v.getDateVisit();
+                if (dateFromDB != null) {
+                    if (dateFromDB.isEqual(visits.getDateVisit())) {
+                        isExist = true;
+                    }
+                }
+            }
+        }
+
         if (!isExist) {
-            boolean isSuccess = visitorsRepository.create(visitor);
-            if (isSuccess) {
-                String message = "Посещение успешно внесено в базу данных";
-                new GetCommonWindowHelper().openWindowSuccess(image, message);
-            } else {
+            boolean isSuccess = false;
+            try {
+                isSuccess = fillingFieldsHelper.createVisit(visits);
+                if (isSuccess) {
+                    String message = "Посещение успешно внесено в базу данных";
+                    new GetCommonWindowHelper().openWindowSuccess(image, message);
+                } else {
+                    String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                    new GetCommonWindowHelper().openWindowUnSuccess(image, event -> createVisitInDB(image), message);
+                }
+            } catch (ExceptionDB e) {
                 String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
                 new GetCommonWindowHelper().openWindowUnSuccess(image, event -> createVisitInDB(image), message);
             }
