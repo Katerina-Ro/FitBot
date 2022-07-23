@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
+
 public class ChangeVisitsController {
     @FXML
     private Button backButton;
@@ -48,7 +50,7 @@ public class ChangeVisitsController {
     private Label phoneNumberVisitorsLableDB;
 
     @FXML
-    public void initialize(Stage changeVisitsStage, Image image) {
+    public void initialize(Stage changeVisitsStage, Image image, Integer pass, LocalDate dateVisit, Integer countVisit, String inputPhoneNumber) {
 
     }
 }

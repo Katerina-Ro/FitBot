@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,9 @@ public class VisitsRepository implements IVisitsRepository {
 
     private static final String DELETE_VISITS = "DELETE from pass_schema.visits " +
             "WHERE pass_schema.visits.pass_id = :passId";
+
+    private static final String DELETE_VISITS_BY_DATE = "DELETE from pass_schema.visits " +
+            "WHERE pass_schema.visits.date_visit = :date";
 
     @Override
     public Optional<List<Visits>> findAllPassBySpecifiedDay(Date specifiedDay) {
@@ -72,6 +76,12 @@ public class VisitsRepository implements IVisitsRepository {
     @Override
     public boolean deleteVisit(Integer passId) {
         int deletedVisits = jdbcTemplate.update(DELETE_VISITS, Map.of("passId", passId));
+        return deletedVisits > 0;
+    }
+
+    @Override
+    public boolean deleteVisit(LocalDate date) {
+        int deletedVisits = jdbcTemplate.update(DELETE_VISITS_BY_DATE, Map.of("date", date));
         return deletedVisits > 0;
     }
 

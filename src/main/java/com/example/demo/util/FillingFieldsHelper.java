@@ -12,6 +12,7 @@ import com.example.demo.dao.repositories.impl.VisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitsRepository;
 import com.example.demo.dao.repositories.support.IComeToDay;
 import com.example.demo.dao.repositories.support.IDontComeToDay;
+import com.example.demo.dao.supportTables.Visit;
 import com.example.demo.exception.ExceptionDB;
 import com.example.demo.exception.SeveralException;
 import javafx.beans.property.StringProperty;
@@ -27,7 +28,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 public class FillingFieldsHelper {
@@ -76,7 +80,7 @@ public class FillingFieldsHelper {
         return FXCollections.emptyObservableList();
     }
 
-    public ObservableList<Visits> getAllVisits(StringProperty inputPhoneNumber) {
+    public ObservableList<Visit> getAllVisits(StringProperty inputPhoneNumber) {
         String phoneNumber = String.valueOf(inputPhoneNumber.get());
         Optional<List<Pass>> passList = getActualPassByPhoneNumber(phoneNumber);
         List<Pass> list = passList.map(FXCollections::observableArrayList).orElseGet(FXCollections::emptyObservableList);
@@ -84,8 +88,18 @@ public class FillingFieldsHelper {
             if (list.size() == 1) {
                 for (Pass p : list) {
                     Optional<List<Visits>> visitsList = getVisitFromDB(p.getNumPass());
+                    List<Visit> listVisit = new ArrayList<>();
                     if (visitsList.isPresent()) {
-                        return FXCollections.observableArrayList(visitsList.get());
+                        for (Visits v: visitsList.get()) {
+                            Visit v2 = new Visit();
+                            v2.setPass(v.getPass());
+                            v2.setDateVisit(v.getDateVisit());
+                            v2.setCountVisit(v.getCountVisit());
+                            v2.setInputPhoneNumber(phoneNumber);
+
+                            listVisit.add(v2);
+                        }
+                        return FXCollections.observableArrayList(listVisit);
                     }
                 }
             } else {

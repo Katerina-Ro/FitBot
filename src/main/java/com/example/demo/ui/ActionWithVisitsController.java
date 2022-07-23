@@ -28,13 +28,13 @@ public class ActionWithVisitsController {
     public void initialize(Stage stageActionWithVisits, Image image) {
         //changeVisitButton.setOnAction(event -> openWindowChangeVisits(image));
         createVisitButton.setOnAction(event -> openWindowCreateVisit(image));
-        deleteVisitButton.setOnAction(event -> openWindowDeleteVisit(image));
+        //deleteVisitButton.setOnAction(event -> openWindowDeleteVisit(image));
         getInfoAllVisitsButton.setOnAction(event -> openWindowGetInfoAllVisits(image));
         backToMainMenuButton.setOnAction(event -> stageActionWithVisits.close());
     }
 
     @FXML
-    public void openWindowChangeVisits(Image image, Integer pass, LocalDate dateVisit, Integer countVisit) {
+    public void openWindowChangeVisits(Image image, Integer pass, LocalDate dateVisit, Integer countVisit, String inputPhoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/changeVisits-view.fxml"));
         Parent root1;
         try {
@@ -46,13 +46,13 @@ public class ActionWithVisitsController {
             stageChangeVisit.setScene(new Scene(root1, 700, 438));
 
             ChangeVisitsController changeVisitsController = fxmlLoader.getController();
-            changeVisitsController.initialize(stageChangeVisit, image);
+            changeVisitsController.initialize(stageChangeVisit, image, pass, dateVisit, countVisit, inputPhoneNumber);
 
             stageChangeVisit.show();
         } catch (IOException e) {
             String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowChangeVisits(image,
-                    pass, dateVisit, countVisit), message);
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowChangeVisits(image, pass,
+                    dateVisit, countVisit, inputPhoneNumber), message);
         }
     }
 
@@ -79,7 +79,7 @@ public class ActionWithVisitsController {
     }
 
     @FXML
-    public void openWindowDeleteVisit(Image image) {
+    public void openWindowDeleteVisit(Image image, Integer pass, LocalDate dateVisit, Integer countVisit, String inputPhoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/deleteVisit-view.fxml"));
         Parent root1;
         try {
@@ -91,12 +91,13 @@ public class ActionWithVisitsController {
             stageDeleteVisit.setScene(new Scene(root1, 504, 315));
 
             DeleteVisitController deleteVisitController = fxmlLoader.getController();
-            deleteVisitController.initialize(stageDeleteVisit, image);
+            deleteVisitController.initialize(stageDeleteVisit, image, pass, dateVisit, countVisit, inputPhoneNumber);
 
             stageDeleteVisit.show();
         } catch (IOException e) {
             String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowDeleteVisit(image), message);
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowDeleteVisit(image, pass,
+                    dateVisit, countVisit, inputPhoneNumber), message);
         }
     }
 
@@ -113,7 +114,7 @@ public class ActionWithVisitsController {
             stageDeleteVisit.setScene(new Scene(root1, 700, 460));
 
             GetVisitsController getVisitsController = fxmlLoader.getController();
-            getVisitsController.initialize(stageDeleteVisit, image);
+            getVisitsController.initialize(stageDeleteVisit);
 
             stageDeleteVisit.show();
         } catch (IOException e) {
