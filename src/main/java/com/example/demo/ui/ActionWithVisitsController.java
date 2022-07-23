@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class ActionWithVisitsController {
     @FXML
@@ -25,7 +26,7 @@ public class ActionWithVisitsController {
 
     @FXML
     public void initialize(Stage stageActionWithVisits, Image image) {
-        changeVisitButton.setOnAction(event -> openWindowChangeVisit(image));
+        //changeVisitButton.setOnAction(event -> openWindowChangeVisits(image));
         createVisitButton.setOnAction(event -> openWindowCreateVisit(image));
         deleteVisitButton.setOnAction(event -> openWindowDeleteVisit(image));
         getInfoAllVisitsButton.setOnAction(event -> openWindowGetInfoAllVisits(image));
@@ -33,7 +34,7 @@ public class ActionWithVisitsController {
     }
 
     @FXML
-    public void openWindowChangeVisit(Image image) {
+    public void openWindowChangeVisits(Image image, Integer pass, LocalDate dateVisit, Integer countVisit) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/changeVisits-view.fxml"));
         Parent root1;
         try {
@@ -50,7 +51,8 @@ public class ActionWithVisitsController {
             stageChangeVisit.show();
         } catch (IOException e) {
             String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowChangeVisit(image), message);
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowChangeVisits(image,
+                    pass, dateVisit, countVisit), message);
         }
     }
 
@@ -108,7 +110,7 @@ public class ActionWithVisitsController {
             stageDeleteVisit.setResizable(false);
             stageDeleteVisit.getIcons().add(image);
             stageDeleteVisit.setTitle("Информация о посещениях студента по абонементу");
-            stageDeleteVisit.setScene(new Scene(root1, 700, 469));
+            stageDeleteVisit.setScene(new Scene(root1, 700, 460));
 
             GetVisitsController getVisitsController = fxmlLoader.getController();
             getVisitsController.initialize(stageDeleteVisit, image);

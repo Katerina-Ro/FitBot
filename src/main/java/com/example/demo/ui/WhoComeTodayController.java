@@ -67,6 +67,8 @@ public class WhoComeTodayController {
     }
 
     private void writeOffVisits(Image image) {
+        // TODO: добавить проверку, есть ли уже эта дата в БД с занятием и приплюсовать в эту дату занятие
+        // TODO: залогировать, а потом очистить список после списания занятий
         if (!comeToDayObservableList.isEmpty()) {
             for (ComeToDay c: comeToDayObservableList) {
                 String phoneNumber = c.getTelephoneNum();

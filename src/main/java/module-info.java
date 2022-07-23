@@ -25,6 +25,7 @@ module com.example.demo {
     opens com.example.demo.ui to javafx.fxml;
     opens com.example.demo.dao.repositories.impl to lombok;
     opens com.example.demo.dao.supportTables to javafx.base;
+    opens com.example.demo.dao to javafx.base;
     opens com.example.demo;
     exports com.example.demo.dao.supportTables to javafx.fxml;
     //exports com.example.demo5.config to javafx.fxml;

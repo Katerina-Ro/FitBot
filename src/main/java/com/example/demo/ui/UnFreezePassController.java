@@ -23,7 +23,6 @@ public class UnFreezePassController {
     private final FillingFieldsHelper fillingFieldsHelper;
     private ObservableList<Pass> passObservableList;
     private AtomicReference<String> phoneNumberForSearch = new AtomicReference<>();
-    //private AtomicReference<String> dateEndFreezeForDB = new AtomicReference<>();
     private AtomicInteger passIdForDB = new AtomicInteger();
 
     @FXML
@@ -127,7 +126,7 @@ public class UnFreezePassController {
             isSuccessCreateFreeze = fillingFieldsHelper.unFreezePass(passIdForDB.get());
         }
         if (isSuccessCreateFreeze) {
-            String message = "Абонемент разаморожен";
+            String message = "Абонемент разморожен";
             new GetCommonWindowHelper().openWindowSuccess(image, message);
         } else {
             String messageError = "Произошла ошибка при попытке заморозки. Обратитесь к разработчику";
