@@ -23,11 +23,11 @@ public class CreateStudentController {
 
     @FXML
     private Button backButton;
-
     @FXML
     private Button createPassButton;
     @FXML
     private Button createStudentButton;
+
     @FXML
     private TextField newFirstNameValue;
     @FXML

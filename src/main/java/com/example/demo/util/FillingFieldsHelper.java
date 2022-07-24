@@ -214,6 +214,10 @@ public class FillingFieldsHelper {
         return classesLeft;
     }
 
+    public boolean updateVisit(Visits visit) {
+        return visitsRepository.updateVisit(visit);
+    }
+
     /**
      * Определение, находится ли текущая дата в промежутке между началом и окончанием абонемента
      * @param pass - данные абонемента

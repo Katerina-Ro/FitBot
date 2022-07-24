@@ -15,9 +15,11 @@ import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ChangeStudentController {
-    private System.Logger logger;
+    private static final Logger logger;
     private final FillingFieldsHelper fillingFieldsHelper;
     private ObservableList<Visitors> visitorsObservableList;
     private AtomicReference<String> phoneNumberForDB = new AtomicReference<>();
@@ -28,41 +30,37 @@ public class ChangeStudentController {
 
     @FXML
     private Button backButton;
-
     @FXML
     private Button changeButton;
 
     @FXML
     private Label firstNameValueDB;
     private final StringProperty firstNameValueDBProperty = new SimpleStringProperty("");
+    @FXML
+    private Label nameValueDB;
+    private final StringProperty nameValueDBProperty = new SimpleStringProperty("");
+    @FXML
+    private Label patronymicValueDB;
+    private final StringProperty patronymicValueDBProperty = new SimpleStringProperty("");
+    @FXML
+    private Label phoneNumberValueDB;
+    private final StringProperty phoneNumberValueDBProperty = new SimpleStringProperty("");
 
     @FXML
     private TextField inputPhoneNumber;
     private final StringProperty phoneNumberProperty = new SimpleStringProperty("");
-
-    @FXML
-    private Label nameValueDB;
-    private final StringProperty nameValueDBProperty = new SimpleStringProperty("");
-
     @FXML
     private TextField newFirstNameValue;
-
     @FXML
     private TextField newNameValue;
-
     @FXML
     private TextField newPatronymicValue;
-
     @FXML
     private TextField newPhoneNumberValue;
 
-    @FXML
-    private Label patronymicValueDB;
-    private final StringProperty patronymicValueDBProperty = new SimpleStringProperty("");
-
-    @FXML
-    private Label phoneNumberValueDB;
-    private final StringProperty phoneNumberValueDBProperty = new SimpleStringProperty("");
+    static {
+        logger = Logger.getLogger(ChangeStudentController.class.getName());
+    }
 
     public ChangeStudentController() {
         this.fillingFieldsHelper = new FillingFieldsHelper();
@@ -310,7 +308,7 @@ public class ChangeStudentController {
             String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
             String messageForDeveloper = String.format("\nПроизошла ошибка в ChangeStudentController во время записи " +
                     "в updateVisitors номер телефона %s", phoneNumberForSearch);
-            logger.log(System.Logger.Level.ERROR, messageForDeveloper);
+            logger.log(Level.SEVERE, messageForDeveloper);
             new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateStudentInDB(image), message);
         }
     }
