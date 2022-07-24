@@ -16,19 +16,13 @@ public class ActionWithVisitsController {
     @FXML
     private Button backToMainMenuButton;
     @FXML
-    private Button changeVisitButton;
-    @FXML
     private Button createVisitButton;
-    @FXML
-    private Button deleteVisitButton;
     @FXML
     private Button getInfoAllVisitsButton;
 
     @FXML
     public void initialize(Stage stageActionWithVisits, Image image) {
-        //changeVisitButton.setOnAction(event -> openWindowChangeVisits(image));
         createVisitButton.setOnAction(event -> openWindowCreateVisit(image));
-        //deleteVisitButton.setOnAction(event -> openWindowDeleteVisit(image));
         getInfoAllVisitsButton.setOnAction(event -> openWindowGetInfoAllVisits(image));
         backToMainMenuButton.setOnAction(event -> stageActionWithVisits.close());
     }

@@ -3,9 +3,7 @@ package com.example.demo.ui;
 import com.example.demo.dao.Visits;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -42,7 +40,6 @@ public class ChangeVisitsController {
     private final ObjectProperty<LocalDate> newDateVisitValueProperty = new SimpleObjectProperty<>();
     @FXML
     private TextField newCountVisitsInThisDayValue;
-    private final IntegerProperty newCountVisitsInThisDayValueProperty = new SimpleIntegerProperty();
 
     static {
         logger = Logger.getLogger(ChangeStudentController.class.getName());
@@ -82,7 +79,6 @@ public class ChangeVisitsController {
                 changeButton.setOnAction(event -> updateVisitInDB(image));
                 newCountVisitsInThisDayValue.textProperty().addListener((observable11, oldValue11, newValue11) -> {
                     if (FillingFieldsHelper.isNumbers(newDateVisitValueProperty.toString())) {
-                        System.out.println("зашли в проверку");
                         changeButton.setDisable(false);
                         changeButton.setOnAction(event -> updateVisitInDB(image));
                     } else {
@@ -94,13 +90,10 @@ public class ChangeVisitsController {
             }
         });
 
-        //newCountVisitsInThisDayValue.textProperty().bindBidirectional(newCountVisitsInThisDayValueProperty,
-                //new NumberStringConverter());
         newCountVisitsInThisDayValue.textProperty().addListener((observable2, oldValue2, newValue2) -> {
             if (FillingFieldsHelper.isNumbers(newDateVisitValue.getText())) {
                 changeButton.setDisable(false);
                 changeButton.setOnAction(event -> updateVisitInDB(image));
-                //newDateVisitValue.textProperty().bindBidirectional(newDateVisitValueProperty, new LocalDateStringConverter());
                 newDateVisitValue.textProperty().addListener((observable1, oldValue1, newValue1) -> {
                     if (FillingFieldsHelper.isDate(newDateVisitValue)) {
                         changeButton.setDisable(false);
@@ -133,7 +126,6 @@ public class ChangeVisitsController {
         if (passNumberValueDB != null && FillingFieldsHelper.isNumbers(passNumberValueDB.getText())) {
             visit.setPass(Integer.valueOf(passNumberValueDB.getText()));
         }
-System.out.println("visit = " +visit);
 
         boolean isSuccessUpdate = fillingFieldsHelper.updateVisit(visit);
         if (isSuccessUpdate) {

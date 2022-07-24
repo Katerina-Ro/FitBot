@@ -70,7 +70,7 @@ public class StartController {
             stageActionWithVisits.setResizable(false);
             stageActionWithVisits.getIcons().add(image);
             stageActionWithVisits.setTitle("Посещения студента");
-            stageActionWithVisits.setScene(new Scene(root1, 672, 375));
+            stageActionWithVisits.setScene(new Scene(root1, 516, 406));
 
             ActionWithVisitsController actionWithVisitsController = fxmlLoader.getController();
             actionWithVisitsController.initialize(stageActionWithVisits, image);

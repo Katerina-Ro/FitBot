@@ -7,23 +7,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="375.0" prefWidth="672.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.ActionWithVisitsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="516.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.ActionWithVisitsController">
    <children>
-      <AnchorPane layoutY="81.0" prefHeight="294.0" prefWidth="672.0" style="-fx-background-color: #fafafa;">
+      <AnchorPane layoutY="112.0" prefHeight="294.0" prefWidth="515.0" style="-fx-background-color: #fafafa;">
          <children>
-            <VBox prefHeight="220.0" prefWidth="332.0" style="-fx-background-color: #f2f0f0;">
+            <VBox prefHeight="220.0" prefWidth="515.0" style="-fx-background-color: #f2f0f0;">
                <children>
-                  <Button fx:id="createVisitButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Создать посещение к абонементу">
+                  <Button fx:id="createVisitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="48.0" prefWidth="252.0" text="Создать посещение к абонементу">
                      <VBox.margin>
-                        <Insets left="35.0" top="45.0" />
+                        <Insets left="130.0" top="45.0" />
                      </VBox.margin>
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Button fx:id="deleteVisitButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Удалить посещение">
+                  <Button fx:id="getInfoAllVisitsButton" alignment="CENTER" mnemonicParsing="false" prefHeight="52.0" prefWidth="254.0" text="Просмотреть информацию о посещениях по абонементу" textAlignment="CENTER" wrapText="true">
                      <VBox.margin>
-                        <Insets left="35.0" top="20.0" />
+                        <Insets left="130.0" top="35.0" />
                      </VBox.margin>
                      <font>
                         <Font size="14.0" />
@@ -31,30 +31,10 @@
                   </Button>
                </children>
             </VBox>
-            <Button fx:id="backToMainMenuButton" layoutX="479.0" layoutY="236.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Назад в главное меню" />
-            <VBox layoutX="327.0" prefHeight="220.0" prefWidth="343.0" style="-fx-background-color: #f2f0f0;">
-               <children>
-                  <Button fx:id="changeVisitButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="254.0" text="Внести изменения в посещение">
-                     <VBox.margin>
-                        <Insets left="55.0" top="45.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="getInfoAllVisitsButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="254.0" text="Просмотреть информацию о посещениях по абонементу" textAlignment="CENTER" wrapText="true">
-                     <VBox.margin>
-                        <Insets left="55.0" top="20.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </VBox>
+            <Button fx:id="backToMainMenuButton" layoutX="327.0" layoutY="236.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Назад в главное меню" />
          </children>
       </AnchorPane>
-      <Label layoutX="44.0" prefHeight="60.0" prefWidth="584.0" text="Действия с посещениями студента" textAlignment="CENTER" textFill="#d7d0d0">
+      <Label layoutX="48.0" layoutY="-15.0" prefHeight="127.0" prefWidth="420.0" text="Действия с посещениями студента" textAlignment="CENTER" textFill="#d7d0d0" wrapText="true">
          <font>
             <Font name="Mistral" size="48.0" />
          </font>
