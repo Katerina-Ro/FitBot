@@ -279,6 +279,10 @@ public class FillingFieldsHelper {
         return passRepository.findPassByPassId(numberPass);
     }
 
+    public boolean updatePass(Pass updatedPass) {
+        return passRepository.update(updatedPass);
+    }
+
     /**
      * Обновление информации об абонементе
      * @param phoneNumber - номер телефона студента

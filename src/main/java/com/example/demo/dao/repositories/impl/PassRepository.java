@@ -116,7 +116,7 @@ public class PassRepository implements IPassRepository {
     @Override
     public boolean updateIfFreeze(Pass dataFreeze) {
         Map<String, Object> paramMap = getParamMap(dataFreeze);
-        int updatePass = jdbcTemplate.update(UPDATE_PASS, paramMap);
+        int updatePass = jdbcTemplate.update(UPDATE_IF_FREEZE, paramMap);
         return updatePass > 0;
     }
 
@@ -183,6 +183,7 @@ public class PassRepository implements IPassRepository {
     private Map<String, Object> getParamMap(Pass pass) {
         Map<String, Object> paramMap = new HashMap<>();
         String phoneNumber = pass.getPhoneNumber();
+        Integer passNum = pass.getNumPass();
         Date dateStart = null;
         if (pass.getDateStart() != null) {
             dateStart = Date.valueOf(pass.getDateStart());
@@ -198,6 +199,7 @@ public class PassRepository implements IPassRepository {
             dateStartFreeze = Date.valueOf(pass.getDateStartFreeze());
         }
         paramMap.put("phoneNumber", phoneNumber);
+        paramMap.put("numPass", passNum);
         paramMap.put("dateStart", dateStart);
         paramMap.put("dateEnd", dateEnd);
         paramMap.put("visitLimit", visitLimit);

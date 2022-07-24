@@ -39,58 +39,33 @@ public class InputPhoneNumberController {
     @FXML
     private TextField inputPhoneNumber;
     private final StringProperty phoneNumberProperty = new SimpleStringProperty("");
-
-    @FXML
-    private Label passId;
     @FXML
     private Label passIdValue;
     private final IntegerProperty passIdValueProperty = new SimpleIntegerProperty();
-
-    @FXML
-    private Label fullName;
     @FXML
     private Label fullNameValue;
     private final StringProperty fullNameValueProperty = new SimpleStringProperty("");
-
-    @FXML
-    private Label dateStart;
     @FXML
     private Label dateStartValue;
     private final ObjectProperty<LocalDate> dateStartValueProperty = new SimpleObjectProperty<>();
-
-    @FXML
-    private Label dateEnd;
     @FXML
     private Label dateEndValue;
     private final ObjectProperty<LocalDate> dateEndValueProperty = new SimpleObjectProperty<>();
-
-    @FXML
-    private Label dateStartFreeze;
     @FXML
     private Label dateStartFreezeValue;
     private final ObjectProperty<LocalDate> dateStartFreezeValueProperty = new SimpleObjectProperty<>();
-
     @FXML
     private Label leftVisitsValue;
     private final IntegerProperty leftVisitsValueProperty = new SimpleIntegerProperty();
-
-    @FXML
-    private Label countFreeze;
     @FXML
     private Label countFreezeValue;
     private final IntegerProperty countFreezeValueProperty = new SimpleIntegerProperty();
-
-    @FXML
-    private Label visitLimit;
     @FXML
     private Label visitLimitValue;
     private final IntegerProperty visitLimitValueProperty = new SimpleIntegerProperty();
 
     @FXML
     private Button backButton;
-
-    @FXML
-    private Button changePassButton;
 
 
     public InputPhoneNumberController() {

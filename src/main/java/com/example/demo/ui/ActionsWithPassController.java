@@ -15,22 +15,16 @@ import java.io.IOException;
 public class ActionsWithPassController {
     @FXML
     private Button backToMainMenuButton;
-
     @FXML
     private Button changePassButton;
-
     @FXML
     private Button createPassButton;
-
     @FXML
     private Button deletePassButton;
-
     @FXML
     private Button freezePassButton;
-
     @FXML
     private Button getInfoPassButton;
-
     @FXML
     private Button unFreezePassButton;
 
@@ -165,7 +159,7 @@ public class ActionsWithPassController {
             stageGetInfoPass.setResizable(false);
             stageGetInfoPass.getIcons().add(image);
             stageGetInfoPass.setTitle("Данные абонемента");
-            stageGetInfoPass.setScene(new Scene(root1, 700, 535));
+            stageGetInfoPass.setScene(new Scene(root1, 700, 507));
 
             InputPhoneNumberController inputPhoneNumberController = fxmlLoader.getController();
             inputPhoneNumberController.initialize(stageGetInfoPass, image, phoneNumber);
