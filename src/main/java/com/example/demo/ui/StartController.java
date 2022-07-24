@@ -1,5 +1,6 @@
 package com.example.demo.ui;
 
+import com.example.demo.util.GetCommonWindowHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -57,7 +58,8 @@ public class StartController {
 
             stageActionWithStudent.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowActionWithStudent(image), message);
         }
     }
 
@@ -77,7 +79,8 @@ public class StartController {
 
             stageActionWithVisits.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowActionWithVisits(image), message);
         }
     }
 
@@ -98,7 +101,8 @@ public class StartController {
 
             stageActionWithPass.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowActionWithPass(image), message);
         }
     }
 
@@ -119,7 +123,8 @@ public class StartController {
 
             stageWhoNothingSay.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowWhoNothingSay(image), message);
         }
     }
 
@@ -140,7 +145,8 @@ public class StartController {
 
             stageWhoDontComeToDay.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowWhoDontComeToDay(image), message);
         }
     }
 
@@ -161,7 +167,8 @@ public class StartController {
 
             stageWhoComeToDay.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowWhoComeToDay(image), message);
         }
     }
 
@@ -182,7 +189,8 @@ public class StartController {
 
             stageSettingsBot.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowSettingsBot(image), message);
         }
     }
 }

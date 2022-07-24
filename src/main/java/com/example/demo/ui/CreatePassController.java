@@ -144,7 +144,8 @@ public class CreatePassController {
 
             stageExistPass.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowExistPass(image, phoneNumber), message);
         }
     }
 }

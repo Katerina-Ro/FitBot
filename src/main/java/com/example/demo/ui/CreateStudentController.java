@@ -124,7 +124,8 @@ public class CreateStudentController {
 
             stageCreatePassWindow.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowCreatePass(image, phoneNumber), message);
         }
     }
 
@@ -145,7 +146,8 @@ public class CreateStudentController {
 
             stageSeveralWindow.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowSeveral(image, phoneNumber), message);
         }
     }
 }

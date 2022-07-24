@@ -33,7 +33,8 @@ public class GetCommonWindowHelper {
 
             stageSuccessWindow.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            openWindowUnSuccess(image, event -> openWindowSuccess(image, messageLabel), message);
         }
     }
 
@@ -54,7 +55,8 @@ public class GetCommonWindowHelper {
 
             stageUnSuccessWindow.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            openWindowUnSuccess(image, event -> openWindowUnSuccess(image, var1, messageLabel), message);
         }
     }
 
@@ -75,7 +77,8 @@ public class GetCommonWindowHelper {
 
             stageWindowConfirmation.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            openWindowUnSuccess(image, event -> openWindowConfirmation(image, var1), message);
         }
     }
 }

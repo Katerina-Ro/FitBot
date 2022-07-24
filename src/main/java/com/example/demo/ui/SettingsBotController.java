@@ -1,5 +1,6 @@
 package com.example.demo.ui;
 
+import com.example.demo.util.GetCommonWindowHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,8 +37,7 @@ public class SettingsBotController {
 
     }
 
-
-    public void openWindowExceptionLoad() {
+    public void openWindowExceptionLoad(Image image) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/exceptionLoadWindow-view.fxml"));
         Parent root1;
         try {
@@ -49,8 +49,8 @@ public class SettingsBotController {
             stage1.setScene(new Scene(root1, 700, 500));
             stage1.show();
         } catch (IOException e) {
-            e.printStackTrace();
-            openWindowExceptionLoad();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowExceptionLoad(image), message);
         }
     }
 }

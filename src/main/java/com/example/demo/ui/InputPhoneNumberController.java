@@ -6,6 +6,7 @@ import com.example.demo.dao.Visitors;
 import com.example.demo.dao.repositories.IVisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
 import com.example.demo.util.FillingFieldsHelper;
+import com.example.demo.util.GetCommonWindowHelper;
 import com.example.demo.util.PatternTemplate;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -159,7 +160,8 @@ public class InputPhoneNumberController {
 
             stage1.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowWhichPass(phoneNumber, image), message);
         }
     }
 
