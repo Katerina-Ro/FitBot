@@ -61,7 +61,7 @@ public class GetInfoStudentController {
     }
 
     @FXML
-    void initialize(Stage stageGetInfoStudent, Image image, TextField phoneNumber) {
+    void initialize(Stage stageGetInfoStudent, Image image, String phoneNumber) {
         observeInputPhoneNumber();
         backButton.setOnAction(event -> stageGetInfoStudent.close());
         changeStudentButton.setOnAction(event -> actionsWithStudentController.openWindowChangeStudent(image, phoneNumber));

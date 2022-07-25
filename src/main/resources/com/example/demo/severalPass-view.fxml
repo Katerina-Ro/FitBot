@@ -14,12 +14,12 @@
          <children>
             <TableView fx:id="tableVisits" layoutY="-43.0" prefHeight="326.0" prefWidth="700.0" style="-fx-background-color: #f2f0f0;">
                <columns>
-                  <TableColumn fx:id="passNumberColumn" editable="false" prefWidth="126.39999234676361" resizable="false" style="-fx-alignment: CENTER;" text="Номер абонемента" />
-                  <TableColumn fx:id="dateVisitColumn" editable="false" prefWidth="175.9999771118164" resizable="false" style="-fx-alignment: CENTER;" text="Кол-во оставшихся занятий" />
-                  <TableColumn fx:id="countVisitsInThisDayColumn" editable="false" prefWidth="80.00006103515625" resizable="false" style="-fx-alignment: CENTER;" text="Дата начала" />
-                  <TableColumn fx:id="changeVisitButton" minWidth="0.0" prefWidth="103.199951171875" resizable="false" style="-fx-alignment: CENTER;" text="Дата окончания" />
-                  <TableColumn fx:id="deleteVisitButton" minWidth="0.0" prefWidth="111.99996948242188" resizable="false" style="-fx-alignment: CENTER;" />
-                  <TableColumn fx:id="deleteVisitButton1" prefWidth="100.0" resizable="false" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="passNumber" editable="false" prefWidth="126.39999234676361" resizable="false" style="-fx-alignment: CENTER;" text="Номер абонемента" />
+                  <TableColumn fx:id="visitLimit" editable="false" prefWidth="175.9999771118164" resizable="false" style="-fx-alignment: CENTER;" text="На какое кол-во занятий" />
+                  <TableColumn fx:id="dateStartPass" editable="false" prefWidth="80.00006103515625" resizable="false" style="-fx-alignment: CENTER;" text="Дата начала" />
+                  <TableColumn fx:id="dateEndPass" minWidth="0.0" prefWidth="103.199951171875" resizable="false" style="-fx-alignment: CENTER;" text="Дата окончания" />
+                  <TableColumn fx:id="deletePassButton" minWidth="0.0" prefWidth="111.99996948242188" resizable="false" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="getPassButton" prefWidth="100.0" resizable="false" style="-fx-alignment: CENTER;" />
                </columns>
             </TableView>
             <Button fx:id="backButton" layoutX="24.0" layoutY="295.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" text="Назад" />

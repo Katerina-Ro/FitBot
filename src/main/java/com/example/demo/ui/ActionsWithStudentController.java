@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -56,7 +55,7 @@ public class ActionsWithStudentController {
     }
 
     @FXML
-    public void openWindowGetInfoStudent(Image image, TextField phoneNumber) {
+    public void openWindowGetInfoStudent(Image image, String phoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/getInfoStudent-view.fxml"));
         Parent root1;
         try {
@@ -100,7 +99,7 @@ public class ActionsWithStudentController {
     }
 
     @FXML
-    public void openWindowChangeStudent(Image image, TextField phoneNumber) {
+    public void openWindowChangeStudent(Image image, String phoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/changeStudent-view.fxml"));
         Parent root1;
         try {

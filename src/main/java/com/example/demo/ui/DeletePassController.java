@@ -54,7 +54,7 @@ public class DeletePassController {
     }
 
     @FXML
-    void initialize(Stage stageDeletePass, Image image) {
+    void initialize(Stage stageDeletePass, Image image, String phoneNumber) {
         observeInputPhoneNumber(image);
         backButton.setOnAction(event -> stageDeletePass.close());
         deletePassButton.setDisable(true);

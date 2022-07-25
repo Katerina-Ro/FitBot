@@ -74,7 +74,7 @@ public class InputPhoneNumberController {
     }
 
     @FXML
-    public void initialize(Stage stage, Image image, TextField phoneNumber) {
+    public void initialize(Stage stage, Image image, String phoneNumber) {
         // Введенный номер телефона
         correctInputPhoneLine();
         inputPhoneNumber.textProperty().bindBidirectional(phoneNumberProperty, new DefaultStringConverter());

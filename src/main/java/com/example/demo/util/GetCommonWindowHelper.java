@@ -1,6 +1,7 @@
 package com.example.demo.util;
 
 import com.example.demo.ui.ConfirmationController;
+import com.example.demo.ui.SeveralPassController;
 import com.example.demo.ui.SuccessWindowController;
 import com.example.demo.ui.UnSuccessWindowController;
 import javafx.event.ActionEvent;
@@ -79,6 +80,28 @@ public class GetCommonWindowHelper {
         } catch (IOException e) {
             String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
             openWindowUnSuccess(image, event -> openWindowConfirmation(image, var1), message);
+        }
+    }
+
+    @FXML
+    public void openWindowSeveralPass(Image image, String phoneNumber) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/severalPass-view.fxml"));
+        Parent root1;
+        try {
+            root1 = fxmlLoader.load();
+            Stage stageWindowSeveralPass = new Stage();
+            stageWindowSeveralPass.setResizable(false);
+            stageWindowSeveralPass.getIcons().add(image);
+            stageWindowSeveralPass.setTitle("Какой абонемент выбрать?");
+            stageWindowSeveralPass.setScene(new Scene(root1, 700, 460));
+
+            SeveralPassController severalPassController = fxmlLoader.getController();
+            severalPassController.initialize(stageWindowSeveralPass, image, phoneNumber);
+
+            stageWindowSeveralPass.show();
+        } catch (IOException e) {
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            openWindowUnSuccess(image, event -> openWindowSeveralPass(image, phoneNumber), message);
         }
     }
 }

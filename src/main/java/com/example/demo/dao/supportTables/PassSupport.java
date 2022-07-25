@@ -6,19 +6,20 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 
 public class PassSupport extends Pass {
-    private Button getInfoPassButton;
-    private Button deleteVisitButton;
+    private Button getPassButton;
+    private Button deletePassButton;
     private ActionsWithPassController actionsWithPassController;
-    private Image image;
+    private final Image image;
 
     public PassSupport() {
         super();
         image = new Image("file:src/main/java/com/example/demo/assets/iconic.png");
-        getInfoPassButton = new Button("Посмотреть");
-        getInfoPassButton.setOnAction(event -> actionsWithPassController.openWindowGetInfoPass(
-                image, this.getPhoneNumber());
-        deleteVisitButton = new Button("Удалить");
-        deleteVisitButton.setOnAction(event -> actionsWithPassController.openWindowDeleteVisit(
-                image, this.getPass(), this.getDateVisit(), this.getCountVisit(), this.inputPhoneNumber));
+        actionsWithPassController = new ActionsWithPassController();
+        getPassButton = new Button("Посмотреть");
+        getPassButton.setOnAction(event -> actionsWithPassController.openWindowGetInfoPass(
+                image, this.getPhoneNumber()));
+        deletePassButton = new Button("Удалить");
+        deletePassButton.setOnAction(event -> actionsWithPassController.openWindowDeletePass(
+                image, this.getPhoneNumber()));
     }
 }

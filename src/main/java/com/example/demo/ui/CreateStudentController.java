@@ -103,7 +103,7 @@ public class CreateStudentController {
                 new GetCommonWindowHelper().openWindowUnSuccess(image, event -> createStudentInDB(image), message);
             }
         } else {
-            openWindowSeveral(image,newPhoneNumberValue);
+            openWindowSeveral(image,newPhoneNumberValue.getText());
         }
     }
 
@@ -130,7 +130,7 @@ public class CreateStudentController {
     }
 
     @FXML
-    public void openWindowSeveral(Image image, TextField phoneNumber) {
+    public void openWindowSeveral(Image image, String phoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/several-view.fxml"));
         Parent root1;
         try {

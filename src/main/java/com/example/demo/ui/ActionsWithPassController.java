@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -32,7 +31,7 @@ public class ActionsWithPassController {
     void initialize(Stage stageActionWithPass, Image image) {
         createPassButton.setOnAction(event -> openWindowCreatePass(image));
         changePassButton.setOnAction(event -> openWindowChangePass(image));
-        deletePassButton.setOnAction(event -> openWindowDeletePass(image));
+        deletePassButton.setOnAction(event -> openWindowDeletePass(image, null));
         getInfoPassButton.setOnAction(event -> openWindowGetInfoPass(image, null));
         freezePassButton.setOnAction(actionEvent -> openWindowFreezePass(image));
         unFreezePassButton.setOnAction(event -> openWindowUnFreezePass(image));
@@ -128,7 +127,7 @@ public class ActionsWithPassController {
     }
 
     @FXML
-    public void openWindowDeletePass(Image image) {
+    public void openWindowDeletePass(Image image, String phoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/deletePass-view.fxml"));
         Parent root1;
         try {
@@ -140,17 +139,17 @@ public class ActionsWithPassController {
             stageDeletePass.setScene(new Scene(root1, 700, 527));
 
             DeletePassController deletePassController = fxmlLoader.getController();
-            deletePassController.initialize(stageDeletePass, image);
+            deletePassController.initialize(stageDeletePass, image, phoneNumber);
 
             stageDeletePass.show();
         } catch (IOException e) {
             String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
-            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowDeletePass(image), message);
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowDeletePass(image, phoneNumber), message);
         }
     }
 
     @FXML
-    public void openWindowGetInfoPass(Image image, TextField phoneNumber) {
+    public void openWindowGetInfoPass(Image image, String phoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/inputPhoneNumber-view.fxml"));
         Parent root1;
         try {

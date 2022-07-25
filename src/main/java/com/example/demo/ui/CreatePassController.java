@@ -123,12 +123,12 @@ public class CreatePassController {
                 new GetCommonWindowHelper().openWindowUnSuccess(image, event -> createPassInDB(image), message);
             }
         } else {
-            openWindowExistPass(image, createPhoneNumber);
+            openWindowExistPass(image, createPhoneNumber.getText());
         }
     }
 
     @FXML
-    public void openWindowExistPass(Image image, TextField phoneNumber) {
+    public void openWindowExistPass(Image image, String phoneNumber) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/existPass-view.fxml"));
         Parent root1;
         try {

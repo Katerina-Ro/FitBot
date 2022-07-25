@@ -12,6 +12,7 @@ import com.example.demo.dao.repositories.impl.VisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitsRepository;
 import com.example.demo.dao.repositories.support.IComeToDay;
 import com.example.demo.dao.repositories.support.IDontComeToDay;
+import com.example.demo.dao.supportTables.PassSupport;
 import com.example.demo.dao.supportTables.Visit;
 import com.example.demo.exception.ExceptionDB;
 import com.example.demo.exception.SeveralException;
@@ -28,10 +29,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class FillingFieldsHelper {
@@ -86,9 +84,9 @@ public class FillingFieldsHelper {
         List<Pass> list = passList.map(FXCollections::observableArrayList).orElseGet(FXCollections::emptyObservableList);
         if (!list.isEmpty()) {
             if (list.size() == 1) {
+                List<Visit> listVisit = new ArrayList<>();
                 for (Pass p : list) {
                     Optional<List<Visits>> visitsList = getVisitFromDB(p.getNumPass());
-                    List<Visit> listVisit = new ArrayList<>();
                     if (visitsList.isPresent()) {
                         for (Visits v: visitsList.get()) {
                             Visit v2 = new Visit();
@@ -107,6 +105,27 @@ public class FillingFieldsHelper {
             }
         }
         return FXCollections.emptyObservableList();
+    }
+
+    public ObservableList<PassSupport> passSupportList(String phoneNumber) {
+        Optional<List<Pass>> passList = getPassList(phoneNumber);
+        List<PassSupport> passes = new ArrayList<>();
+        if (passList.isPresent()) {
+            if (passList.get().size() > 1) {
+                for (Pass p: passList.get()) {
+                    PassSupport passSupport = new PassSupport();
+                    passSupport.setNumPass(p.getNumPass());
+                    passSupport.setDateStart(p.getDateStart());
+                    passSupport.setDateEnd(p.getDateEnd());
+                    passSupport.setVisitLimit(p.getVisitLimit());
+                    passSupport.setPhoneNumber(p.getPhoneNumber());
+                    passSupport.setVisitsLeft(p.getVisitsLeft());
+
+                    passes.add(passSupport);
+                }
+            }
+        }
+        return FXCollections.observableArrayList(passes);
     }
 
     public boolean freezePass(Pass freezeData) {
@@ -345,7 +364,7 @@ public class FillingFieldsHelper {
 
                     return  FXCollections.observableArrayList(listPass.get());
                 } else {
-                    // здесь вписать новое окно с выбором, какой именно абонемент (из двух) нужен?
+                    // TODO: здесь вписать новое окно с выбором, какой именно абонемент (из двух) нужен?
                     return FXCollections.emptyObservableList();
                 }
             }
@@ -576,57 +595,6 @@ public class FillingFieldsHelper {
         }
 
         /**
-         * Получение информации об абонементе
-         * @param chatId - уникальный номер пользователя в telegram bot
-
-        public Optional<List<Pass>> getPassByChatId(Long chatId) {
-        Optional<Visitors> visitor = getVisitorByPhone(chatId);
-        return visitor.map(Visitors::getPassList);
-        }*/
-
-        /**
-         * Получение информации об абонементе
-         * @param phoneNumber - номер телефона студента
-
-        public Optional<List<Pass>> getPassByPhoneNumber(String phoneNumber) {
-        Optional<Visitors> visitors = getVisitorByPhone(phoneNumber);
-        return visitors.map(Visitors::getPassList);
-        }  */
-
-        /**
-         * Заносим номер телефона в базу данных по chatId
-         */
-        public void createVisitorsBot(Long chatId, String phoneNumber) {
-            System.out.println("вписываем телефон в базу данных");
-            Visitors visitor = new Visitors();
-            visitor.setChatId(chatId);
-            visitor.setTelephoneNum(phoneNumber);
-            visitorsRepository.create(visitor);
-        }
-
-        /**
-         * Занесение данных о студенте (только для админов)
-
-         public void createVisitorsAdmin(String phoneNumber, String name, @Nullable String surname,
-         @Nullable String patronymic, @Nullable Pass pass) {
-         Visitors visitor = new Visitors();
-         visitor.setTelephoneNum(phoneNumber);
-         visitor.setName(name);
-         if(surname != null) {
-         visitor.setSurname(surname);
-         }
-         if(patronymic != null) {
-         visitor.setPatronymic(patronymic);
-         }
-         if(pass != null) {
-         List<Pass> listPass = visitor.getPassList();
-         listPass.add(pass);
-         visitor.setPassList(listPass);
-         }
-         visitorsRepository.create(visitor);
-         }  */
-
-        /**
          * Получить данные студента по номеру телефона
          * @param phoneNumber - номер телефона студента
          */
@@ -645,21 +613,6 @@ public class FillingFieldsHelper {
             //visitorsRepository.deleteById(chatIdForDB);
             return true;
         }
-
-        /**
-         * Удаление информации о студенте (доступно только админам)
-         * @param phoneNumber - номер телефона студента
-         * @return true, если удаление прошло успешно
-
-        public boolean deleteVisitors(String phoneNumber) {
-        Optional<Visitors> visitor = getVisitor(phoneNumber);
-        if (visitor.isPresent()) {
-        Long chatId = visitor.get().getChatId();
-        visitorsRepository.deleteById(chatId);
-        return true;
-        }
-        return false;
-        } */
 
         /**
          * Обновление информации о студенте
@@ -692,31 +645,6 @@ public class FillingFieldsHelper {
             }
             return false;
         }
-
-        /**
-         * Изменение номера телефона студента
-         * @param phoneNumber - имеющийся в базе номер телефона студента
-         * @param newPhoneNumber - новый номер телефона
-         * @return true, если номер телефона изменен
-
-        public boolean changePhoneNumberOfVisitor(String phoneNumber, String newPhoneNumber) {
-        Optional<Visitors> visitors = getVisitorByPhone(phoneNumber);
-        if (visitors.isPresent()) {
-        visitors.get().setTelephoneNum(newPhoneNumber);
-        visitorsRepository.save(visitors.get());
-        return true;
-        }
-        return false;
-        } */
-
-        /**
-         * Получение информации о визитах
-         * @param chatId - идентификатор студента в Телеграмме
-
-        public Optional<List<Visits>> getVisit(Long chatId, Integer passId) {
-        Optional<List<Pass>> pass = getPassByChatId(chatId);
-        return pass.map(passes -> passes.get(passId).getVisits());
-        }*/
 
         /**
          * Получить список всех студентов, кто придет в текущий день
@@ -812,5 +740,4 @@ public class FillingFieldsHelper {
         }
         return Optional.of(listPassId);
     }
-
 }
