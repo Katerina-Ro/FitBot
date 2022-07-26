@@ -38,6 +38,9 @@ public class UnFreezePassController {
     private final StringProperty phoneNumberProperty = new SimpleStringProperty("");
 
     @FXML
+    private Label phoneLabel;
+
+    @FXML
     private Label countFreezeDB;
     private final IntegerProperty countFreezeDBProperty = new SimpleIntegerProperty();
     @FXML
@@ -55,6 +58,18 @@ public class UnFreezePassController {
     void initialize(Stage stageUnFreezePass, Image image) {
         observeInputPhoneNumber(image);
         backButton.setOnAction(event -> stageUnFreezePass.close());
+    }
+
+    @FXML
+    void initialize2(Stage stageUnFreezePass, Image image, String phoneNumber, Pass pass) {
+        phoneLabel.setText(phoneNumber);
+        observeInputPhoneNumber2(image, pass);
+        backButton.setOnAction(event -> stageUnFreezePass.close());
+    }
+
+    private void observeInputPhoneNumber2(Image image, Pass pass) {
+        phoneNumberForSearch.set(phoneLabel.getText());
+        fillGetInfoPass2(image, pass);
     }
 
     private void observeInputPhoneNumber(Image image) {
@@ -89,6 +104,34 @@ public class UnFreezePassController {
                 unFreezeButton.setDisable(true);
             }
         });
+    }
+
+    private void fillGetInfoPass2(Image image, Pass pass) {
+        // Заполняем поле "Номер абонемента"
+        passIdValueProperty.setValue(pass.getNumPass());
+        passIdForDB.set(pass.getNumPass());
+        passIdValueProperty.addListener((observable1, oldValue1, newValue1) -> {
+            passIdValueProperty.setValue(newValue1);
+            passIdForDB.set((Integer) newValue1);
+        });
+        passIdValue.textProperty().bindBidirectional(passIdValueProperty, new NumberStringConverter());
+
+        // Заполняем поле "Количество использованных заморозок"
+        countFreezeDBProperty.setValue(pass.getFreezeLimit());
+        countFreezeDBProperty.addListener((observable6, oldValue6, newValue6) -> {
+            countFreezeDBProperty.setValue(newValue6);
+        });
+        countFreezeDB.textProperty().bindBidirectional(countFreezeDBProperty, new NumberStringConverter());
+
+        // Заполняем поле "Дата начала последней заморозки"
+        dateStartFreezeDBProperty.setValue(pass.getDateStartFreeze());
+        dateStartFreezeDBProperty.addListener((observable7, oldValue7, newValue7) -> {
+            dateStartFreezeDBProperty.setValue(newValue7);
+        });
+        dateStartFreezeDB.textProperty().bindBidirectional(dateStartFreezeDBProperty, new LocalDateStringConverter());
+
+        unFreezeButton.setDisable(false);
+        unFreezeButton.setOnAction(event -> unFreezePassInDB(image));
     }
 
     private void fillGetInfoPass(Image image) {

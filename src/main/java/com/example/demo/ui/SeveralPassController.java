@@ -30,7 +30,7 @@ public class SeveralPassController {
     @FXML
     private TableColumn<PassSupport, Integer> visitLimit;
     @FXML
-    private TableColumn<PassSupport, Button> deletePassButton;
+    private TableColumn<PassSupport, Button> unFreezeButton;
     @FXML
     private TableColumn<PassSupport, Button> getPassButton;
     @FXML
@@ -56,7 +56,7 @@ public class SeveralPassController {
         visitLimit.setCellValueFactory(new PropertyValueFactory<>("visitLimit"));
         dateStartPass.setCellValueFactory(new PropertyValueFactory<>("dateStart"));
         dateEndPass.setCellValueFactory(new PropertyValueFactory<>("dateEnd"));
-        deletePassButton.setCellValueFactory(new PropertyValueFactory<>("deletePassButton"));
+        unFreezeButton.setCellValueFactory(new PropertyValueFactory<>("unFreezeButton"));
         getPassButton.setCellValueFactory(new PropertyValueFactory<>("getPassButton"));
 
         tableVisits.setItems(listPassSupport);

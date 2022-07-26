@@ -18,7 +18,7 @@
                   <TableColumn fx:id="visitLimit" editable="false" prefWidth="175.9999771118164" resizable="false" style="-fx-alignment: CENTER;" text="На какое кол-во занятий" />
                   <TableColumn fx:id="dateStartPass" editable="false" prefWidth="80.00006103515625" resizable="false" style="-fx-alignment: CENTER;" text="Дата начала" />
                   <TableColumn fx:id="dateEndPass" minWidth="0.0" prefWidth="103.199951171875" resizable="false" style="-fx-alignment: CENTER;" text="Дата окончания" />
-                  <TableColumn fx:id="deletePassButton" minWidth="0.0" prefWidth="111.99996948242188" resizable="false" style="-fx-alignment: CENTER;" />
+                  <TableColumn fx:id="unFreezeButton" minWidth="0.0" prefWidth="111.99996948242188" resizable="false" style="-fx-alignment: CENTER;" />
                   <TableColumn fx:id="getPassButton" prefWidth="100.0" resizable="false" style="-fx-alignment: CENTER;" />
                </columns>
             </TableView>

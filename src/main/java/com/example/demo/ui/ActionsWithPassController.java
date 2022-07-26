@@ -1,5 +1,6 @@
 package com.example.demo.ui;
 
+import com.example.demo.dao.Pass;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,6 +53,28 @@ public class ActionsWithPassController {
 
             UnFreezePassController unFreezePassController = fxmlLoader.getController();
             unFreezePassController.initialize(stageUnFreezePass, image);
+
+            stageUnFreezePass.show();
+        } catch (IOException e) {
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowUnFreezePass(image), message);
+        }
+    }
+
+    @FXML
+    public void openWindowUnFreezePass2(Image image, String phoneNumber, Pass pass) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/unFreezePass-view2.fxml"));
+        Parent root1;
+        try {
+            root1 = fxmlLoader.load();
+            Stage stageUnFreezePass = new Stage();
+            stageUnFreezePass.setResizable(false);
+            stageUnFreezePass.getIcons().add(image);
+            stageUnFreezePass.setTitle("Разморозка абонемента");
+            stageUnFreezePass.setScene(new Scene(root1, 578, 292));
+
+            UnFreezePassController unFreezePassController = fxmlLoader.getController();
+            unFreezePassController.initialize2(stageUnFreezePass, image, phoneNumber, pass);
 
             stageUnFreezePass.show();
         } catch (IOException e) {
