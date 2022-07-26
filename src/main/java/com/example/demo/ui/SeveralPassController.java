@@ -51,11 +51,12 @@ public class SeveralPassController {
     private void initData(Image image, String phoneNumber) {
         ObservableList<PassSupport> listPassSupport = fillingFieldsHelper.passSupportList(phoneNumber);
 
+        phoneLabel.setText(phoneNumber);
         passNumber.setCellValueFactory(new PropertyValueFactory<>("numPass"));
         visitLimit.setCellValueFactory(new PropertyValueFactory<>("visitLimit"));
         dateStartPass.setCellValueFactory(new PropertyValueFactory<>("dateStart"));
         dateEndPass.setCellValueFactory(new PropertyValueFactory<>("dateEnd"));
-        deletePassButton.setCellValueFactory(new PropertyValueFactory<>("deleteVisitButton"));
+        deletePassButton.setCellValueFactory(new PropertyValueFactory<>("deletePassButton"));
         getPassButton.setCellValueFactory(new PropertyValueFactory<>("getPassButton"));
 
         tableVisits.setItems(listPassSupport);

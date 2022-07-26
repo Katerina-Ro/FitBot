@@ -113,7 +113,7 @@ public class FillingFieldsHelper {
         if (passList.isPresent()) {
             if (passList.get().size() > 1) {
                 for (Pass p: passList.get()) {
-                    PassSupport passSupport = new PassSupport();
+                    PassSupport passSupport = new PassSupport(phoneNumber);
                     passSupport.setNumPass(p.getNumPass());
                     passSupport.setDateStart(p.getDateStart());
                     passSupport.setDateEnd(p.getDateEnd());

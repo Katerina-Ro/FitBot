@@ -4,6 +4,7 @@ import com.example.demo.dao.Pass;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,6 +17,8 @@ import javafx.util.converter.LocalDateStringConverter;
 import javafx.util.converter.NumberStringConverter;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -61,15 +64,25 @@ public class UnFreezePassController {
         inputPhoneNumber.textProperty().bindBidirectional(phoneNumberProperty, new DefaultStringConverter());
         phoneNumberProperty.addListener((observable, oldValue, newValue) -> {
             if (phoneNumberProperty.length().get() == 11) {
-                passObservableList = fillingFieldsHelper.getPassList(inputPhoneNumber.getText());
-                if (!passObservableList.isEmpty()) {
-                    phoneNumberForSearch.set(inputPhoneNumber.getText());
-                    fillGetInfoPass(image);
-                } else {
-                    phoneNumberForSearch.set(null);
-                    fillGetInfoPassIfEmpty();
-                    unFreezeButton.setDisable(true);
+                Optional<List<Pass>> passList = fillingFieldsHelper.getPassList(inputPhoneNumber.getText());
+                if (passList.isPresent()) {
+                    if (passList.get().size() == 1) {
+                        passObservableList = FXCollections.observableList(passList.get());
+                        if (!passObservableList.isEmpty()) {
+                            phoneNumberForSearch.set(inputPhoneNumber.getText());
+                            fillGetInfoPass(image);
+                        } else {
+                            phoneNumberForSearch.set(null);
+                            fillGetInfoPassIfEmpty();
+                            unFreezeButton.setDisable(true);
+                        }
+                    } else {
+                        new GetCommonWindowHelper().openWindowSeveralPass(image, inputPhoneNumber.getText());
+                    }
                 }
+                phoneNumberForSearch.set(null);
+                fillGetInfoPassIfEmpty();
+                unFreezeButton.setDisable(true);
             } else {
                 phoneNumberForSearch.set(null);
                 fillGetInfoPassIfEmpty();
