@@ -4,6 +4,7 @@ import com.example.demo.dao.Pass;
 import com.example.demo.dao.Visits;
 import com.example.demo.dao.supportTables.ComeToDay;
 import com.example.demo.exception.ExceptionDB;
+import com.example.demo.exception.SeveralException;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.StringProperty;
@@ -50,7 +51,13 @@ public class WhoComeTodayController {
     @FXML
     void initialize(Stage stageWhoComeToday, Image image) {
         initDataToTable();
-        writeOffVisitButton.setOnAction(event -> writeOffVisits(image));
+        writeOffVisitButton.setOnAction(event -> {
+            try {
+                writeOffVisits(image);
+            } catch (SeveralException e) {
+                new GetCommonWindowHelper().openWindowSeveralPass(image, phoneNumberColumn.getText());
+            }
+        });
         backButton.setOnAction(event -> stageWhoComeToday.close());
     }
 
@@ -66,7 +73,7 @@ public class WhoComeTodayController {
         tableView.setItems(comeToDayObservableList);
     }
 
-    private void writeOffVisits(Image image) {
+    private void writeOffVisits(Image image) throws SeveralException {
         // TODO: добавить проверку, есть ли уже эта дата в БД с занятием и приплюсовать в эту дату занятие
         // TODO: залогировать, а потом очистить список после списания занятий
         if (!comeToDayObservableList.isEmpty()) {
@@ -88,11 +95,23 @@ public class WhoComeTodayController {
                         createVisit = fillingFieldsHelper.createVisit(visit);
                     } catch (ExceptionDB e) {
                         String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
-                        new GetCommonWindowHelper().openWindowUnSuccess(image, event -> writeOffVisits(image), messageError);
+                        new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
+                            try {
+                                writeOffVisits(image);
+                            } catch (SeveralException ex) {
+                                new GetCommonWindowHelper().openWindowSeveralPass(image, pass.getPhoneNumber());
+                            }
+                        }, messageError);
                     }
                     if (!createVisit) {
                         String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
-                        new GetCommonWindowHelper().openWindowUnSuccess(image, event -> writeOffVisits(image), messageError);
+                        new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
+                            try {
+                                writeOffVisits(image);
+                            } catch (SeveralException e) {
+                                new GetCommonWindowHelper().openWindowSeveralPass(image, pass.getPhoneNumber());
+                            }
+                        }, messageError);
                     } else {
                         String message = "Занятие успешно записано в базу данных";
                         new GetCommonWindowHelper().openWindowSuccess(image, message);

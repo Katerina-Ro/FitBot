@@ -1,7 +1,9 @@
 package com.example.demo.ui;
 
 import com.example.demo.dao.supportTables.Visit;
+import com.example.demo.exception.SeveralException;
 import com.example.demo.util.FillingFieldsHelper;
+import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -11,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.converter.DefaultStringConverter;
 
@@ -45,17 +48,21 @@ public class GetVisitsController {
 
 
     @FXML
-    void initialize(Stage stageGetVisits) {
-        observeInputPhoneNumber();
+    void initialize(Stage stageGetVisits, Image image) {
+        observeInputPhoneNumber(image);
         backButton.setOnAction(event -> stageGetVisits.close());
     }
 
-    private void observeInputPhoneNumber() {
+    private void observeInputPhoneNumber(Image image) {
         FillingFieldsHelper.correctInputPhoneLine(inputPhoneNumber);
         inputPhoneNumber.textProperty().bindBidirectional(phoneNumberProperty, new DefaultStringConverter());
         phoneNumberProperty.addListener((observable, oldValue, newValue) -> {
             if (phoneNumberProperty.length().get() == 11) {
-                visitsObservableList = fillingFieldsHelper.getAllVisits(phoneNumberProperty);
+                try {
+                    visitsObservableList = fillingFieldsHelper.getAllVisits(phoneNumberProperty);
+                } catch (SeveralException e) {
+                    new GetCommonWindowHelper().openWindowSeveralPass(image, inputPhoneNumber.getText());
+                }
                 if (!visitsObservableList.isEmpty()) {
                     initDataToTable();
                 } else {

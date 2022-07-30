@@ -108,7 +108,7 @@ public class ActionWithVisitsController {
             stageDeleteVisit.setScene(new Scene(root1, 700, 460));
 
             GetVisitsController getVisitsController = fxmlLoader.getController();
-            getVisitsController.initialize(stageDeleteVisit);
+            getVisitsController.initialize(stageDeleteVisit, image);
 
             stageDeleteVisit.show();
         } catch (IOException e) {

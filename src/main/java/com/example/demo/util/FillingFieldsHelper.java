@@ -78,7 +78,7 @@ public class FillingFieldsHelper {
         return FXCollections.emptyObservableList();
     }
 
-    public ObservableList<Visit> getAllVisits(StringProperty inputPhoneNumber) {
+    public ObservableList<Visit> getAllVisits(StringProperty inputPhoneNumber) throws SeveralException {
         String phoneNumber = String.valueOf(inputPhoneNumber.get());
         Optional<List<Pass>> passList = getActualPassByPhoneNumber(phoneNumber);
         List<Pass> list = passList.map(FXCollections::observableArrayList).orElseGet(FXCollections::emptyObservableList);
@@ -335,18 +335,21 @@ public class FillingFieldsHelper {
      * @return список абонементов. По логике кода заложено, что может быть несколько активных абонементов.
      * Но, по идее (в реальности), должен быть только один
      */
-    public Optional<List<Pass>> getActualPassByPhoneNumber(String phoneNumber) {
+    public Optional<List<Pass>> getActualPassByPhoneNumber(String phoneNumber) throws SeveralException {
         Optional<List<Pass>> passListFromDB = passRepository.findPassByPhone(phoneNumber);
         if (passListFromDB.isPresent()) {
-            // TODO: вставить условие- проверку, если актуальных пассов больше, чем 1, то нужно встаивть еще тодно
-            //  окно выбора номер пасса
-            List<Pass> listActualPass = new ArrayList<>();
-            for (Pass p: passListFromDB.get()) {
-                if (haveDayInPassCalculate(p)) {
-                    listActualPass.add(p);
-                    return Optional.of(listActualPass);
-                }
-            }
+            System.out.println("в базе = " + passListFromDB.get().size());
+           if (passListFromDB.get().size() == 1) {
+               List<Pass> listActualPass = new ArrayList<>();
+               for (Pass p: passListFromDB.get()) {
+                   if (haveDayInPassCalculate(p)) {
+                       listActualPass.add(p);
+                       return Optional.of(listActualPass);
+                   }
+               }
+           } else {
+               throw new SeveralException();
+           }
         }
         return Optional.empty();
     }
