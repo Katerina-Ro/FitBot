@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 public class InputPhoneNumberController {
     private final IVisitorsRepository visitorsRepository;
     private final FillingFieldsHelper fillingFieldsHelper;
-    private ObservableList<Pass> passObservableList;
+    private ObservableList<Pass> passObservableList = FXCollections.emptyObservableList();
     private ObservableList<String> visitorsObservableList;
     Pattern p = Pattern.compile(PatternTemplate.INTEGER_LINE.getTemplate());
 
