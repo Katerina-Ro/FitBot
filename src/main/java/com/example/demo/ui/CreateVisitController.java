@@ -3,6 +3,7 @@ package com.example.demo.ui;
 import com.example.demo.dao.Pass;
 import com.example.demo.dao.Visits;
 import com.example.demo.exception.ExceptionDB;
+import com.example.demo.exception.SeveralException;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.IntegerProperty;
@@ -58,7 +59,11 @@ public class CreateVisitController {
             String newPhoneNumberValueArray = inputPhoneNumber.getText();
             if (newPhoneNumberValueArray.length() == 11) {
                 if (FillingFieldsHelper.isPhoneNumber(newPhoneNumberValueArray)) {
-                    passObservableList = fillingFieldsHelper.getTablePass(inputPhoneNumber.textProperty());
+                    try {
+                        passObservableList = fillingFieldsHelper.getTablePass(inputPhoneNumber.textProperty());
+                    } catch (SeveralException e) {
+                        new GetCommonWindowHelper().openWindowSeveralPass(image, inputPhoneNumber.getText());
+                    }
                     if (passObservableList != null && !passObservableList.isEmpty()) {
                         if (passObservableList.size() == 1) {
                             Pass pass = passObservableList.get(0);

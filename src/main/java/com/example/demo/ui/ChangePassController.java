@@ -1,6 +1,7 @@
 package com.example.demo.ui;
 
 import com.example.demo.dao.Pass;
+import com.example.demo.exception.SeveralException;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.*;
@@ -96,7 +97,11 @@ public class ChangePassController {
         phoneNumberProperty.addListener((observable, oldValue, newValue) -> {
             if (phoneNumberProperty.length().get() == 11) {
                 if (FillingFieldsHelper.isPhoneNumber(inputPhoneNumber.getText())) {
-                    passObservableList = fillingFieldsHelper.getTablePass(phoneNumberProperty);
+                    try {
+                        passObservableList = fillingFieldsHelper.getTablePass(phoneNumberProperty);
+                    } catch (SeveralException e) {
+                        new GetCommonWindowHelper().openWindowSeveralPass(image, inputPhoneNumber.getText());
+                    }
                     if (!passObservableList.isEmpty()) {
                         fillStageIfPassObservableListNotEmpty(image);
                     } else {

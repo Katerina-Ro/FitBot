@@ -1,6 +1,7 @@
 package com.example.demo.ui;
 
 import com.example.demo.dao.Pass;
+import com.example.demo.exception.SeveralException;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.*;
@@ -65,13 +66,13 @@ public class DeletePassController {
         inputPhoneNumber.textProperty().bindBidirectional(phoneNumberProperty, new DefaultStringConverter());
         phoneNumberProperty.addListener((observable, oldValue, newValue) -> {
             if (phoneNumberProperty.length().get() == 11) {
-                passObservableList = fillingFieldsHelper.getTablePass(phoneNumberProperty);
+                try {
+                    passObservableList = fillingFieldsHelper.getTablePass(phoneNumberProperty);
+                } catch (SeveralException e) {
+                    new GetCommonWindowHelper().openWindowSeveralPass(image, inputPhoneNumber.getText());
+                }
                 if (!passObservableList.isEmpty()) {
-                    if (passObservableList.size() == 1) {
-                        fillGetInfoPassIfListNoEmpty(image);
-                    } else {
-                        //TODO: создать окно, если несколько абонементов, чтобы выбрать из них passID
-                    }
+                    fillGetInfoPassIfListNoEmpty(image);
                 } else {
                     fillInfoPassIfListEmpty();
                 }

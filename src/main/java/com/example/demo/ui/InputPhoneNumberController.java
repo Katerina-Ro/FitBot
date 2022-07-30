@@ -5,6 +5,7 @@ import com.example.demo.dao.Pass;
 import com.example.demo.dao.Visitors;
 import com.example.demo.dao.repositories.IVisitorsRepository;
 import com.example.demo.dao.repositories.impl.VisitorsRepository;
+import com.example.demo.exception.SeveralException;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
 import com.example.demo.util.PatternTemplate;
@@ -83,7 +84,11 @@ public class InputPhoneNumberController {
         phoneNumberProperty.addListener((observable, oldValue, newValue) -> {
             if (phoneNumberProperty.length().get() == 11) {
                 // В случае изменения введенного номера телефона, меняются данные полей. Устанавливаем функцию наблюдения
-                passObservableList = fillingFieldsHelper.getTablePass(phoneNumberProperty);
+                try {
+                    passObservableList = fillingFieldsHelper.getTablePass(phoneNumberProperty);
+                } catch (SeveralException e) {
+                    new GetCommonWindowHelper().openWindowSeveralPass(image, inputPhoneNumber.getText());
+                }
                 visitorsObservableList = getFullNameStudent(phoneNumberProperty, image);
                 if (!passObservableList.isEmpty() && !visitorsObservableList.isEmpty()) {
                     fillStageIfPassObservableListNotEmpty();

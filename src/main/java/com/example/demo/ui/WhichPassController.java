@@ -2,13 +2,10 @@ package com.example.demo.ui;
 
 import com.example.demo.dao.Pass;
 import com.example.demo.util.FillingFieldsHelper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.LocalDate;
 
@@ -37,8 +34,8 @@ public class WhichPassController {
     }
 
     @FXML
-    void initialize(String phoneNumber) {
-        ObservableList<Pass> passObservableList = FXCollections.observableArrayList(fillingFieldsHelper.getListPass(phoneNumber));
+    void initialize(String phoneNumber)  {
+        /*ObservableList<Pass> passObservableList = FXCollections.observableArrayList(fillingFieldsHelper.getListPass(phoneNumber));
         if (!passObservableList.isEmpty()) {
             passNumberColumn.setCellValueFactory(new PropertyValueFactory<Pass, Integer>("pass_id"));
             dateStartPassColumn.setCellValueFactory(new PropertyValueFactory<>("date_start"));
@@ -46,6 +43,6 @@ public class WhichPassController {
             leftPassColumn.setCellValueFactory(new PropertyValueFactory<>("visit_limit"));
 
             tableWhichPass.setItems(passObservableList);
-        }
+        }*/
     }
 }

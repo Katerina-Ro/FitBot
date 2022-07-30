@@ -1,7 +1,8 @@
 package com.example.demo.exception;
 
 public class SeveralException extends Exception {
-    public SeveralException(String message) {
-        super(message);
+    private static final String MESSAGE = "Несколько абонементов";
+    public SeveralException() {
+        super(MESSAGE);
     }
 }

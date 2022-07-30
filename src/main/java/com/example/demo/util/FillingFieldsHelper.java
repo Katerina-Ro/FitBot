@@ -64,7 +64,7 @@ public class FillingFieldsHelper {
         this.dontComeToDay = new com.example.demo.dao.repositories.impl.support.DontComeToDay(jdbcTemplate);
     }
 
-    public ObservableList<Pass> getTablePass(StringProperty inputPhoneNumber){
+    public ObservableList<Pass> getTablePass(StringProperty inputPhoneNumber) throws SeveralException {
         String phoneNumber = String.valueOf(inputPhoneNumber.get());
         return getListPass(phoneNumber);
     }
@@ -351,7 +351,7 @@ public class FillingFieldsHelper {
         return Optional.empty();
     }
 
-    public ObservableList<Pass> getListPass(String phoneNumber){
+    public ObservableList<Pass> getListPass(String phoneNumber) throws SeveralException {
         if (phoneNumber != null) {
             Optional<List<Pass>> listPass = getActualPassByPhoneNumber(phoneNumber);
             if (listPass.isPresent() && !listPass.get().isEmpty()) {
@@ -364,8 +364,7 @@ public class FillingFieldsHelper {
 
                     return  FXCollections.observableArrayList(listPass.get());
                 } else {
-                    // TODO: здесь вписать новое окно с выбором, какой именно абонемент (из двух) нужен?
-                    return FXCollections.emptyObservableList();
+                    throw new SeveralException();
                 }
             }
         }

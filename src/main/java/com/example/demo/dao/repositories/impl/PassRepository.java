@@ -96,8 +96,7 @@ public class PassRepository implements IPassRepository {
         List<Pass> pass = jdbcTemplate.query(FIND_PASS_BY_PASS_ID, Map.of("passId",passId),
                 new PassRowMapper());
         if (pass.size() > 1) {
-            throw new IllegalStateException(String.format("По passId = %s в базе содержится 2 абонемента: %s ",
-                    passId, pass));
+            throw new IllegalStateException("Несколько абонементов с таким номером");
         }
         return Optional.ofNullable(pass.get(0));
     }
