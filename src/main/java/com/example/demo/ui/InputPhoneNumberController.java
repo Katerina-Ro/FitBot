@@ -40,6 +40,8 @@ public class InputPhoneNumberController {
     private TextField inputPhoneNumber;
     private final StringProperty phoneNumberProperty = new SimpleStringProperty("");
     @FXML
+    private Label phoneLabel;
+    @FXML
     private Label passIdValue;
     private final IntegerProperty passIdValueProperty = new SimpleIntegerProperty();
     @FXML
@@ -95,6 +97,17 @@ public class InputPhoneNumberController {
         backButton.setOnAction(event -> stage.close());
     }
 
+    @FXML
+    public void initialize2(Stage stage, Image image, Integer passId) {
+        Optional<Pass> pass = fillingFieldsHelper.getPassByPassNumber(passId);
+        if (pass.isPresent()) {
+            fillStage(pass.get());
+        } else {
+            fillStageIfPassObservableListIsEmpty();
+        }
+        backButton.setOnAction(event -> stage.close());
+    }
+
     private ObservableList<String> getFullNameStudent(StringProperty phoneNumber, Image image) {
         String inputPhoneNumber = String.valueOf(phoneNumber.get());
         Optional<Visitors> visitor = visitorsRepository.findVisitorByPhoneNumber(inputPhoneNumber);
@@ -117,6 +130,18 @@ public class InputPhoneNumberController {
             }
         }
         return fullNameFromDB;
+    }
+
+    public void fillStage(Pass pass) {
+        phoneLabel.setText(pass.getPhoneNumber());
+        passIdValue.setText(String.valueOf(pass.getNumPass()));
+        dateStartValue.setText(String.valueOf(pass.getDateStart()));
+        dateEndValue.setText(String.valueOf(pass.getDateEnd()));
+        dateStartFreezeValue.setText(pass.getDateStartFreeze() != null ?
+                String.valueOf(pass.getDateStartFreeze()) : null);
+        countFreezeValue.setText(pass.getFreezeLimit() != null ? String.valueOf(pass.getFreezeLimit()) :
+                null);
+        visitLimitValue.setText(String.valueOf(pass.getVisitLimit()));
     }
 
     public void openWindowWhichPass(String phoneNumber, Image image) {
@@ -267,4 +292,6 @@ public class InputPhoneNumberController {
         });
         leftVisitsValue.textProperty().bindBidirectional(leftVisitsValueProperty, new NumberStringConverter());
     }
+
+
 }

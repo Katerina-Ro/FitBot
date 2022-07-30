@@ -25,9 +25,13 @@ public class PassRepository implements IPassRepository {
 
     private static final String FIND_PASS_BY_PHONE = "SELECT * FROM pass_schema.pass_table WHERE pass_schema.pass_table.tel_num = :phoneNumber";
 
-    private static final String FIND_PASS_BY_PASS_ID = "SELECT pass_id, date_start, date_end, visit_limit, tel_num, freeze_limit, date_freeze" +
+    private static final String FIND_PASS_BY_PASS_ID = "SELECT pass_id, date_start, date_end, visit_limit, tel_num, freeze_limit, date_freeze " +
             "FROM pass_schema.pass_table " +
-            "WHERE pass_schema.pass_table.pass_id = :passId" +
+            "WHERE pass_schema.pass_table.pass_id = :passId ";
+
+    private static final String FIND_PASS_BY_PASS_ID_2 = "SELECT pass_id, date_start, date_end, visit_limit, tel_num, freeze_limit, date_freeze " +
+            "FROM pass_schema.pass_table " +
+            "WHERE pass_schema.pass_table.pass_id = :passId " +
             "AND current_date between pass_schema.pass_table.date_start and pass_schema.pass_table.date_start";
 
     private static final String CREATE_PASS = "INSERT into pass_schema.pass_table " +
@@ -69,7 +73,7 @@ public class PassRepository implements IPassRepository {
     public Optional<String> findPhoneNumberByPassId(Integer passId) {
         List<String> phoneNumber = jdbcTemplate.query(FIND_PHONE_NUMBER_BY_PASS_ID, Map.of("numPass", passId),
                 new PhoneNumberRowMapper());
-        if (phoneNumber.size() != 1) {
+        if (phoneNumber.size() > 1) {
             throw new IllegalStateException(String.format("По passId = %s в базе содержится 2 номера телефона: %s ",
                     passId, phoneNumber));
         }
@@ -91,7 +95,7 @@ public class PassRepository implements IPassRepository {
     public Optional<Pass> findPassByPassId(Integer passId) {
         List<Pass> pass = jdbcTemplate.query(FIND_PASS_BY_PASS_ID, Map.of("passId",passId),
                 new PassRowMapper());
-        if (pass.size() != 1) {
+        if (pass.size() > 1) {
             throw new IllegalStateException(String.format("По passId = %s в базе содержится 2 абонемента: %s ",
                     passId, pass));
         }

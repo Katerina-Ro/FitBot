@@ -1,6 +1,5 @@
 package com.example.demo.ui;
 
-import com.example.demo.dao.Pass;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -62,7 +61,7 @@ public class ActionsWithPassController {
     }
 
     @FXML
-    public void openWindowUnFreezePass2(Image image, String phoneNumber, Pass pass) {
+    public void openWindowUnFreezePass2(Image image, String phoneNumber, Integer passId) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/unFreezePass-view2.fxml"));
         Parent root1;
         try {
@@ -74,7 +73,7 @@ public class ActionsWithPassController {
             stageUnFreezePass.setScene(new Scene(root1, 578, 292));
 
             UnFreezePassController unFreezePassController = fxmlLoader.getController();
-            unFreezePassController.initialize2(stageUnFreezePass, image, phoneNumber, pass);
+            unFreezePassController.initialize2(stageUnFreezePass, image, phoneNumber, passId);
 
             stageUnFreezePass.show();
         } catch (IOException e) {
@@ -190,6 +189,28 @@ public class ActionsWithPassController {
         } catch (IOException e) {
             String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
             new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowGetInfoPass(image, phoneNumber), message);
+        }
+    }
+
+    @FXML
+    public void openWindowGetInfoPass2(Image image, Integer passId) {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/inputPhoneNumber-view2.fxml"));
+        Parent root1;
+        try {
+            root1 = fxmlLoader.load();
+            Stage stageGetInfoPass = new Stage();
+            stageGetInfoPass.setResizable(false);
+            stageGetInfoPass.getIcons().add(image);
+            stageGetInfoPass.setTitle("Данные абонемента");
+            stageGetInfoPass.setScene(new Scene(root1, 700, 507));
+
+            InputPhoneNumberController inputPhoneNumberController = fxmlLoader.getController();
+            inputPhoneNumberController.initialize2(stageGetInfoPass, image, passId);
+
+            stageGetInfoPass.show();
+        } catch (IOException e) {
+            String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
+            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowGetInfoPass2(image, passId), message);
         }
     }
 }

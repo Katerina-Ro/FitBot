@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="507.0" prefWidth="700.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.InputPhoneNumberController">
+   <children>
+      <AnchorPane layoutY="74.0" prefHeight="433.0" prefWidth="700.0" style="-fx-background-color: #fafafa;">
+         <children>
+            <GridPane layoutY="1.0" prefHeight="370.0" prefWidth="700.0" style="-fx-background-color: #f2f0f0;">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="398.3999877929688" minWidth="10.0" prefWidth="357.799951171875" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="386.400048828125" minWidth="10.0" prefWidth="169.00004882812493" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label fx:id="passIdColumn" prefHeight="40.0" prefWidth="254.0" text="Номер абонемента">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="dateStartColumn" text="Дата начала абонемента" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="dateEndColumn" prefHeight="40.0" prefWidth="354.0" text="До какого числа абонемент" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="visitLimitColumn" prefHeight="40.0" prefWidth="354.0" text="На какое количество занятий" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="countFreezeColumn" prefHeight="40.0" prefWidth="354.0" text="Количество использованных заморозок" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="dateStartFreezeColumn" prefHeight="40.0" prefWidth="354.0" text="Дата начала заморозки" GridPane.rowIndex="5">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="20.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="passIdValue" prefHeight="40.0" prefWidth="266.0" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="dateStartValue" prefHeight="40.0" prefWidth="267.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="visitLimitValue" prefHeight="40.0" prefWidth="266.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="countFreezeValue" prefHeight="40.0" prefWidth="265.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="dateStartFreezeValue" prefHeight="40.0" prefWidth="266.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="dateEndValue" prefHeight="40.0" prefWidth="266.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="15.0" />
+                     </GridPane.margin>
+                  </Label>
+               </children>
+            </GridPane>
+            <Button fx:id="backButton" layoutX="14.0" layoutY="395.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="86.0" text="Назад" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="14.0" layoutY="9.0" prefHeight="56.0" prefWidth="528.0" style="-fx-background-color: #fafa;" text="Введите номер телефона в поле справа в 11-значном формате, начиная с 7" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="Lucida Sans Unicode" size="14.0" />
+         </font>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets right="10.0" />
+         </padding>
+      </Label>
+      <Label fx:id="phoneLabel" layoutX="553.0" layoutY="20.0" prefHeight="34.0" prefWidth="119.0" style="-fx-background-color: #fafa;">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

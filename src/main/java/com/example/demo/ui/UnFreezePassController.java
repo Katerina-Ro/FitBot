@@ -61,15 +61,20 @@ public class UnFreezePassController {
     }
 
     @FXML
-    void initialize2(Stage stageUnFreezePass, Image image, String phoneNumber, Pass pass) {
+    void initialize2(Stage stageUnFreezePass, Image image, String phoneNumber, Integer passId) {
         phoneLabel.setText(phoneNumber);
-        observeInputPhoneNumber2(image, pass);
+        observeInputPhoneNumber2(image, passId);
         backButton.setOnAction(event -> stageUnFreezePass.close());
     }
 
-    private void observeInputPhoneNumber2(Image image, Pass pass) {
+    private void observeInputPhoneNumber2(Image image, Integer passId) {
         phoneNumberForSearch.set(phoneLabel.getText());
-        fillGetInfoPass2(image, pass);
+        Optional<Pass> pass = fillingFieldsHelper.getPassByPassNumber(passId);
+        if (pass.isPresent()) {
+            fillGetInfoPass2(image, pass.get());
+        } else {
+            fillGetInfoPassIfEmpty();
+        }
     }
 
     private void observeInputPhoneNumber(Image image) {

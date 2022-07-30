@@ -113,7 +113,7 @@ public class FillingFieldsHelper {
         if (passList.isPresent()) {
             if (passList.get().size() > 1) {
                 for (Pass p: passList.get()) {
-                    PassSupport passSupport = new PassSupport(phoneNumber);
+                    PassSupport passSupport = new PassSupport(phoneNumber, p.getNumPass());
                     passSupport.setNumPass(p.getNumPass());
                     passSupport.setDateStart(p.getDateStart());
                     passSupport.setDateEnd(p.getDateEnd());
@@ -291,7 +291,7 @@ public class FillingFieldsHelper {
     }
 
     /**
-     * Получение информации об абонементе (для админа)
+     * Получение информации об абонементе
      * @param numberPass - номер телефона студента
      */
     public Optional<Pass> getPassByPassNumber(Integer numberPass) {

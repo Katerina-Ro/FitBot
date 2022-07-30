@@ -15,14 +15,14 @@ public class PassSupport extends Pass {
     private ActionsWithPassController actionsWithPassController;
     private final Image image;
 
-    public PassSupport(String phoneNumber) {
+    public PassSupport(String phoneNumber, Integer passId) {
         image = new Image("file:src/main/java/com/example/demo/assets/iconic.png");
         actionsWithPassController = new ActionsWithPassController();
         getPassButton = new Button("Посмотреть");
-        getPassButton.setOnAction(event -> actionsWithPassController.openWindowGetInfoPass(
-                image, phoneNumber));
+        getPassButton.setOnAction(event -> actionsWithPassController.openWindowGetInfoPass2(
+                image, passId));
         unFreezeButton = new Button("Разморозить");
         unFreezeButton.setOnAction(event -> actionsWithPassController.openWindowUnFreezePass2(
-                image, phoneNumber));
+                image, phoneNumber, passId));
     }
 }
