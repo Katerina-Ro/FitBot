@@ -14,27 +14,17 @@ import java.io.IOException;
 public class SettingsBotController {
     @FXML
     private Button backButton;
-
-    @FXML
-    private Button changeTimeAskButton;
-
-    @FXML
-    private Button turnOffAskInChatButton;
-
     @FXML
     private Button turnOffBotButton;
-
-    @FXML
-    private Button turnOnAskInChatButton;
-
     @FXML
     private Button turnOnBotButton;
 
     @FXML
     void initialize(Stage stageSettings, Image image) {
+        turnOffBotButton.setOnAction(event -> new GetCommonWindowHelper().openWindowConfirmation(image,
+                event2 ->
         backButton.setOnAction(event -> {stageSettings.close();
         });
-
     }
 
     public void openWindowExceptionLoad(Image image) {
@@ -52,5 +42,9 @@ public class SettingsBotController {
             String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
             new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowExceptionLoad(image), message);
         }
+    }
+
+    private void turnOffBot() {
+
     }
 }

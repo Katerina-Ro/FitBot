@@ -7,47 +7,32 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="337.0" prefWidth="590.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.SettingsBotController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="253.0" prefWidth="479.0" style="-fx-background-color: #2E3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ui.SettingsBotController">
    <children>
-      <AnchorPane layoutY="81.0" prefHeight="258.0" prefWidth="570.0" style="-fx-background-color: #fafafa;">
+      <AnchorPane layoutY="82.0" prefHeight="170.0" prefWidth="480.0" style="-fx-background-color: #fafafa;">
          <children>
-            <VBox prefHeight="194.0" prefWidth="274.0" style="-fx-background-color: #f2f0f0;">
+            <VBox prefHeight="106.0" prefWidth="240.0" style="-fx-background-color: #f2f0f0;">
                <children>
                   <Button fx:id="turnOffBotButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Выключить бота">
                      <VBox.margin>
-                        <Insets left="50.0" top="30.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="turnOffAskInChatButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Выключить опрос в чатах">
-                     <VBox.margin>
-                        <Insets left="50.0" top="10.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="changeTimeAskButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Изменить время опроса">
-                     <VBox.margin>
-                        <Insets left="50.0" top="10.0" />
+                        <Insets left="35.0" top="35.0" />
                      </VBox.margin>
                   </Button>
                </children>
             </VBox>
-            <VBox layoutX="274.0" prefHeight="194.0" prefWidth="314.0" style="-fx-background-color: #f2f0f0;">
+            <VBox layoutX="240.0" prefHeight="106.0" prefWidth="240.0" style="-fx-background-color: #f2f0f0;">
                <children>
-                  <Button fx:id="turnOnBotButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Вкл. бота">
+                  <Button fx:id="turnOnBotButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Включить бота">
                      <VBox.margin>
-                        <Insets left="100.0" top="35.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button fx:id="turnOnAskInChatButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Включить опрос в чатах">
-                     <VBox.margin>
-                        <Insets left="100.0" top="10.0" />
+                        <Insets left="35.0" top="35.0" />
                      </VBox.margin>
                   </Button>
                </children>
             </VBox>
-            <Button fx:id="backButton" layoutX="490.0" layoutY="202.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="73.0" text="Назад" />
+            <Button fx:id="backButton" layoutX="382.0" layoutY="124.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="73.0" text="Назад" />
          </children>
       </AnchorPane>
-      <Label layoutX="154.0" layoutY="14.0" prefHeight="60.0" prefWidth="280.0" text="Настройки бота" textAlignment="CENTER" textFill="#d7d0d0">
+      <Label layoutX="109.0" prefHeight="60.0" prefWidth="280.0" text="Настройки бота" textAlignment="CENTER" textFill="#d7d0d0">
          <font>
             <Font name="Mistral" size="48.0" />
          </font>

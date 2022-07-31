@@ -93,6 +93,10 @@ public class WhoComeTodayController {
                     boolean createVisit = false;
                     try {
                         createVisit = fillingFieldsHelper.createVisit(visit);
+                        boolean v = fillingFieldsHelper.deleteComeToDay(pass.getPhoneNumber());
+                        System.out.println("успешно = " + v);
+                        System.out.println("удалила = " + comeToDayObservableList.remove(c));
+                        System.out.println("comeToDayObservableList = " + comeToDayObservableList);
                     } catch (ExceptionDB e) {
                         String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
                         new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {

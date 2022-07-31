@@ -182,7 +182,7 @@ public class StartController {
             stageSettingsBot.setResizable(false);
             stageSettingsBot.getIcons().add(image);
             stageSettingsBot.setTitle("Настройки бота");
-            stageSettingsBot.setScene(new Scene(root1, 590, 337));
+            stageSettingsBot.setScene(new Scene(root1, 479, 253));
 
             SettingsBotController settingsBotController = fxmlLoader.getController();
             settingsBotController.initialize(stageSettingsBot, image);

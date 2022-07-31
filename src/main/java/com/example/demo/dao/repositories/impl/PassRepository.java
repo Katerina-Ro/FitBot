@@ -23,7 +23,9 @@ public class PassRepository implements IPassRepository {
     private static final String FIND_PHONE_NUMBER_BY_PASS_ID = "SELECT pass_schema.pass_table.phoneNumber FROM pass_schema.pass_table " +
             "WHERE pass_schema.pass_table.pass_id = :numPass";
 
-    private static final String FIND_PASS_BY_PHONE = "SELECT * FROM pass_schema.pass_table WHERE pass_schema.pass_table.tel_num = :phoneNumber";
+    // TODO: вставить условие "где столбец дата старта заморозки не null
+    private static final String FIND_PASS_BY_PHONE = "SELECT * FROM pass_schema.pass_table " +
+            "WHERE pass_schema.pass_table.tel_num = :phoneNumber";
 
     private static final String FIND_PASS_BY_PASS_ID = "SELECT pass_id, date_start, date_end, visit_limit, tel_num, freeze_limit, date_freeze " +
             "FROM pass_schema.pass_table " +
@@ -145,8 +147,6 @@ public class PassRepository implements IPassRepository {
 
     @Override
     public boolean deletePass(String phoneNumber) {
-        System.out.println("phoneNumber = " + phoneNumber);
-        System.out.println(DELETE_PASS_BY_PHONE_NUMBER);
         int deletedPass = jdbcTemplate.update(DELETE_PASS_BY_PHONE_NUMBER, Map.of("phoneNumber", phoneNumber));
         return deletedPass > 0;
     }
