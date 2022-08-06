@@ -26,7 +26,7 @@ public class BotCommandCallBackQuery {
                 .build();
     }
 
-    public EditMessageText findCommand(String commandIdentifier, Update update) {
+    public synchronized EditMessageText findCommand(String commandIdentifier, Update update) {
         return (commandMapSendMessage.get(commandIdentifier).execute(update));
     }
 }

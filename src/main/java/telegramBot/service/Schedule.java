@@ -12,18 +12,13 @@ public class Schedule {
         Timer timer = new Timer();
 
         // периодичность 24 часа
-        long period = 86400000;
-        // время задержки перед показом
-        long delay;
+        long period = 86400000L;
 
         LocalTime localTime = LocalTime.now();
-        if (FindingDataUtil.isEventTime(localTime)) {
-            delay = 0L;
-            System.out.println(delay + "миллисекунд");
-        } else {
-            delay = new FindingDataUtil().getDelay(localTime);
-            System.out.println(delay + " delay");
-        }
+
+        // время задержки перед показом
+        long delay = new FindingDataUtil().getDelay(localTime);
+
         timer.scheduleAtFixedRate(myTimerTask, delay, period);
     }
 }

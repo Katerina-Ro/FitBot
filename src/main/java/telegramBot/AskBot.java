@@ -16,4 +16,10 @@ public class AskBot {
 
         new Schedule().getSchedule();
     }
+
+    public void turnOffApp(boolean flag) {
+        if (flag) {
+            System.exit(0);
+        }
+    }
 }

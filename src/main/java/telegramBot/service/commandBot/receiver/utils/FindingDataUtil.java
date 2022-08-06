@@ -28,19 +28,39 @@ public class FindingDataUtil {
         return false;
     }
 
-    public static boolean isEventTime(LocalTime currentTime) {
-        return eventTime.compareTo(currentTime) == 0;
+    public long getDelay(LocalTime currentTime) {
+        long currentHourInMillis = getHourInMillis(currentTime.getHour());
+        long currentMinutesInMillis = getMinutesInMillis(currentTime.getMinute());
+        long currentSecondInMillis = getSecondInMillis(currentTime.getSecond());
+
+        long currentTimeInMillis = currentHourInMillis + currentMinutesInMillis + currentSecondInMillis;
+
+        long eventHourInMillis = getHourInMillis(eventTime.getHour());
+        long eventMinutesInMillis = getMinutesInMillis(eventTime.getMinute());
+        long eventSecondsInMillis = getSecondInMillis(eventTime.getSecond());
+
+        long eventTimeInMillis = eventHourInMillis + eventMinutesInMillis + eventSecondsInMillis;
+
+        long period = 86400000L;
+
+        if (eventTime.compareTo(currentTime) < 0) {
+            return period - (currentTimeInMillis - eventTimeInMillis);
+        } else if (eventTime.compareTo(currentTime) > 0) {
+            return eventTimeInMillis - currentTimeInMillis;
+        } else {
+            return period - (currentTimeInMillis - eventTimeInMillis);
+        }
     }
 
-    public long getDelay(LocalTime currentTime) {
-        long currentTimeNano = currentTime.getNano();
-        long eventTimeNano = eventTime.getNano();
-        long difference = currentTimeNano - eventTimeNano;
+    private long getHourInMillis(int hour) {
+        return (long) hour * 60 * 60 * 1000;
+    }
 
-        long period = 86400000;
-        System.out.println("currentTime = " + currentTime + " currentTimeNano " + currentTimeNano
-                + " eventTime " +eventTime + " eventTimeNano ="
-        + eventTimeNano + " difference " + difference + " period - difference = " + (period - difference));
-        return period - difference;
+    private long getMinutesInMillis(int minutes) {
+        return (long) minutes * 60 * 1000;
+    }
+
+    private long getSecondInMillis(int seconds) {
+        return (long) seconds * 1000;
     }
 }

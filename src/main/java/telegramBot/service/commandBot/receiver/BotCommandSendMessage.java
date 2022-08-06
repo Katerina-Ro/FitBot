@@ -33,7 +33,7 @@ public class BotCommandSendMessage {
                 .build();
     }
 
-    public SendMessage findCommand(String commandIdentifier, Update update) {
+    public synchronized SendMessage findCommand(String commandIdentifier, Update update) {
         return (commandMapSendMessage.getOrDefault(commandIdentifier, startCommand).execute(update));
     }
 }

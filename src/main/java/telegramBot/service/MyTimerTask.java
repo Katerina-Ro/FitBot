@@ -19,7 +19,7 @@ import java.util.TimerTask;
 
 @Log4j2
 public class MyTimerTask extends TimerTask {
-    private static final String botToken =
+    private static final String botToken = "5132814541:AAFSh1Oj9ihGfi2Vt_SwhTZ9mUaxU0I86t8";
     private static final String IMAGE_WAVING_HAND = String.valueOf(Character.toChars(0x1F44B));
     private static final String START_MESSAGE = "Привет " + IMAGE_WAVING_HAND + " \nВы придете сегодня на занятие?";
     private static HttpURLConnection conn = null;
@@ -27,7 +27,7 @@ public class MyTimerTask extends TimerTask {
 
     @Override
     public void run() {
-        String urlToken =
+        String urlToken = "https://api.telegram.org/bot" + botToken + "/sendMessage";
         String chatId;
         List<Long> listChatId = visitorsRepository.findAllChatId();
         if (listChatId != null && !listChatId.isEmpty()) {
