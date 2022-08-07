@@ -20,7 +20,7 @@ public interface IVisitsRepository {
 
     boolean createVisit(Visits visits) throws ExceptionDB;
 
-    boolean updateVisit(Visits visit);
+    boolean updateVisit(Visits visit, LocalDate dateVisitExist);
 
     boolean deleteVisit(Integer passId);
 

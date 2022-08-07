@@ -14,8 +14,8 @@ public class Visits {
 
     @Override
     public String toString() {
-        return "Номер абонемента " + pass + '\'' +
-                ", Дата посещения " + dateVisit + '\'' +
+        return "Номер абонемента " + pass +
+                ", Дата посещения " + dateVisit +
                 ", Количество посещений " + countVisit;
     }
 }

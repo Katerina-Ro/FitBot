@@ -41,18 +41,20 @@ public class PassRepository implements IPassRepository {
             "values (:phoneNumber, :dateStart, :dateEnd, :visitLimit, :freezeLimit, :dateStartFreeze)";
 
     private static final String UPDATE_PASS = "UPDATE pass_schema.pass_table " +
-            "SET tel_num = coalesce(:phoneNumber, tel_num)" +
+            "SET tel_num = coalesce(:phoneNumber, tel_num) " +
             ",date_start = coalesce(:dateStart, date_start) " +
             ",date_end = coalesce(:dateEnd, date_end) " +
             ",visit_limit = coalesce(:visitLimit, visit_limit) " +
-            "WHERE pass_id = coalesce(:numPass, pass_id)";
+            ",freeze_limit = coalesce(:freezeLimit, freeze_limit) " +
+            ",date_freeze = coalesce(:dateStartFreeze, date_freeze) " +
+            "WHERE pass_id = :numPass";
 
     private static final String UPDATE_IF_FREEZE = "UPDATE pass_schema.pass_table " +
             "SET tel_num = coalesce(:phoneNumber, tel_num)" +
             ",date_start = coalesce(:dateStart, date_start) " +
             ",date_end = coalesce(:dateEnd, date_end) " +
             ",visit_limit = coalesce(:visitLimit, visit_limit) " +
-            "WHERE pass_id = coalesce(:numPass, pass_id)";
+            "WHERE pass_id = :numPass";
 
     private static final String UPDATE_IF_UNFREEZE = "UPDATE pass_schema.pass_table " +
             "SET date_freeze = :dateFreeze WHERE pass_id = :numPass";
@@ -105,7 +107,6 @@ public class PassRepository implements IPassRepository {
 
     @Override
     public boolean createPass(Pass pass) {
-        // TODO: нужно для Insert прописывать, если не null
         Map<String, Object> paramMap = getParamMap(pass);
         int createdPass = jdbcTemplate.update(CREATE_PASS, paramMap);
         return createdPass > 0;
@@ -115,6 +116,7 @@ public class PassRepository implements IPassRepository {
     public boolean update(Pass updatedPass) {
         Map<String, Object> paramMap = getParamMap(updatedPass);
         int updatePass = jdbcTemplate.update(UPDATE_PASS, paramMap);
+        //List<Pass> updatePass = jdbcTemplate.query(UPDATE_PASS, paramMap,new PassRowMapper());
         return updatePass > 0;
     }
 
@@ -206,12 +208,9 @@ public class PassRepository implements IPassRepository {
         paramMap.put("dateStart", dateStart);
         paramMap.put("dateEnd", dateEnd);
         paramMap.put("visitLimit", visitLimit);
-        if (freezeLimit != null) {
-            paramMap.put("freezeLimit", freezeLimit);
-        }
-        if (dateStartFreeze != null) {
-            paramMap.put("dateStartFreeze",dateStartFreeze);
-        }
+        paramMap.put("freezeLimit", freezeLimit);
+        paramMap.put("dateStartFreeze",dateStartFreeze);
+
         return paramMap;
     }
 

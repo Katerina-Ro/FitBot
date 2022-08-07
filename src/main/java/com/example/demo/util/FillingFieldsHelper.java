@@ -101,7 +101,7 @@ public class FillingFieldsHelper {
                     }
                 }
             } else {
-                // TODO: вставить условие, если в списоке абонементов больше, чем 1 абонемент. Нужно окно выбора пасса
+                throw new SeveralException();
             }
         }
         return FXCollections.emptyObservableList();
@@ -144,7 +144,7 @@ public class FillingFieldsHelper {
      * Получение информации об актуальном абонементе
      * @return список абонементов. По логике кода заложено, что может быть несколько активных абонементов.
      * Но, по идее (в реальности), должен быть только один
-     */
+
     public Optional<List<Pass>> findVisitorByPhoneNumber(String phoneNumber) {
         Optional<Visitors> visitor = visitorsRepository.findVisitorByPhoneNumber(phoneNumber);
         Optional<List<Pass>> passListFromDB;
@@ -161,7 +161,7 @@ public class FillingFieldsHelper {
             }
         }
         return Optional.empty();
-    }
+    }  */
 
     private Optional<List<com.example.demo.dao.supportTables.ComeToDay>> getAllComeToday() {
         return comeToDay.getAllComeToDay();
@@ -222,9 +222,9 @@ public class FillingFieldsHelper {
 
     /**
      * Прибавляем занятие в абонементе (доступно только пдмину)
-     * @param pass - информация об абонементе
+     *
      * @return количество оставшихся занятий в абонементе после прибавления
-     */
+
     public Optional<String> plusClasses(Pass pass, Integer inputNumber, LocalDate specifiedDate) {
         pass.setVisitLimit(inputNumber);
         Optional<String> classesLeft = calculateClassesLeft(pass);
@@ -232,13 +232,13 @@ public class FillingFieldsHelper {
             int numMinusVisits = inputNumber - Integer.parseInt(classesLeft.get());
             boolean isSuccess = minusVisit(pass.getNumPass(), numMinusVisits, specifiedDate);
             /* log.info(String.format("К оставшимся дням в абонементе %s прибавлено %s занятий. Из таблицы о посещениях " +
-                    "удалены день и количество посещений? %s", pass.getVisitLimit(), inputNumber, isSuccess)); */
+                    "удалены день и количество посещений? %s", pass.getVisitLimit(), inputNumber, isSuccess));
         }
         return classesLeft;
-    }
+    } */
 
-    public boolean updateVisit(Visits visit) {
-        return visitsRepository.updateVisit(visit);
+    public boolean updateVisit(Visits visit, LocalDate dateVisitExist) {
+        return visitsRepository.updateVisit(visit, dateVisitExist);
     }
 
     /**
@@ -302,7 +302,7 @@ public class FillingFieldsHelper {
         return passRepository.findPassByPassId(numberPass);
     }
 
-    public boolean updatePass(Pass updatedPass) {
+    public boolean updatePass(Pass updatedPass) throws Exception {
         return passRepository.update(updatedPass);
     }
 
@@ -342,7 +342,6 @@ public class FillingFieldsHelper {
     public Optional<List<Pass>> getActualPassByPhoneNumber(String phoneNumber) throws SeveralException {
         Optional<List<Pass>> passListFromDB = passRepository.findPassByPhone(phoneNumber);
         if (passListFromDB.isPresent()) {
-            System.out.println("в базе = " + passListFromDB.get().size());
            if (passListFromDB.get().size() == 1) {
                List<Pass> listActualPass = new ArrayList<>();
                for (Pass p: passListFromDB.get()) {
@@ -351,8 +350,10 @@ public class FillingFieldsHelper {
                        return Optional.of(listActualPass);
                    }
                }
-           } else {
+           } else if (passListFromDB.get().size() > 1) {
                throw new SeveralException();
+           } else {
+               return Optional.empty();
            }
         }
         return Optional.empty();
@@ -484,7 +485,7 @@ public class FillingFieldsHelper {
         });
     }
 
-    public boolean deleteVisitorFromDB(String phoneNumber) {
+    public boolean deleteVisitorFromDB(String phoneNumber) throws SeveralException {
         boolean isSuccessDeleteVisits = deleteVisits(phoneNumber);
         boolean isSuccessDeletePass = false;
         boolean isSuccessDeleteStudent = false;
@@ -545,17 +546,21 @@ public class FillingFieldsHelper {
         return passRepository.createPass(pass);
     }
 
-    public Optional<List<Integer>> getListPassIdForDeleteVisits(String phoneNumber) {
+    public Optional<List<Integer>> getListPassIdForDeleteVisits(String phoneNumber) throws SeveralException {
         Optional<List<Pass>> passListFromDB = passRepository.findPassByPhone(phoneNumber);
         if (passListFromDB.isPresent()) {
-            // TODO: вставить условие, если пасс == 1 +, если пассов больше, чем 1, то вчтавить для этого новоое
-            //  окно выбора пасса по ид
-            List<Integer> listPassId = new ArrayList<>();
-            for(Pass p: passListFromDB.get()) {
-                Integer passId = p.getNumPass();
-                listPassId.add(passId);
+            if (passListFromDB.get().size() == 1) {
+                List<Integer> listPassId = new ArrayList<>();
+                for(Pass p: passListFromDB.get()) {
+                    Integer passId = p.getNumPass();
+                    listPassId.add(passId);
+                }
+                return Optional.of(listPassId);
+            } else if (passListFromDB.get().size() > 1) {
+                throw new SeveralException();
+            } else {
+                return Optional.empty();
             }
-            return Optional.of(listPassId);
         }
         return Optional.empty();
     }
@@ -570,7 +575,7 @@ public class FillingFieldsHelper {
         return true;
     }
 
-    private boolean deleteVisits(String phoneNumber) {
+    private boolean deleteVisits(String phoneNumber) throws SeveralException {
         Optional<List<Integer>> list = getListPassIdForDeleteVisits(phoneNumber);
         return list.filter(this::deleteAllVisitsFromDB).isPresent();
     }
@@ -674,10 +679,9 @@ public class FillingFieldsHelper {
 
     /**
      * Внесение информации о визитах к конкретному абонементу студента
-     * @param passId идентификатор абонемента
-     * @param dateVisit - дата посещения
+     *
      * @return - true, если занесении информации о конкретном посещении прошло успешно
-     */
+
     public boolean updateVisit(Integer passId, LocalDate dateVisit, Integer countVisit) {
         Optional<List<Visits>> visitList = getVisitFromDB(passId);
         if (visitList.isPresent()) {
@@ -689,7 +693,7 @@ public class FillingFieldsHelper {
             }
         }
         return false;
-    }
+    } */
 
     public boolean createVisit(Visits visit) throws ExceptionDB {
         return visitsRepository.createVisit(visit);
@@ -703,6 +707,7 @@ public class FillingFieldsHelper {
         return visitsRepository.findAllVisitsByPassId(passId);
     }
 
+    /**
     public boolean minusVisit(Integer passId, int inputNumber, LocalDate specifiedDay) {
         Optional<List<Visits>> list = getVisitFromDB(passId);
         if(list.isPresent()) {
@@ -717,7 +722,7 @@ public class FillingFieldsHelper {
             }
         }
         return false;
-    }
+    } */
 
     public boolean updateVisitors(Visitors visitor) {
         try {

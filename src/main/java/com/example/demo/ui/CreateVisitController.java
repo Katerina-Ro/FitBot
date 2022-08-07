@@ -121,7 +121,7 @@ public class CreateVisitController {
                                 });
                             }
                         } else {
-                            // TODO: окно, если несколько абонементов
+                            new GetCommonWindowHelper().openWindowSeveralPass(image, inputPhoneNumber.getText());
                         }
                     } else {
                         createVisitInDBButton.setDisable(true);

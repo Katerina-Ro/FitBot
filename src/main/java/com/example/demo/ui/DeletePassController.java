@@ -86,9 +86,7 @@ public class DeletePassController {
         for (Pass p : passObservableList) {
             // Заполняем поле "Номер абонемента"
             passIdValueProperty.setValue(p.getNumPass());
-            passIdValueProperty.addListener((observable1, oldValue1, newValue1) -> {
-                passIdValueProperty.setValue(newValue1);
-            });
+            passIdValueProperty.addListener((observable1, oldValue1, newValue1) -> passIdValueProperty.setValue(newValue1));
             passIdValue.textProperty().bindBidirectional(passIdValueProperty, new NumberStringConverter());
 
             // Заполняем поле "Дата начала абонемента"

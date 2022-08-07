@@ -119,22 +119,35 @@ public class ChangeVisitsController {
                 new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateVisitInDB(image), message);
             }
         }
-        if (newCountVisitsInThisDayValue.getText() != null && FillingFieldsHelper.isNumbers(
-                (newCountVisitsInThisDayValue.getText()))) {
+        if (newCountVisitsInThisDayValue.getText() != null && !newCountVisitsInThisDayValue.getText().isBlank()
+            && FillingFieldsHelper.isNumbers((newCountVisitsInThisDayValue.getText()))) {
             visit.setCountVisit(Integer.valueOf(newCountVisitsInThisDayValue.getText()));
+        } else {
+            visit.setCountVisit(Integer.valueOf(countVisitsInThisDayValueDB.getText()));
         }
-        if (passNumberValueDB != null && FillingFieldsHelper.isNumbers(passNumberValueDB.getText())) {
+        if (passNumberValueDB != null && !passNumberValueDB.getText().isBlank()
+                && FillingFieldsHelper.isNumbers(passNumberValueDB.getText())) {
             visit.setPass(Integer.valueOf(passNumberValueDB.getText()));
         }
 
-        boolean isSuccessUpdate = fillingFieldsHelper.updateVisit(visit);
-        if (isSuccessUpdate) {
-            String message = "Посещение успешно обновлено в базе данных";
-            new GetCommonWindowHelper().openWindowSuccess(image, message);
+        LocalDate dateVisitExist = LocalDate.parse(dateVisitValueDB.getText());
+
+        if (dateVisitExist != null) {
+            boolean isSuccessUpdate = fillingFieldsHelper.updateVisit(visit, dateVisitExist);
+            if (isSuccessUpdate) {
+                String message = "Посещение успешно обновлено в базе данных";
+                new GetCommonWindowHelper().openWindowSuccess(image, message);
+            } else {
+                String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                String messageForDeveloper = String.format("\nПроизошла ошибка в ChangeVisitsController во время записи " +
+                        "в updateVisit номер телефона %s", phoneLabel);
+                logger.log(Level.SEVERE, messageForDeveloper);
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateVisitInDB(image), message);
+            }
         } else {
             String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
             String messageForDeveloper = String.format("\nПроизошла ошибка в ChangeVisitsController во время записи " +
-                    "в updateVisit номер телефона %s", phoneLabel);
+                    "в updateVisit номер телефона %s. dateVisitExist = null", phoneLabel);
             logger.log(Level.SEVERE, messageForDeveloper);
             new GetCommonWindowHelper().openWindowUnSuccess(image, event -> updateVisitInDB(image), message);
         }

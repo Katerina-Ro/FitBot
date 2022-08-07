@@ -35,9 +35,10 @@ public class VisitsRepository implements IVisitsRepository {
             "values (:passId, :dateVisit, :countVisits)";
 
     private static final String UPDATE_VISIT = "UPDATE pass_schema.visits " +
-            "SET pass_schema.visits.date_visit = coalesce(:dateVisit, date_visit) " +
-            "pass_schema.visits.count_visit = coalesce(:countVisits, count_visit) " +
-            "WHERE pass_schema.visits.pass_id = coalesce(:passId, pass_id)";
+            "SET date_visit = coalesce(:dateVisit, date_visit), " +
+            "count_visit = coalesce(:countVisits, count_visit) " +
+            "WHERE pass_schema.visits.pass_id = :passId " +
+            "and pass_schema.visits.date_visit = :dateVisitExist";
 
     private static final String DELETE_VISITS = "DELETE from pass_schema.visits " +
             "WHERE pass_schema.visits.pass_id = :passId";
@@ -67,8 +68,9 @@ public class VisitsRepository implements IVisitsRepository {
     }
 
     @Override
-    public boolean updateVisit(Visits visit) {
+    public boolean updateVisit(Visits visit, LocalDate dateVisitExist) {
         Map<String, Object> paramsMap = getParamMap(visit);
+        paramsMap.put("dateVisitExist", dateVisitExist);
         int updatedVisit = jdbcTemplate.update(UPDATE_VISIT, paramsMap);
         return updatedVisit > 0;
     }
@@ -105,12 +107,8 @@ public class VisitsRepository implements IVisitsRepository {
         }
         Integer countVisits = visit.getCountVisit();
         paramsMap.put("passId", passId);
-        if (dateVisit != null) {
-            paramsMap.put("dateVisit", dateVisit);
-        }
-        if (countVisits != null) {
-            paramsMap.put("countVisits", countVisits);
-        }
+        paramsMap.put("dateVisit", dateVisit);
+        paramsMap.put("countVisits", countVisits);
         return paramsMap;
     }
 }

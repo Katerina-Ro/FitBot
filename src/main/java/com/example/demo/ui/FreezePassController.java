@@ -176,7 +176,6 @@ public class FreezePassController {
 
     private void freezePassInDB(Image image) {
         Pass pass = new Pass();
-        System.out.println("passIdForDB = " + passIdForDB.get());
         if (passIdForDB != null && FillingFieldsHelper.isNumbers(String.valueOf(passIdForDB))) {
             pass.setNumPass(passIdForDB.get());
         }

@@ -102,7 +102,7 @@ public class ChangePassController {
                     } catch (SeveralException e) {
                         new GetCommonWindowHelper().openWindowSeveralPass(image, inputPhoneNumber.getText());
                     }
-                    if (!passObservableList.isEmpty()) {
+                    if (passObservableList != null && !passObservableList.isEmpty()) {
                         fillStageIfPassObservableListNotEmpty(image);
                     } else {
                         fillStageIfPassObservableListIsEmpty();
@@ -226,7 +226,6 @@ public class ChangePassController {
     private void updatePassInDB(Image image) {
         Pass newPass = new Pass();
         newPass.setNumPass(Integer.valueOf(passIdValue.getText()));
-        System.out.println("numPass = " + newPass.getNumPass());
         if (dateStartPassInput.getText() != null && !dateStartPassInput.getText().isBlank()
                 && FillingFieldsHelper.isDate(dateStartPassInput)) {
             try {
@@ -244,7 +243,7 @@ public class ChangePassController {
         if (dateEndPassInput.getText() != null &&  !dateEndPassInput.getText().isBlank() &&
                 FillingFieldsHelper.isDate(dateEndPassInput)) {
             try {
-                newPass.setDateStart(fillingFieldsHelper.convertFormatLocalDate(dateEndPassInput.getText()));
+                newPass.setDateEnd(fillingFieldsHelper.convertFormatLocalDate(dateEndPassInput.getText()));
             } catch (ParseException e) {
                 String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
                 new GetCommonWindowHelper().openWindowUnSuccess(image, event -> fillStageIfPassObservableListNotEmpty(image),
@@ -266,11 +265,19 @@ public class ChangePassController {
             }
         }
 
-        boolean isSuccessUpdate = fillingFieldsHelper.updatePass(newPass);
-        if (isSuccessUpdate) {
-            String message = "Абонемент успешнообновлен в базе данных";
-            new GetCommonWindowHelper().openWindowSuccess(image, message);
-        } else {
+        try {
+            boolean isSuccessUpdate = fillingFieldsHelper.updatePass(newPass);
+            if (isSuccessUpdate) {
+                String message = "Абонемент успешно обновлен в базе данных";
+                new GetCommonWindowHelper().openWindowSuccess(image, message);
+            } else {
+                String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                String messageForDeveloper = String.format("\nПроизошла ошибка в ChangeStudentController во время записи " +
+                        "в updateVisitors номер телефона %s", inputPhoneNumber.getText());
+                logger.log(Level.SEVERE, messageForDeveloper);
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> fillStageIfPassObservableListNotEmpty(image), message);
+            }
+        } catch (Exception e) {
             String message = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
             String messageForDeveloper = String.format("\nПроизошла ошибка в ChangeStudentController во время записи " +
                     "в updateVisitors номер телефона %s", inputPhoneNumber.getText());

@@ -202,13 +202,17 @@ public class DeleteStudentController {
         String phoneNumber;
         if (phoneNumberForSearch != null && FillingFieldsHelper.isPhoneNumber(String.valueOf(phoneNumberForSearch))) {
             phoneNumber = String.valueOf(phoneNumberForSearch);
-            boolean isSuccess = fillingFieldsHelper.deleteVisitorFromDB(phoneNumber);
-            if (isSuccess) {
-                String message = "Карточка студента успешно удалена в базе данных";
-                new GetCommonWindowHelper().openWindowSuccess(image, message);
-            } else {
-                String message = "Произошла ошибка во время удаления из базы данных. Обратитесь к разработчику";
-                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> deleteStudentFromDB(image), message);
+            try {
+                boolean isSuccess = fillingFieldsHelper.deleteVisitorFromDB(phoneNumber);
+                if (isSuccess) {
+                    String message = "Карточка студента успешно удалена в базе данных";
+                    new GetCommonWindowHelper().openWindowSuccess(image, message);
+                } else {
+                    String message = "Произошла ошибка во время удаления из базы данных. Обратитесь к разработчику";
+                    new GetCommonWindowHelper().openWindowUnSuccess(image, event -> deleteStudentFromDB(image), message);
+                }
+            } catch (SeveralException e) {
+                new GetCommonWindowHelper().openWindowSeveralPass(image, inputPhoneNumber.getText());
             }
         }
     }

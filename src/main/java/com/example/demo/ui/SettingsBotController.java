@@ -22,9 +22,8 @@ public class SettingsBotController {
     @FXML
     void initialize(Stage stageSettings, Image image) {
         turnOffBotButton.setOnAction(event -> new GetCommonWindowHelper().openWindowConfirmation(image,
-                event2 ->
-        backButton.setOnAction(event -> {stageSettings.close();
-        });
+                event2 -> turnOffBot()));
+        backButton.setOnAction(event -> stageSettings.close());
     }
 
     public void openWindowExceptionLoad(Image image) {
