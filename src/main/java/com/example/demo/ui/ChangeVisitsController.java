@@ -1,6 +1,7 @@
 package com.example.demo.ui;
 
 import com.example.demo.dao.Visits;
+import com.example.demo.exception.ExceptionDB;
 import com.example.demo.util.FillingFieldsHelper;
 import com.example.demo.util.GetCommonWindowHelper;
 import javafx.beans.property.ObjectProperty;
@@ -133,7 +134,15 @@ public class ChangeVisitsController {
         LocalDate dateVisitExist = LocalDate.parse(dateVisitValueDB.getText());
 
         if (dateVisitExist != null) {
-            boolean isSuccessUpdate = fillingFieldsHelper.updateVisit(visit, dateVisitExist);
+            boolean isSuccessUpdate = false;
+            try {
+                isSuccessUpdate = fillingFieldsHelper.updateVisit(visit, dateVisitExist);
+            } catch (ExceptionDB e) {
+                String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
+                    updateVisitInDB(image);
+                    }, messageError);
+            }
             if (isSuccessUpdate) {
                 String message = "Посещение успешно обновлено в базе данных";
                 new GetCommonWindowHelper().openWindowSuccess(image, message);
