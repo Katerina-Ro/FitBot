@@ -25,7 +25,6 @@
                   </Button>
                </children>
             </VBox>
-            <Button fx:id="settingsBotButton" layoutX="477.0" layoutY="261.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Настройки бота" />
             <Button fx:id="closeApplicationButton" layoutX="31.0" layoutY="261.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="166.0" text="Выйти из приложения" />
             <VBox layoutX="327.0" prefHeight="240.0" prefWidth="343.0" style="-fx-background-color: #f2f0f0;">
                <children>

@@ -3,6 +3,7 @@ module com.example.demo {
     requires javafx.fxml;
     requires javafx.web;
 
+    //requires askBotApp;
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires validatorfx;
