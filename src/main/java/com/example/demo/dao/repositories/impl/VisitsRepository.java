@@ -62,6 +62,7 @@ public class VisitsRepository implements IVisitsRepository {
 
     @Override
     public boolean createVisit(Visits visits) throws ExceptionDB {
+        System.out.println("внутри createVisit");
         Map<String, Object> paramMap = getParamMap(visits);
         int createdPass = jdbcTemplate.update(INSERT_VISIT, paramMap);
         return createdPass > 0;

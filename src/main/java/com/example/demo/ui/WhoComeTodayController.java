@@ -74,7 +74,6 @@ public class WhoComeTodayController {
     }
 
     private void writeOffVisits(Image image) throws SeveralException {
-        // TODO: добавить проверку, есть ли уже эта дата в БД с занятием и приплюсовать в эту дату занятие
         // TODO: залогировать, а потом очистить список после списания занятий
         if (!comeToDayObservableList.isEmpty()) {
             for (ComeToDay c: comeToDayObservableList) {
@@ -91,15 +90,17 @@ public class WhoComeTodayController {
                     visit.setPass(passId);
 
                     boolean existThisDateVisitsInDB = false;
+                    int countVisitsInThisDateInDB = 0;
                     Optional<List<Visits>> listVisits = fillingFieldsHelper.getVisitFromDB(passId);
                     if (listVisits.isPresent()) {
                         for (Visits v1 : listVisits.get()) {
                             existThisDateVisitsInDB = dateVisit.isEqual(v1.getDateVisit());
+                            countVisitsInThisDateInDB = v1.getCountVisit();
                         }
                     }
 
                     if (existThisDateVisitsInDB) {
-                        visit.setCountVisit(2);
+                        visit.setCountVisit(countVisitsInThisDateInDB + 1);
                         boolean updateVisitSuccess = false;
                         try {
                             updateVisitSuccess = fillingFieldsHelper.updateVisit(visit, dateVisit);
@@ -130,6 +131,7 @@ public class WhoComeTodayController {
                     } else {
                         boolean createVisit = false;
                         try {
+                            System.out.println("сейчас будем списывать занятие ");
                             createVisit = fillingFieldsHelper.createVisit(visit);
                             boolean v = fillingFieldsHelper.deleteComeToDay(pass.getPhoneNumber());
                         } catch (ExceptionDB e) {
@@ -159,5 +161,10 @@ public class WhoComeTodayController {
                 }
             }
         }
+        /*System.out.println("comeToDayObservableList после " + comeToDayObservableList);
+        if (comeToDayObservableList != null && !comeToDayObservableList.isEmpty()) {
+            String message = "У оставшихся в списке студентов истек срок абонемента либо нет абонемента в базе";
+            new GetCommonWindowHelper().openWindowSuccess(image, message);
+        }*/
     }
 }
