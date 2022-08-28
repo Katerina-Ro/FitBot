@@ -15,7 +15,7 @@ import telegramBot.service.modelService.VisitorsService;
  */
 @Service
 public class StartCommand implements Command {
-    private static final String START_MESSAGE = "Вы подключили бота для опроса о посещении. Теперь каждый день Вам будет" +
+    private static final String START_MESSAGE = "Вы подключили бота для опроса о посещении. Теперь каждый день Вам будет " +
             "приходить опрос о посещении занятия";
     @Getter
     private static final String NO_USER_IN_DB_BY_CHAT_ID = "Привет. Это бот для опроса о посещении. Введите Ваш номер " +
@@ -30,6 +30,7 @@ public class StartCommand implements Command {
 
     @Override
     public SendMessage execute(Update update)  {
+        System.out.println("зашли в старт");
         Long chatIdUser = SendMessageUtils.getChatIdUser(update);
         if(!visitorsService.havPhoneNumber(chatIdUser)) {
             return messageError(update);

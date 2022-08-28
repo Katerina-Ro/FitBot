@@ -57,7 +57,9 @@ public class BotConnect extends TelegramLongPollingBot {
             SendMessageUtils.removeForceReplyKeyboard();
             try {
                 log.info("TelegramAPI started");
+                System.out.println("зашел");
                 String commandIdentifier = update.getMessage().getText();
+                System.out.println("команда = " + commandIdentifier);
                 if (FindingDataUtil.isPhoneNumber(update.getMessage().getText())) {
                    commandIdentifier = update.getMessage().getReplyToMessage().getText();
                 }

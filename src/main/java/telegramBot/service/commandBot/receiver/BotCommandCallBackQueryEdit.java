@@ -41,6 +41,8 @@ public class BotCommandCallBackQueryEdit {
                 .put(COMMANDS.NO.getCommand(), this.noCommand)
                 .build();
     }
+
+    // synchronized
     public synchronized EditMessageText findCommand(String commandIdentifier, Update update) {
         return (commandMapCommandEdit.getOrDefault(commandIdentifier, this.unknownCommand).execute(update));
     }

@@ -15,7 +15,8 @@ import java.util.Map;
 public class DontComeToDayRepository implements IDontComeToDayRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    @Value("insert ")
+    @Value("insert into pass_schema.dont_come_today (chat_id, tel_num, surname, name, patronymic, currency_date)\n" +
+            "values (:chatId, :telephoneNum, :surname, :name, :patronymic, :currencyDate)")
     private String insertDontComeToDay;
 
     @Autowired

@@ -30,8 +30,7 @@ public class VisitorsRepository implements IVisitorsRepository {
     @Value("SELECT pass_schema.visitors.tel_num FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id = :chatId")
     private String findTelephoneNumByChatId;
 
-    @Value("SELECT * FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id = :chatId")
-    private String findVisitorByChatId;
+    private String findVisitorByChatId = "SELECT * FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id = :chatId";
 
     @Value("SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors " +
             "WHERE pass_schema.visitors.tel_num = :telephoneNum")
@@ -65,6 +64,7 @@ public class VisitorsRepository implements IVisitorsRepository {
 
     @Override
     public Optional<Visitors> findVisitorByChatId(Long chatId) {
+        System.out.println("зашли в " + chatId);
         List<Visitors> visitor = jdbcTemplate.query(findVisitorByChatId, Map.of("chatId", chatId),
                 new VisitorsRowMapper());
         if (visitor.size() != 1) {
@@ -125,6 +125,7 @@ public class VisitorsRepository implements IVisitorsRepository {
         @Override
         public Visitors mapRow(ResultSet rs, int rowNum) throws SQLException {
             Visitors visitors = new Visitors();
+            visitors.setChatId(rs.getLong("chat_id"));
             visitors.setTelephoneNum(rs.getString("tel_num"));
             visitors.setSurname(rs.getString("surname"));
             visitors.setName(rs.getString("name"));

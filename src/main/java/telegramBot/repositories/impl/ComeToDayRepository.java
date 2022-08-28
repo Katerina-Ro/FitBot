@@ -15,7 +15,8 @@ import java.util.Map;
 public class ComeToDayRepository implements IComeToDayRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
-    @Value("insert ")
+    @Value("insert into pass_schema.come_today (chat_id, tel_num, surname, name, patronymic, currency_date) " +
+            "values (:chatId, :telephoneNum, :surname, :name, :patronymic, :currencyDate)")
     private String insertComeToDay;
 
     @Autowired

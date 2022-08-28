@@ -21,6 +21,7 @@ public class Visitors {
         return "Номер телефона посетителя " + telephoneNum +
                 ", Фамилия " + surname +
                 ", Имя " + name +
-                ", Отчество (может быть не указано) " + patronymic;
+                ", Отчество (может быть не указано) " + patronymic +
+                ", chatId = " + chatId;
     }
 }
