@@ -38,7 +38,7 @@ public class StartController {
         actionWithStudentButton.setOnAction(event -> openWindowActionWithStudent(image));
         actionWithVisitsStudentButton.setOnAction(event -> openWindowActionWithVisits(image));
         closeApplicationButton.setOnAction(event -> primaryStage.close());
-        settingsBotButton.setOnAction(actionEvent -> openWindowSettingsBot(image));
+        //settingsBotButton.setOnAction(actionEvent -> openWindowSettingsBot(image));
     }
 
     @FXML
@@ -172,7 +172,7 @@ public class StartController {
         }
     }
 
-    @FXML
+    /*@FXML
     public void openWindowSettingsBot(Image image) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/example/demo/settingsBot-view.fxml"));
         Parent root1;
@@ -192,5 +192,5 @@ public class StartController {
             String message = "Произошла ошибка во время открытия окна. Обратитесь к разработчику";
             new GetCommonWindowHelper().openWindowUnSuccess(image, event -> openWindowSettingsBot(image), message);
         }
-    }
+    }*/
 }

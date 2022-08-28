@@ -16,13 +16,11 @@ public class SettingsBotController {
     private Button backButton;
     @FXML
     private Button turnOffBotButton;
-    @FXML
-    private Button turnOnBotButton;
 
     @FXML
     void initialize(Stage stageSettings, Image image) {
         turnOffBotButton.setOnAction(event -> new GetCommonWindowHelper().openWindowConfirmation(image,
-                event2 -> turnOffBot()));
+                event2 -> turnOffBotAp()));
         backButton.setOnAction(event -> stageSettings.close());
     }
 
@@ -43,7 +41,7 @@ public class SettingsBotController {
         }
     }
 
-    private void turnOffBot() {
+    private void turnOffBotAp() {
 
     }
 }

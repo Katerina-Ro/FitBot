@@ -237,7 +237,7 @@ public class FillingFieldsHelper {
         return classesLeft;
     } */
 
-    public boolean updateVisit(Visits visit, LocalDate dateVisitExist) {
+    public boolean updateVisit(Visits visit, LocalDate dateVisitExist) throws ExceptionDB {
         return visitsRepository.updateVisit(visit, dateVisitExist);
     }
 
