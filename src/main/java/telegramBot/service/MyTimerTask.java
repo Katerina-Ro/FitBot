@@ -60,7 +60,7 @@ public class MyTimerTask extends TimerTask {
                     }
                     StringBuilder content;
 
-                    try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                    try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
                         String line;
                         content = new StringBuilder();
 

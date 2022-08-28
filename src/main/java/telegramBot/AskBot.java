@@ -11,6 +11,7 @@ import telegramBot.service.Schedule;
 public class AskBot {
 
     public static void main(String[] args) throws TelegramApiException {
+        System.out.println("Старт программы");
         new TelegramBotsApi(DefaultBotSession.class);
         SpringApplication.run(AskBot.class, args);
 
