@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface IDontComeToDay {
     Optional<List<DontComeToDay>> getDontComeToDay();
+
+    boolean deleteDontComeToDay(String phoneNumber);
 }

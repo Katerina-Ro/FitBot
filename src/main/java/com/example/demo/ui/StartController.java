@@ -141,7 +141,7 @@ public class StartController {
             stageWhoDontComeToDay.setScene(new Scene(root1, 700, 480));
 
             WhoSaysNoTodayController whoSaysNoTodayController = fxmlLoader.getController();
-            whoSaysNoTodayController.initialize(stageWhoDontComeToDay);
+            whoSaysNoTodayController.initialize(stageWhoDontComeToDay, image);
 
             stageWhoDontComeToDay.show();
         } catch (IOException e) {
@@ -160,7 +160,7 @@ public class StartController {
             stageWhoComeToDay.setResizable(false);
             stageWhoComeToDay.getIcons().add(image);
             stageWhoComeToDay.setTitle("Кто сегодня придет");
-            stageWhoComeToDay.setScene(new Scene(root1, 700, 480));
+            stageWhoComeToDay.setScene(new Scene(root1, 700, 514));
 
             WhoComeTodayController whoComeTodayController = fxmlLoader.getController();
             whoComeTodayController.initialize(stageWhoComeToDay, image);

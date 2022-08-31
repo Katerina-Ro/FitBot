@@ -174,6 +174,10 @@ public class FillingFieldsHelper {
         return comeToDay.deleteComeToDay(phoneNumber);
     }
 
+    public boolean deleteDontComeToDay(String phoneNumber) {
+        return dontComeToDay.deleteDontComeToDay(phoneNumber);
+    }
+
     public ObservableList<com.example.demo.dao.supportTables.ComeToDay> getObservableListAllComeToday() {
         Optional<List<com.example.demo.dao.supportTables.ComeToDay>> listAll = getAllComeToday();
         return listAll.map(FXCollections::observableArrayList).orElseGet(FXCollections::emptyObservableList);

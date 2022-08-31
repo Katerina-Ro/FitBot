@@ -30,6 +30,8 @@ public class WhoComeTodayController {
     private Button backButton;
     @FXML
     private Button writeOffVisitButton;
+    @FXML
+    private Button deleteAllComeToDay;
 
     @FXML
     private TableColumn<ComeToDay, String> firstNameColumn;
@@ -60,6 +62,8 @@ public class WhoComeTodayController {
             }
         });
         backButton.setOnAction(event -> stageWhoComeToday.close());
+        deleteAllComeToDay.setOnAction(event -> new GetCommonWindowHelper().openWindowConfirmation(image,
+                        event2 -> clearTableComeToDayFromDB()));
     }
 
     private void initDataToTable() {
@@ -176,10 +180,13 @@ public class WhoComeTodayController {
                 }
             }
         }
-        /*System.out.println("comeToDayObservableList после " + comeToDayObservableList);
-        if (comeToDayObservableList != null && !comeToDayObservableList.isEmpty()) {
-            String message = "У оставшихся в списке студентов истек срок абонемента либо нет абонемента в базе";
-            new GetCommonWindowHelper().openWindowSuccess(image, message);
-        }*/
+    }
+
+    public void clearTableComeToDayFromDB() {
+        if (!comeToDayObservableList.isEmpty()) {
+            for (ComeToDay c : comeToDayObservableList) {
+                fillingFieldsHelper.deleteComeToDay(c.getTelephoneNum());
+            }
+        }
     }
 }
