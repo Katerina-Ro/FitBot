@@ -24,6 +24,7 @@ public class ComeToDay {
         return "Номер телефона посетителя " + telephoneNum +
                 ", Фамилия " + surname +
                 ", Имя " + name +
-                ", Отчество (может быть не указано) " + (patronymic != null ? patronymic : "");
+                ", Отчество (может быть не указано) " + (patronymic != null ? patronymic : "") +
+                ", ChatId " + chatId;
     }
 }

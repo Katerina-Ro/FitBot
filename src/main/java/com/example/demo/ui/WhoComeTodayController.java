@@ -1,6 +1,7 @@
 package com.example.demo.ui;
 
 import com.example.demo.dao.Pass;
+import com.example.demo.dao.Visitors;
 import com.example.demo.dao.Visits;
 import com.example.demo.dao.supportTables.ComeToDay;
 import com.example.demo.exception.ExceptionDB;
@@ -74,88 +75,102 @@ public class WhoComeTodayController {
     }
 
     private void writeOffVisits(Image image) throws SeveralException {
-        // TODO: залогировать, а потом очистить список после списания занятий
-        if (!comeToDayObservableList.isEmpty()) {
-            for (ComeToDay c: comeToDayObservableList) {
-                String phoneNumber = c.getTelephoneNum();
-                Optional<List<Pass>> actualListPass = fillingFieldsHelper.getActualPassByPhoneNumber(phoneNumber);
-                if (actualListPass.isPresent()) {
-                    Pass pass = actualListPass.get().get(0);
-                    Integer passId = pass.getNumPass();
-                    LocalDate dateVisit = c.getCurrencyDate();
+        Optional<List<com.example.demo.dao.supportTables.ComeToDay>> listComeToDay = fillingFieldsHelper.getAllComeToday();
+        if (listComeToDay.isPresent()) {
+            for (ComeToDay c: listComeToDay.get()) {
+                Optional<Visitors> visitorFromDB = fillingFieldsHelper.getVisitorByPhone(c.getTelephoneNum());
+                if (visitorFromDB.isEmpty()) {
+                    Visitors newVisitor = new Visitors();
+                    newVisitor.setTelephoneNum(c.getTelephoneNum());
+                    newVisitor.setChatId(c.getChatId());
 
-                    Visits visit = new Visits();
-                    visit.setDateVisit(dateVisit);
-                    visit.setCountVisit(1);
-                    visit.setPass(passId);
-
-                    boolean existThisDateVisitsInDB = false;
-                    int countVisitsInThisDateInDB = 0;
-                    Optional<List<Visits>> listVisits = fillingFieldsHelper.getVisitFromDB(passId);
-                    if (listVisits.isPresent()) {
-                        for (Visits v1 : listVisits.get()) {
-                            existThisDateVisitsInDB = dateVisit.isEqual(v1.getDateVisit());
-                            countVisitsInThisDateInDB = v1.getCountVisit();
-                        }
-                    }
-
-                    if (existThisDateVisitsInDB) {
-                        visit.setCountVisit(countVisitsInThisDateInDB + 1);
-                        boolean updateVisitSuccess = false;
-                        try {
-                            updateVisitSuccess = fillingFieldsHelper.updateVisit(visit, dateVisit);
-                            fillingFieldsHelper.deleteComeToDay(pass.getPhoneNumber());
-                        } catch (ExceptionDB e) {
-                            String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
-                            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
-                                try {
-                                    writeOffVisits(image);
-                                } catch (SeveralException ex) {
-                                    new GetCommonWindowHelper().openWindowSeveralPass(image, pass.getPhoneNumber());
-                                }
-                            }, messageError);
-                        }
-                        if (!updateVisitSuccess) {
-                            String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
-                            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
-                                try {
-                                    writeOffVisits(image);
-                                } catch (SeveralException e) {
-                                    new GetCommonWindowHelper().openWindowSeveralPass(image, pass.getPhoneNumber());
-                                }
-                            }, messageError);
-                        } else {
-                            String message = "Занятие успешно записано в базу данных";
-                            new GetCommonWindowHelper().openWindowSuccess(image, message);
-                        }
+                    fillingFieldsHelper.createVisitors(newVisitor);
+                } else {
+                    if (visitorFromDB.get().getChatId() == null) {
+                        visitorFromDB.get().setChatId(c.getChatId());
+                        fillingFieldsHelper.updateVisitors(visitorFromDB.get());
                     } else {
-                        boolean createVisit = false;
-                        try {
-                            System.out.println("сейчас будем списывать занятие ");
-                            createVisit = fillingFieldsHelper.createVisit(visit);
-                            boolean v = fillingFieldsHelper.deleteComeToDay(pass.getPhoneNumber());
-                        } catch (ExceptionDB e) {
-                            String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
-                            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
-                                try {
-                                    writeOffVisits(image);
-                                } catch (SeveralException ex) {
-                                    new GetCommonWindowHelper().openWindowSeveralPass(image, pass.getPhoneNumber());
+                        String phoneNumber = c.getTelephoneNum();
+                        Optional<List<Pass>> actualListPass = fillingFieldsHelper.getActualPassByPhoneNumber(phoneNumber);
+                        if (actualListPass.isPresent()) {
+                            Pass pass = actualListPass.get().get(0);
+                            Integer passId = pass.getNumPass();
+                            LocalDate dateVisit = c.getCurrencyDate();
+
+                            Visits visit = new Visits();
+                            visit.setDateVisit(dateVisit);
+                            visit.setCountVisit(1);
+                            visit.setPass(passId);
+
+                            boolean existThisDateVisitsInDB = false;
+                            int countVisitsInThisDateInDB = 0;
+                            Optional<List<Visits>> listVisits = fillingFieldsHelper.getVisitFromDB(passId);
+                            if (listVisits.isPresent()) {
+                                for (Visits v1 : listVisits.get()) {
+                                    existThisDateVisitsInDB = dateVisit.isEqual(v1.getDateVisit());
+                                    countVisitsInThisDateInDB = v1.getCountVisit();
                                 }
-                            }, messageError);
-                        }
-                        if (!createVisit) {
-                            String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
-                            new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
+                            }
+
+                            if (existThisDateVisitsInDB) {
+                                visit.setCountVisit(countVisitsInThisDateInDB + 1);
+                                boolean updateVisitSuccess = false;
                                 try {
-                                    writeOffVisits(image);
-                                } catch (SeveralException e) {
-                                    new GetCommonWindowHelper().openWindowSeveralPass(image, pass.getPhoneNumber());
+                                    updateVisitSuccess = fillingFieldsHelper.updateVisit(visit, dateVisit);
+                                    fillingFieldsHelper.deleteComeToDay(pass.getPhoneNumber());
+                                } catch (ExceptionDB e) {
+                                    String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                                    new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
+                                        try {
+                                            writeOffVisits(image);
+                                        } catch (SeveralException ex) {
+                                            new GetCommonWindowHelper().openWindowSeveralPass(image, pass.getPhoneNumber());
+                                        }
+                                    }, messageError);
                                 }
-                            }, messageError);
-                        } else {
-                            String message = "Занятие успешно записано в базу данных";
-                            new GetCommonWindowHelper().openWindowSuccess(image, message);
+                                if (!updateVisitSuccess) {
+                                    String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                                    new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
+                                        try {
+                                            writeOffVisits(image);
+                                        } catch (SeveralException e) {
+                                            new GetCommonWindowHelper().openWindowSeveralPass(image, pass.getPhoneNumber());
+                                        }
+                                    }, messageError);
+                                } else {
+                                    String message = "Занятие успешно записано в базу данных";
+                                    new GetCommonWindowHelper().openWindowSuccess(image, message);
+                                }
+                            } else {
+                                boolean createVisit = false;
+                                try {
+                                    System.out.println("сейчас будем списывать занятие ");
+                                    createVisit = fillingFieldsHelper.createVisit(visit);
+                                    boolean v = fillingFieldsHelper.deleteComeToDay(pass.getPhoneNumber());
+                                } catch (ExceptionDB e) {
+                                    String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                                    new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
+                                        try {
+                                            writeOffVisits(image);
+                                        } catch (SeveralException ex) {
+                                            new GetCommonWindowHelper().openWindowSeveralPass(image, pass.getPhoneNumber());
+                                        }
+                                    }, messageError);
+                                }
+                                if (!createVisit) {
+                                    String messageError = "Произошла ошибка во время записи в базу данных. Обратитесь к разработчику";
+                                    new GetCommonWindowHelper().openWindowUnSuccess(image, event -> {
+                                        try {
+                                            writeOffVisits(image);
+                                        } catch (SeveralException e) {
+                                            new GetCommonWindowHelper().openWindowSeveralPass(image, pass.getPhoneNumber());
+                                        }
+                                    }, messageError);
+                                } else {
+                                    String message = "Занятие успешно записано в базу данных";
+                                    new GetCommonWindowHelper().openWindowSuccess(image, message);
+                                }
+                            }
                         }
                     }
                 }

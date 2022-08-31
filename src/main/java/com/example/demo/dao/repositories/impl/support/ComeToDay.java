@@ -48,6 +48,7 @@ public class ComeToDay implements IComeToDay {
             comeToDay.setName(rs.getString("name"));
             comeToDay.setPatronymic(rs.getString("patronymic"));
             comeToDay.setTelephoneNum(rs.getString("tel_num"));
+            comeToDay.setChatId(rs.getLong("chat_id"));
             Date rsDate = rs.getDate("currency_date");
             comeToDay.setCurrencyDate(rsDate.toLocalDate());
             return comeToDay;
