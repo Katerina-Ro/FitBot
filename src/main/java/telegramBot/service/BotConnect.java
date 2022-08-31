@@ -13,7 +13,6 @@ import telegramBot.service.commandBot.receiver.BotCommandCallBackQuery;
 import telegramBot.service.commandBot.receiver.BotCommandCallBackQueryEdit;
 import telegramBot.service.commandBot.receiver.BotCommandSendMessage;
 import telegramBot.service.commandBot.receiver.utils.FindingDataUtil;
-import telegramBot.service.commandBot.receiver.utils.SendMessageUtils;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,12 +53,10 @@ public class BotConnect extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if (update.getMessage() != null && update.hasMessage()) {
-            SendMessageUtils.removeForceReplyKeyboard();
+            //SendMessageUtils.removeForceReplyKeyboard();
             try {
                 log.info("TelegramAPI started");
-                System.out.println("зашел");
                 String commandIdentifier = update.getMessage().getText();
-                System.out.println("команда = " + commandIdentifier);
                 if (FindingDataUtil.isPhoneNumber(update.getMessage().getText())) {
                    commandIdentifier = update.getMessage().getReplyToMessage().getText();
                 }

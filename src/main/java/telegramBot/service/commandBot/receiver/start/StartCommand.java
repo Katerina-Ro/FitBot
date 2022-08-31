@@ -30,7 +30,6 @@ public class StartCommand implements Command {
 
     @Override
     public SendMessage execute(Update update)  {
-        System.out.println("зашли в старт");
         Long chatIdUser = SendMessageUtils.getChatIdUser(update);
         if(!visitorsService.havPhoneNumber(chatIdUser)) {
             return messageError(update);

@@ -14,7 +14,7 @@ public class ComeToDay {
     @NotBlank
     private String telephoneNum;
     private String surname;
-    @NotBlank
+    //@NotBlank
     private String name;
     private String patronymic;
     private LocalDate currencyDate = LocalDate.now(ZoneId.of("GMT+03:00"));

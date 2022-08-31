@@ -15,6 +15,9 @@ import java.util.Map;
 public class DontComeToDayRepository implements IDontComeToDayRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
+    // TODO: values (?, ?, ?, ?, ?, ?)]; ОШИБКА: значение NULL в столбце "name" отношения "dont_come_today" нарушает ограничение NOT NULL
+    //  Подробности: Ошибочная строка содержит (658149192, 79502078309, null, null, null, 2022-08-31).; nested exception is org.postgresql.util.PSQLException: ОШИБКА: значение NULL в столбце "name" отношения "dont_come_today" нарушает ограничение NOT NULL
+    //  Подробности: Ошибочная строка содержит (658149192, 79502078309, null, null, null, 2022-08-31).
     @Value("insert into pass_schema.dont_come_today (chat_id, tel_num, surname, name, patronymic, currency_date)\n" +
             "values (:chatId, :telephoneNum, :surname, :name, :patronymic, :currencyDate)")
     private String insertDontComeToDay;

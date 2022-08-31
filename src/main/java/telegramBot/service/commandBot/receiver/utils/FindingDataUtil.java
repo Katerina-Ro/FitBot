@@ -6,7 +6,7 @@ import java.time.LocalTime;
  * Вспомогательный класс для получения данных из сообщения типа String
  */
 public class FindingDataUtil {
-    private final static LocalTime eventTime = LocalTime.of(9, 0, 0);
+    private final static LocalTime eventTime = LocalTime.of(9, 30, 0);
 
     /**
      * Проверка, первый символ - это цифра 7

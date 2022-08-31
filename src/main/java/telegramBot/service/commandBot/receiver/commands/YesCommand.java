@@ -1,19 +1,19 @@
 package telegramBot.service.commandBot.receiver.commands;
 
-import supportTable.ComeToDay;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import supportTable.ComeToDay;
 import telegramBot.model.Visitors;
-import telegramBot.repositories.IComeToDayRepository;
 import telegramBot.service.commandBot.COMMANDS;
 import telegramBot.service.commandBot.CommandEditSendMessage;
 import telegramBot.service.commandBot.receiver.utils.SendMessageUtils;
 import telegramBot.service.commandBot.receiver.utils.keyboard.Buttons;
 import telegramBot.service.commandBot.receiver.utils.keyboard.MakerInlineKeyboardMarkup;
+import telegramBot.service.modelService.ComeToDayService;
 import telegramBot.service.modelService.VisitorsService;
 
 import java.time.LocalDate;
@@ -28,12 +28,12 @@ public class YesCommand implements CommandEditSendMessage {
     private static final String NO_HAVE_CLASSES_IN_PASS = "Не осталось занятий в абонементе либо нет информации " +
             "об абонементе в базе данных";
     private final VisitorsService visitorsService;
-    private final IComeToDayRepository comeToDayRepository;
+    private final ComeToDayService comeToDayService;
 
     @Autowired
-    public YesCommand(VisitorsService visitorsService, IComeToDayRepository comeToDayRepository) {
+    public YesCommand(VisitorsService visitorsService, ComeToDayService comeToDayService) {
         this.visitorsService = visitorsService;
-        this.comeToDayRepository = comeToDayRepository;
+        this.comeToDayService = comeToDayService;
     }
 
     @Override
@@ -50,12 +50,14 @@ public class YesCommand implements CommandEditSendMessage {
             comeToDay.setTelephoneNum(v.getTelephoneNum());
             comeToDay.setCurrencyDate(LocalDate.now());
             // добавляем в список (map) тех, кто придет, и вписываем в промежуточную таблицу
-            try {
-                comeToDayRepository.createComeToDay(comeToDay);
-            } catch (DataAccessException e) {
-                log.error(String.format("Ошибка при записи в БД: %s", e));
-                SendMessageUtils.sendEditMessage(update,"Нет о Вас информации в БД. Обратитесь к администратору",
-                        MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
+            if (!comeToDayService.existThisComeToday(comeToDay)) {
+                try {
+                    comeToDayService.createComeToDay(comeToDay);
+                } catch (DataAccessException e) {
+                    log.error(String.format("Ошибка при записи в БД: %s", e));
+                    SendMessageUtils.sendEditMessage(update, "Нет о Вас информации в БД. Обратитесь к администратору",
+                            MakerInlineKeyboardMarkup.get1InlineKeyboardMarkup(Buttons.getKeyBoardBackToStart()));
+                }
             }
         } else {
             SendMessageUtils.sendEditMessage(update,"Нет о Вас информации в БД. Обратитесь к администратору",

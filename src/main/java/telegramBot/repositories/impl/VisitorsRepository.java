@@ -36,7 +36,6 @@ public class VisitorsRepository implements IVisitorsRepository {
             "WHERE pass_schema.visitors.tel_num = :telephoneNum")
     private String findChatIdByPhoneNumber;
 
-    //@Value("")
     private String findAllChatId = "SELECT pass_schema.visitors.chat_id FROM pass_schema.visitors WHERE pass_schema.visitors.chat_id is not null";
 
     @Value("insert into pass_schema.visitors (surname, name, patronumic, tel_num, chat_id) " +
@@ -64,7 +63,6 @@ public class VisitorsRepository implements IVisitorsRepository {
 
     @Override
     public Optional<Visitors> findVisitorByChatId(Long chatId) {
-        System.out.println("зашли в " + chatId);
         List<Visitors> visitor = jdbcTemplate.query(findVisitorByChatId, Map.of("chatId", chatId),
                 new VisitorsRowMapper());
         if (visitor.size() != 1) {
@@ -78,11 +76,15 @@ public class VisitorsRepository implements IVisitorsRepository {
     public Optional<String> findTelephoneNumByChatId(Long chatId) {
         List<String> phoneNumber = jdbcTemplate.query(findTelephoneNumByChatId, Map.of("chatId", chatId),
                 new PhoneNumberMapper());
-        if (phoneNumber.size() != 1) {
+        if (phoneNumber.size() > 1) {
             throw new IllegalStateException(String.format("По chatId = %s в базе содержится 2 номера телефона: %s ",
                     chatId, phoneNumber));
         }
-        return Optional.ofNullable(phoneNumber.get(0));
+        if (!phoneNumber.isEmpty()) {
+            return Optional.of(phoneNumber.get(0));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override
