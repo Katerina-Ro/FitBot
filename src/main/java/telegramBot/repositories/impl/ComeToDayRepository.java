@@ -43,7 +43,7 @@ public class ComeToDayRepository implements IComeToDayRepository {
     @Override
     public Optional<List<ComeToDay>> getComeToDay() throws DataAccessException {
         List<ComeToDay> allComeToDay = jdbcTemplate.query(findAllComeToDay, new ComeToDayRowMapper());
-        return Optional.ofNullable(allComeToDay);
+        return Optional.of(allComeToDay);
     }
 
     public static class ComeToDayRowMapper implements RowMapper<ComeToDay> {

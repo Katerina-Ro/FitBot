@@ -20,8 +20,8 @@ public class FindingDataUtil {
 
     public static boolean isPhoneNumber(String incomingMessage) {
         if (firstSevenByIncomingMessage(incomingMessage)) {
-            if (CheckingInputLinesUtil.checkLengthLine(incomingMessage)) {
-                return CheckingInputLinesUtil.isNumbers(incomingMessage);
+            if (incomingMessage.trim().length() == 11) {
+                return incomingMessage.trim().matches("[0-9]+");
             }
             return false;
         }
